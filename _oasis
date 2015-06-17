@@ -1,0 +1,25 @@
+OASISFormat: 0.4
+
+Name: prelude
+Synopsis: prelude
+Version: 0.0.0
+
+License: MIT
+Authors: Darin Morrison
+Maintainers: Darin Morrison <darinmorrison+git@gmail.com>
+Description: prelude
+Homepage: https://github.com/freebroccolo/ocaml-prelude
+
+BuildTools: ocamlbuild
+Plugins: DevFiles (0.4), META (0.4)
+
+SourceRepository "master"
+  Type: git
+  Location: https://github.com/freebroccolo/ocaml-prelude.git
+  Branch: master
+  Browser: https://github.com/freebroccolo/ocaml-prelude
+
+Executable "main"
+  Path: src
+  MainIs: main.ml
+  CompiledObject: best
