@@ -32,7 +32,7 @@ end
 
 module type APPLICATIVE = sig
   include APPLY
-  val apply : ('a -> 'b) t -> ('a t -> 'b t)
+  val pure : 'a -> 'a t
 end
 
 module type BIND = sig
