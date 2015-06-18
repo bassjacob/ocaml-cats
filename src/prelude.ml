@@ -490,8 +490,7 @@ module Profunctor = struct
       : (Sig.PROFUNCTOR with type (-'a, +'b) p = 'a -> 'b) =
     struct
       type (-'a, +'b) p = 'a -> 'b
-      let dimap f g h =
-        fun x -> g (h (f x))
+      let dimap f g h x = g (h (f x))
     end
     include Core
     include Ext.Profunctor(Core)
