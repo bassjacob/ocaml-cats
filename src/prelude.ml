@@ -1,3 +1,4 @@
+(*
 let undefined ?(message = "Undefined") _ = failwith message
 
 let const : 'a -> ('b -> 'a) =
@@ -26,6 +27,7 @@ let tap f x : ('a -> unit) -> ('a -> 'a)
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
+*)
 
 module Sig = struct
   module type SEMIGROUP = sig
@@ -128,9 +130,9 @@ end
 module Ext = struct
   module Profunctor = functor (T : Sig.PROFUNCTOR) -> struct
     let lmap : ('a -> 'b) -> (('b, 'c) T.p -> ('a, 'c) T.p)
-      = fun f -> T.dimap f id
+      = fun f -> T.dimap f (fun x -> x)
     let rmap : ('c -> 'd) -> (('b, 'c) T.p -> ('b, 'd) T.p)
-      = fun f -> T.dimap id f
+      = fun f -> T.dimap (fun x -> x) f
   end
 end
 
@@ -330,7 +332,7 @@ module Profunctor = struct
       : (Sig.PROFUNCTOR with type (-'a, +'b) p = 'a -> 'b) =
     struct
       type (-'a, +'b) p = 'a -> 'b
-      let dimap f g h = g % h % f
+      let dimap f g h = fun x -> g (h (f x))
     end
     include Core
     include Ext.Profunctor(Core)
