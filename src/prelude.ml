@@ -86,7 +86,7 @@ module Sig = struct
 
   module type CATEGORY = sig
     include PROFUNCTOR
-    val idn : ('a, 'a) p
+    val id : ('a, 'a) p
   end
 
   module type APPLY = sig
