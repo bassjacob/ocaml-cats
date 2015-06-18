@@ -61,9 +61,11 @@ module Semiring = struct
   end
 end
 
-module type PROFUNCTOR = sig
+module type Profunctor = sig
   type (-'a, +'b) p
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
+  val lmap : ('a -> 'b) -> (('b, 'c) p -> ('a, 'c) p)
+  val rmap : ('c -> 'd) -> (('b, 'c) p -> ('b, 'd) p)
 end
 
 module Functor = struct
@@ -71,11 +73,11 @@ module Functor = struct
     type +'a t
     val map : ('a -> 'b) -> ('a t -> 'b t)
   end
-  module Make : functor (Hom: PROFUNCTOR) -> sig
+  module Make : functor (Hom : Profunctor) -> sig
     type dom
     type +'a t = (dom, 'a) Hom.p
     include (SIG with type +'a t := 'a t)
-  end = functor (Hom : PROFUNCTOR) -> struct
+  end = functor (Hom : Profunctor) -> struct
     type dom
     type +'a t = (dom, 'a) Hom.p
     let map f = Hom.dimap id f
@@ -87,11 +89,11 @@ module OpFunctor = struct
     type -'a t
     val map : ('a -> 'b) -> ('b t -> 'a t)
   end
-  module Make : functor (Hom : PROFUNCTOR) -> sig
+  module Make : functor (Hom : Profunctor) -> sig
     type cod
     type -'a t = ('a, cod) Hom.p
     include (SIG with type -'a t := 'a t)
-  end = functor (Hom : PROFUNCTOR) -> struct
+  end = functor (Hom : Profunctor) -> struct
     type cod
     type -'a t = ('a, cod) Hom.p
     let map f = Hom.dimap f id
@@ -100,13 +102,13 @@ end
 
 module type SEMICATEGORY = sig
   type (-'a, +'b) hom
-  include (PROFUNCTOR with type (-'a, +'b) p := ('a, 'b) hom)
+  include (Profunctor with type (-'a, +'b) p := ('a, 'b) hom)
   val cmp : ('b, 'c) hom -> ('a, 'b) hom -> ('a, 'c) hom
 end
 
 module type CATEGORY = sig
   type (-'a, +'b) hom
-  include (PROFUNCTOR with type (-'a, +'b) p := ('a, 'b) hom)
+  include (Profunctor with type (-'a, +'b) p := ('a, 'b) hom)
   val idn : ('a, 'a) hom
 end
 
@@ -131,9 +133,13 @@ module type MONAD = sig
   include (BIND with type 'a t := 'a m)
 end
 
-module ProfunctorArrow : PROFUNCTOR = struct
+module ProfunctorArrow
+  : (Profunctor with type (-'a, +'b) p = 'a -> 'b) =
+struct
   type (-'a, +'b) p = 'a -> 'b
   let dimap f g h = g % h % f
+  let lmap f = dimap f id
+  let rmap f = dimap id f
 end
 module FunctorArrow = Functor.Make(ProfunctorArrow)
 module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
