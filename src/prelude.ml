@@ -51,7 +51,7 @@ module Sig = struct
   module type MODULOSEMIRING = sig
     include SEMIRING
     val div : t -> t -> t
-    val modu : t -> t -> t
+    val modulo : t -> t -> t
   end
 
   module type RING = sig
@@ -307,7 +307,7 @@ module ModuloSemiring = struct
   struct
     include Semiring.Unit
     let div _ _ = ()
-    let modu _ _ = ()
+    let modulo _ _ = ()
   end
 
   module Int
@@ -315,7 +315,7 @@ module ModuloSemiring = struct
   struct
     include Semiring.Int
     let div = (/)
-    let modu = (mod)
+    let modulo = (mod)
   end
 
   module Float
@@ -323,7 +323,7 @@ module ModuloSemiring = struct
   struct
     include Semiring.Float
     let div = (/.)
-    let modu = mod_float
+    let modulo = mod_float
   end
 end
 
