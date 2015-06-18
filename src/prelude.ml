@@ -290,7 +290,7 @@ module Monoid = struct
     module Def
       : (Sig.MONOID with type t = unit) =
     struct
-      include Semigroup.Unit
+      include Semigroup.Unit.Def
       let unit = ()
     end
     include Def
@@ -301,7 +301,7 @@ module Monoid = struct
       module Def
         : (Sig.MONOID with type t = int) =
       struct
-        include Semigroup.Additive.Int
+        include Semigroup.Additive.Int.Def
         let unit = 0
       end
       include Def
@@ -311,7 +311,7 @@ module Monoid = struct
       module Def
         : (Sig.MONOID with type t = float) =
       struct
-        include Semigroup.Additive.Float
+        include Semigroup.Additive.Float.Def
         let unit = 0.0
       end
       include Def
@@ -323,7 +323,7 @@ module Monoid = struct
       module Def
         : (Sig.MONOID with type t = int) =
       struct
-        include Semigroup.Multiplicative.Int
+        include Semigroup.Multiplicative.Int.Def
         let unit = 1
       end
       include Def
@@ -333,7 +333,7 @@ module Monoid = struct
       module Def
         : (Sig.MONOID with type t = float) =
       struct
-        include Semigroup.Multiplicative.Float
+        include Semigroup.Multiplicative.Float.Def
         let unit = 1.0
       end
       include Def
@@ -360,8 +360,8 @@ module Semiring = struct
     module Def
       : (Sig.SEMIRING with type t = int) =
     struct
-      module Add = Monoid.Additive.Int
-      module Mul = Monoid.Multiplicative.Int
+      module Add = Monoid.Additive.Int.Def
+      module Mul = Monoid.Multiplicative.Int.Def
       type t = int
       let zero = Add.unit
       let add x y = Add.op x y
@@ -376,8 +376,8 @@ module Semiring = struct
     module Def
       : (Sig.SEMIRING with type t = float) =
     struct
-      module Add = Monoid.Additive.Float
-      module Mul = Monoid.Multiplicative.Float
+      module Add = Monoid.Additive.Float.Def
+      module Mul = Monoid.Multiplicative.Float.Def
       type t = float
       let zero = Add.unit
       let add x y = Add.op x y
@@ -394,7 +394,7 @@ module ModuloSemiring = struct
     module Def
       : (Sig.MODULOSEMIRING with type t = unit) =
     struct
-      include Semiring.Unit
+      include Semiring.Unit.Def
       let div _ _ = ()
       let modulo _ _ = ()
     end
@@ -406,7 +406,7 @@ module ModuloSemiring = struct
     module Def
       : (Sig.MODULOSEMIRING with type t = int) =
     struct
-      include Semiring.Int
+      include Semiring.Int.Def
       let div = (/)
       let modulo = (mod)
     end
@@ -418,7 +418,7 @@ module ModuloSemiring = struct
     module Def
       : (Sig.MODULOSEMIRING with type t = float) =
     struct
-      include Semiring.Float
+      include Semiring.Float.Def
       let div = (/.)
       let modulo = mod_float
     end
@@ -432,7 +432,7 @@ module Ring = struct
     module Def
       : (Sig.RING with type t = unit) =
     struct
-      include Semiring.Unit
+      include Semiring.Unit.Def
       let sub _ _ = ()
     end
     include Def
@@ -443,7 +443,7 @@ module Ring = struct
     module Def
       : (Sig.RING with type t = int) =
     struct
-      include Semiring.Int
+      include Semiring.Int.Def
       let sub x y = x - y
     end
     include Def
@@ -454,7 +454,7 @@ module Ring = struct
     module Def
       : (Sig.RING with type t = float) =
     struct
-      include Semiring.Float
+      include Semiring.Float.Def
       let sub x y = x -. y
     end
     include Def
@@ -467,8 +467,8 @@ module DivisionRing = struct
     module Def
       : (Sig.DIVISIONRING with type t = unit) =
     struct
-      include Ring.Unit
-      include (ModuloSemiring.Unit : Sig.MODULOSEMIRING with type t := t)
+      include Ring.Unit.Def
+      include (ModuloSemiring.Unit.Def : Sig.MODULOSEMIRING with type t := t)
     end
     include Def
   end
@@ -477,8 +477,8 @@ module DivisionRing = struct
     module Def
       : (Sig.DIVISIONRING with type t = float) =
     struct
-      include Ring.Float
-      include (ModuloSemiring.Float : Sig.MODULOSEMIRING with type t := t)
+      include Ring.Float.Def
+      include (ModuloSemiring.Float.Def : Sig.MODULOSEMIRING with type t := t)
     end
     include Def
   end
