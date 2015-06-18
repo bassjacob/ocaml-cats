@@ -141,6 +141,10 @@ module Ext = struct
     let bang : 'a M.t -> unit M.t = fun x -> (fun _ -> ()) <$-> x
   end
 
+  module Apply = functor (M : Sig.APPLY) -> struct
+    let (<*>) : ('a -> 'b) M.t -> ('a M.t -> 'b M.t) = M.apply
+  end
+
   module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
     let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.compose
     let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
