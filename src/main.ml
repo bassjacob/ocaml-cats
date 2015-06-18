@@ -172,6 +172,13 @@ module Semigroup = struct
 end
 
 module Monoid = struct
+  module Unit
+    : (Sig.MONOID with type t = unit) =
+  struct
+    include Semigroup.Unit
+    let unit = ()
+  end
+
   module Additive = struct
     module Int
       : (Sig.MONOID with type t = int) =
@@ -206,6 +213,16 @@ module Monoid = struct
 end
 
 module Semiring = struct
+  module Unit
+    : (Sig.SEMIRING with type t = unit) =
+  struct
+    type t = unit
+    let zero = ()
+    let add _ _ = ()
+    let one = ()
+    let mul _ _ = ()
+  end
+
   module Int
     : (Sig.SEMIRING with type t = int) =
   struct
@@ -232,6 +249,13 @@ module Semiring = struct
 end
 
 module Ring = struct
+  module Unit
+    : (Sig.RING with type t = unit) =
+  struct
+    include Semiring.Unit
+    let sub _ _ = ()
+  end
+
   module Int
     : (Sig.RING with type t = int) =
   struct
