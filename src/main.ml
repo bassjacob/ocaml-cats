@@ -135,7 +135,7 @@ module ProfunctorArrow : PROFUNCTOR = struct
   type (-'a, +'b) p = 'a -> 'b
   let dimap f g h = g % h % f
 end
-module   FunctorArrow =   Functor.Make(ProfunctorArrow)
+module FunctorArrow = Functor.Make(ProfunctorArrow)
 module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
 
 module SemiringInt
