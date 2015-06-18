@@ -69,15 +69,13 @@ module type OPFUNCTOR = sig
 end
 
 module type SEMICATEGORY = sig
-  type (-'a, +'b) hom
-  include (Profunctor.SIG with type (-'a, +'b) p := ('a, 'b) hom)
-  val cmp : ('b, 'c) hom -> ('a, 'b) hom -> ('a, 'c) hom
+  include Profunctor.SIG
+  val cmp : ('b, 'c) p -> ('a, 'b) p -> ('a, 'c) p
 end
 
 module type CATEGORY = sig
-  type (-'a, +'b) hom
-  include (Profunctor.SIG with type (-'a, +'b) p := ('a, 'b) hom)
-  val idn : ('a, 'a) hom
+  include Profunctor.SIG
+  val idn : ('a, 'a) p
 end
 
 module type APPLY = sig
@@ -96,20 +94,18 @@ module type BIND = sig
 end
 
 module type MONAD = sig
-  type +'a m
-  include (APPLICATIVE with type 'a t := 'a m)
-  include (BIND with type 'a t := 'a m)
+  include APPLICATIVE
+  include (BIND with type 'a t := 'a t)
 end
 
 module type EXTEND = sig
-  type +'a w
-  include (FUNCTOR with type 'a t := 'a w)
-  val extend : ('a w -> 'b) -> ('a w -> 'b w)
+  include FUNCTOR
+  val extend : ('a t -> 'b) -> ('a t -> 'b t)
 end
 
 module type COMONAD = sig
   include EXTEND
-  val extract : 'a w -> 'a
+  val extract : 'a t -> 'a
 end
 
 module type FOLDABLE = sig
