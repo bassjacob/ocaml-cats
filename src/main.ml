@@ -27,6 +27,40 @@ external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
+module type SEMIGROUP = sig
+  type t
+  val op : t -> t -> t
+end
+
+module type MONOID = sig
+  include SEMIGROUP
+  val unit : t
+end
+
+module Semiring = struct
+  module type SIG = sig
+    type t
+    val zero : t
+    val add : t -> t -> t
+    val one : t
+    val mul : t -> t -> t
+  end
+  module MakeAdditiveMonoid : functor (T : SIG) -> sig
+    include MONOID
+  end = functor (T : SIG) -> struct
+    type t = T.t
+    let unit = T.zero
+    let op = T.add
+  end
+  module MakeMultiplicativeMonoid : functor (T : SIG) -> sig
+    include MONOID
+  end = functor (T : SIG) -> struct
+    type t = T.t
+    let unit = T.one
+    let op = T.mul
+  end
+end
+
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
@@ -103,3 +137,13 @@ module ProfunctorArrow : PROFUNCTOR = struct
 end
 module   FunctorArrow =   Functor.Make(ProfunctorArrow)
 module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
+
+module SemiringInt : Semiring.SIG = struct
+  type t = int
+  let zero = 0
+  let add x y = x + y
+  let one = 1
+  let mul x y = x * y
+end
+module MonoidAdditiveInt = Semiring.MakeAdditiveMonoid(SemiringInt)
+module MonoidMultiplicativeInt = Semiring.MakeMultiplicativeMonoid(SemiringInt)
