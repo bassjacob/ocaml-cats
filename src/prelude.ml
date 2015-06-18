@@ -128,68 +128,79 @@ module Sig = struct
 end
 
 module Ext = struct
-  module Semigroup = functor (M : Sig.SEMIGROUP) -> struct
-    let (@) : M.t -> M.t -> M.t =
-      M.op
+  module Semigroup : functor (M : Sig.SEMIGROUP) -> sig
+    val (@) : M.t -> M.t -> M.t
+  end = functor (M : Sig.SEMIGROUP) -> struct
+    let (@) = M.op
   end
 
-  module Semiring = functor (M : Sig.SEMIRING) -> struct
-    let ( +@ ) : M.t -> M.t -> M.t =
-      M.add
-    let ( *@ ) : M.t -> M.t -> M.t =
-      M.mul
+  module Semiring : functor (M : Sig.SEMIRING) -> sig
+    val ( +@ ) : M.t -> M.t -> M.t
+    val ( *@ ) : M.t -> M.t -> M.t
+  end = functor (M : Sig.SEMIRING) -> struct
+    let ( +@ ) = M.add
+    let ( *@ ) = M.mul
   end
 
-  module ModuloSemiring = functor (M : Sig.MODULOSEMIRING) -> struct
-    let (/@) : M.t -> M.t -> M.t =
-      M.div
-    let (%@) : M.t -> M.t -> M.t =
-      M.modulo
+  module ModuloSemiring : functor (M : Sig.MODULOSEMIRING) -> sig
+    val (/@) : M.t -> M.t -> M.t
+    val (%@) : M.t -> M.t -> M.t
+  end = functor (M : Sig.MODULOSEMIRING) -> struct
+    let (/@) = M.div
+    let (%@) = M.modulo
   end
 
-  module Ring = functor (M : Sig.RING) -> struct
-    let (-@) : M.t -> M.t -> M.t =
-      M.sub
-    let negate : M.t -> M.t =
-      fun x -> M.zero -@ x
+  module Ring : functor (M : Sig.RING) -> sig
+    val (-@) : M.t -> M.t -> M.t
+    val negate : M.t -> M.t
+  end = functor (M : Sig.RING) -> struct
+    let (-@) = M.sub
+    let negate x = M.zero -@ x
   end
 
-  module Profunctor = functor (M : Sig.PROFUNCTOR) -> struct
-    let lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p) =
-      fun f -> M.dimap f (fun x -> x)
-    let rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p) =
-      fun f -> M.dimap (fun x -> x) f
+  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
+    val lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p)
+    val rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p)
+  end = functor (M : Sig.PROFUNCTOR) -> struct
+    let lmap f = M.dimap f (fun x -> x)
+    let rmap f = M.dimap (fun x -> x) f
   end
 
-  module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
-    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p =
-      M.compose
-    let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
-      fun f g -> M.compose g f
+  module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
+    val (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p
+    val (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p
+  end = functor (M : Sig.SEMIGROUPOID) -> struct
+    let (%>) = M.compose
+    let (%<) f g = M.compose g f
   end
 
-  module Functor = functor (M : Sig.FUNCTOR) -> struct
-    let (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t) =
-      M.map
-    let (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t =
-      fun x f -> f <$-> x
-    let bang : 'a M.t -> unit M.t =
-      fun x -> (fun _ -> ()) <$-> x
+  module Functor : functor (M : Sig.FUNCTOR) -> sig
+    val (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t)
+    val (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t
+    val bang : 'a M.t -> unit M.t
+  end = functor (M : Sig.FUNCTOR) -> struct
+    let (<$->) = M.map
+    let (<-$>) x f = f <$-> x
+    let bang x = (fun _ -> ()) <$-> x
   end
 
-  module Apply = functor (M : Sig.APPLY) -> struct
-    let (<*>) : ('a -> 'b) M.t -> ('a M.t -> 'b M.t) = M.apply
+  module Apply : functor (M : Sig.APPLY) -> sig
+    val (<*>) : ('a -> 'b) M.t -> ('a M.t -> 'b M.t)
+  end = functor (M : Sig.APPLY) -> struct
+    let (<*>) = M.apply
   end
 
-  module Bind = functor (M : Sig.BIND) -> struct
-    let (>>=) : 'a M.t -> ('a -> 'b M.t) -> 'b M.t =
-      M.bind
+  module Bind : functor (M : Sig.BIND) -> sig
+    val (>>=) : 'a M.t -> ('a -> 'b M.t) -> 'b M.t
+  end = functor (M : Sig.BIND) -> struct
+    let (>>=) = M.bind
   end
 
-  module Monad = functor (M : Sig.MONAD) -> struct
+  module Monad : functor (M : Sig.MONAD) -> sig
+    val ap : ('a -> 'b) M.t -> ('a M.t -> 'b M.t)
+  end = functor (M : Sig.MONAD) -> struct
     module E = Bind(M);; open M;; open E;;
-    let ap : ('a -> 'b) M.t -> ('a M.t -> 'b M.t) =
-      fun mf mx -> mf >>= fun f -> mx >>= fun x -> pure (f x)
+    let ap mf mx = mf >>= fun f -> mx >>= fun x -> pure (f x)
   end
 end
 
