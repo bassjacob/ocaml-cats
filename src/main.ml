@@ -1,26 +1,31 @@
-let const : 'a 'b. 'a -> ('b -> 'a) =
+let undefined ?(message = "Undefined") _ = failwith message
+
+let const : 'a -> ('b -> 'a) =
   fun x _ -> x
 
-let id : 'a. 'a -> 'a =
-  fun x -> x
+external id : 'a -> 'a = "%identity"
 
-let cmp : 'a 'b 'c. ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c) =
+let (%>) : ('a -> 'b) -> ('b -> 'c) -> ('a -> 'c) =
+  fun g f x -> f (g x)
+
+let (%) : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c) =
   fun g f x -> g (f x)
 
-let curry : 'a 'b 'c. ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
+let flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
+  fun f x y -> f y x
+
+let curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
   fun f x y -> f (x, y)
 
-let uncurry : 'a 'b 'c. ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
+let uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
   fun f (x, y) -> f x y
 
-let ($) : 'a 'b. ('a -> 'b) -> ('a -> 'b) =
-  fun f x -> f x
+let tap f x : ('a -> unit) -> ('a -> 'a)
+  = f x; x
 
-let embed : 'a 'r. 'a -> (('a -> 'r) -> 'r) =
-  fun x k -> k x
+external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 
-let flip : 'a 'b 'c. ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
-  fun f x y -> f y x
+external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
