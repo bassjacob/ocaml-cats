@@ -81,7 +81,7 @@ module Sig = struct
 
   module type SEMIGROUPOID = sig
     include PROFUNCTOR
-    val cmp : ('b, 'c) p -> ('a, 'b) p -> ('a, 'c) p
+    val compose : ('b, 'c) p -> ('a, 'b) p -> ('a, 'c) p
   end
 
   module type CATEGORY = sig
@@ -136,9 +136,9 @@ module Ext = struct
   end
 
   module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
-    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.cmp
+    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.compose
     let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
-      fun f g -> M.cmp g f
+      fun f g -> M.compose g f
   end
 end
 
