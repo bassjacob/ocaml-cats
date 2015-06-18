@@ -4,6 +4,12 @@ let id : 'a. 'a -> 'a =
 let cmp : 'a 'b 'c. ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c) =
   fun g f x -> g (f x)
 
+let curry : 'a 'b 'c. ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
+  fun f x y -> f (x, y)
+
+let uncurry : 'a 'b 'c. ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
+  fun f (x, y) -> f x y
+
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
