@@ -4,7 +4,7 @@ A small OCaml prelude for algebraic and categorical concepts
 
 ## API Reference
 
-See [here](https://github.com/freebroccolo/ocaml-prelude/tree/master/docs/prelude)
+See [here](https://rawgit.com/freebroccolo/ocaml-prelude/master/docs/prelude/index.html)
 
 ### Building
 
