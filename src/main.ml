@@ -151,4 +151,3 @@ module ProfunctorArrow = struct
   include Core
   include Profunctor.Manifest(Core)
 end
-
