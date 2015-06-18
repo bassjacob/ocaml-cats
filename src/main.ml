@@ -115,23 +115,35 @@ module type FOLDABLE = sig
   val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a t -> 'm)
 end
 
-module SemigroupIntAdditive : (SEMIGROUP with type t = int) = struct
+module SemigroupIntAdditive
+  : (SEMIGROUP with type t = int) =
+struct
   type t = int
   let op x y = x + y
 end
-module SemigroupIntMultiplicative : (SEMIGROUP with type t = int) = struct
+module SemigroupIntMultiplicative
+  : (SEMIGROUP with type t = int) =
+struct
   type t = int
   let op x y = x * y
 end
-module MonoidIntAdditive : (MONOID with type t = int) = struct
+
+module MonoidIntAdditive
+  : (MONOID with type t = int) =
+struct
   include SemigroupIntAdditive
   let unit = 0
 end
-module MonoidIntMultiplicative : (MONOID with type t = int) = struct
+module MonoidIntMultiplicative
+  : (MONOID with type t = int) =
+struct
   include SemigroupIntMultiplicative
   let unit = 1
 end
-module SemiringInt : (SEMIRING with type t = int) = struct
+
+module SemiringInt
+  : (SEMIRING with type t = int) =
+struct
   type t = int
   let zero = MonoidIntAdditive.unit
   let add x y = MonoidIntAdditive.op x y
@@ -139,8 +151,10 @@ module SemiringInt : (SEMIRING with type t = int) = struct
   let mul x y = MonoidIntMultiplicative.op x y
 end
 
-module ProfunctorArrow = struct
-  module Core : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) = struct
+module ProfunctorFn = struct
+  module Core
+    : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) =
+  struct
     type (-'a, +'b) p = 'a -> 'b
     let dimap f g h = g % h % f
   end
