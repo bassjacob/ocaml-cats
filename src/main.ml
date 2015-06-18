@@ -140,6 +140,13 @@ module Semigroup = struct
       type t = int
       let op x y = x + y
     end
+
+    module Float
+      : (Sig.SEMIGROUP with type t = float) =
+    struct
+      type t = float
+      let op x y = x +. y
+    end
   end
 
   module Multiplicative = struct
@@ -148,6 +155,13 @@ module Semigroup = struct
     struct
       type t = int
       let op x y = x * y
+    end
+
+    module Float
+      : (Sig.SEMIGROUP with type t = float) =
+    struct
+      type t = float
+      let op x y = x *. y
     end
   end
 end
@@ -160,6 +174,13 @@ module Monoid = struct
       include Semigroup.Additive.Int
       let unit = 0
     end
+
+    module Float
+      : (Sig.MONOID with type t = float) =
+    struct
+      include Semigroup.Additive.Float
+      let unit = 0.0
+    end
   end
 
   module Multiplicative = struct
@@ -168,6 +189,13 @@ module Monoid = struct
     struct
       include Semigroup.Multiplicative.Int
       let unit = 1
+    end
+
+    module Float
+      : (Sig.MONOID with type t = float) =
+    struct
+      include Semigroup.Multiplicative.Float
+      let unit = 1.0
     end
   end
 end
@@ -179,6 +207,18 @@ module Semiring = struct
     module Add = Monoid.Additive.Int
     module Mul = Monoid.Multiplicative.Int
     type t = int
+    let zero = Add.unit
+    let add x y = Add.op x y
+    let one = Mul.unit
+    let mul x y = Mul.op x y
+  end
+
+  module Float
+    : (Sig.SEMIRING with type t = float) =
+  struct
+    module Add = Monoid.Additive.Float
+    module Mul = Monoid.Multiplicative.Float
+    type t = float
     let zero = Add.unit
     let add x y = Add.op x y
     let one = Mul.unit
