@@ -1,3 +1,6 @@
+let id : 'a. 'a -> 'a =
+  fun x -> x
+
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
@@ -15,7 +18,7 @@ module Functor_From_Profunctor : functor (Hom : PROFUNCTOR) -> sig
 end = functor (Hom : PROFUNCTOR) -> struct
   type dom
   type +'a t = (dom, 'a) Hom.t
-  let map f = Hom.dimap (fun x -> x) f
+  let map f = Hom.dimap id f
 end
 
 module type OPFUNCTOR = sig
@@ -30,7 +33,7 @@ module OpFunctor_From_Profunctor : functor (Hom : PROFUNCTOR) -> sig
 end = functor (Hom : PROFUNCTOR) -> struct
   type cod
   type -'a t = ('a, cod) Hom.t
-  let map f = Hom.dimap f (fun x -> x)
+  let map f = Hom.dimap f id
 end
 
 module type SEMICATEGORY = sig
