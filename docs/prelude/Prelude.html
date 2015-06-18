@@ -18,17 +18,6 @@
 
 <pre><span class="keyword">module</span> Prelude: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="VALundefined"><span class="keyword">val</span> undefined</span> : <code class="type">?message:string -> 'a -> 'b</code></pre>
-<pre><span id="VALconst"><span class="keyword">val</span> const</span> : <code class="type">'a -> 'b -> 'a</code></pre>
-<pre><span id="VALid"><span class="keyword">val</span> id</span> : <code class="type">'a -> 'a</code></pre>
-<pre><span id="VAL(%>)"><span class="keyword">val</span> (%&gt;)</span> : <code class="type">('a -> 'b) -> ('b -> 'c) -> 'a -> 'c</code></pre>
-<pre><span id="VAL(%)"><span class="keyword">val</span> (%)</span> : <code class="type">('b -> 'c) -> ('a -> 'b) -> 'a -> 'c</code></pre>
-<pre><span id="VALflip"><span class="keyword">val</span> flip</span> : <code class="type">('a -> 'b -> 'c) -> 'b -> 'a -> 'c</code></pre>
-<pre><span id="VALcurry"><span class="keyword">val</span> curry</span> : <code class="type">('a * 'b -> 'c) -> 'a -> 'b -> 'c</code></pre>
-<pre><span id="VALuncurry"><span class="keyword">val</span> uncurry</span> : <code class="type">('a -> 'b -> 'c) -> 'a * 'b -> 'c</code></pre>
-<pre><span id="VALtap"><span class="keyword">val</span> tap</span> : <code class="type">((('a -> unit) -> 'a -> 'a) -> 'b) -><br>       (('a -> unit) -> 'a -> 'a) -> ('a -> unit) -> 'a -> 'a</code></pre>
-<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
-<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'r) -> 'r</code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Sig.html">Sig</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Ext.html">Ext</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Ext.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Semigroup.html">Semigroup</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semigroup.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
