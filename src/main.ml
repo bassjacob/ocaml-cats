@@ -13,6 +13,9 @@ let curry : 'a 'b 'c. ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
 let uncurry : 'a 'b 'c. ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
   fun f (x, y) -> f x y
 
+let flip : 'a 'b 'c. ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
+  fun f x y -> f y x
+
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
