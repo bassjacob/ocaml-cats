@@ -123,6 +123,10 @@ module type EXTEND = sig
   val extend : ('a w -> 'b) -> ('a w -> 'b w)
 end
 
+module type COMONAD = sig
+  include EXTEND
+  val extract : 'a w -> 'a
+end
 module ProfunctorArrow = struct
   module Core : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) = struct
     type (-'a, +'b) p = 'a -> 'b
