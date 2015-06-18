@@ -74,18 +74,14 @@ module Profunctor = struct
   end
 end
 
-module Functor = struct
-  module type SIG = sig
-    type +'a t
-    val map : ('a -> 'b) -> ('a t -> 'b t)
-  end
+module type FUNCTOR =  sig
+  type +'a t
+  val map : ('a -> 'b) -> ('a t -> 'b t)
 end
 
-module OpFunctor = struct
-  module type SIG = sig
-    type -'a t
-    val map : ('a -> 'b) -> ('b t -> 'a t)
-  end
+module type OPFUNCTOR = sig
+  type -'a t
+  val map : ('a -> 'b) -> ('b t -> 'a t)
 end
 
 module type SEMICATEGORY = sig
@@ -101,7 +97,7 @@ module type CATEGORY = sig
 end
 
 module type APPLY = sig
-  include Functor.SIG
+  include FUNCTOR
   val apply : ('a -> 'b) t -> ('a t -> 'b t)
 end
 
