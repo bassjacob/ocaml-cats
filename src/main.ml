@@ -37,14 +37,12 @@ module type MONOID = sig
   val unit : t
 end
 
-module Semiring = struct
-  module type SIG = sig
-    type t
-    val zero : t
-    val add : t -> t -> t
-    val one : t
-    val mul : t -> t -> t
-  end
+module type SEMIRING = sig
+  type t
+  val zero : t
+  val add : t -> t -> t
+  val one : t
+  val mul : t -> t -> t
 end
 
 module Profunctor = struct
