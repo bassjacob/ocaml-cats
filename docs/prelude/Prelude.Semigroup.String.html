@@ -22,7 +22,8 @@
 
 <pre><span class="keyword">module</span> String: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semigroup.String.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">string</code> </pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Semigroup.String.Def.html">Def</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semigroup.String.Def.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">include</span> Def</pre>
 
-
-<pre><span id="VALop"><span class="keyword">val</span> op</span> : <code class="type">string -> string -> string</code></pre></body></html>
+<pre><span class="keyword">include</span> struct ... end</pre>
+</body></html>

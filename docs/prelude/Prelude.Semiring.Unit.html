@@ -20,10 +20,8 @@
 
 <pre><span class="keyword">module</span> Unit: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semiring.Unit.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">unit</code> </pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Semiring.Unit.Def.html">Def</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semiring.Unit.Def.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">include</span> Def</pre>
 
-
-<pre><span id="VALzero"><span class="keyword">val</span> zero</span> : <code class="type">unit</code></pre>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">'a -> 'b -> unit</code></pre>
-<pre><span id="VALone"><span class="keyword">val</span> one</span> : <code class="type">unit</code></pre>
-<pre><span id="VALmul"><span class="keyword">val</span> mul</span> : <code class="type">'a -> 'b -> unit</code></pre></body></html>
+<pre><span class="keyword">include</span> struct ... end</pre>
+</body></html>
