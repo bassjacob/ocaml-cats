@@ -127,6 +127,14 @@ module type COMONAD = sig
   include EXTEND
   val extract : 'a w -> 'a
 end
+
+module type FOLDABLE = sig
+  type 'a t
+  val foldr : ('a -> 'b -> 'b) -> ('b -> 'a t -> 'b)
+  val foldl : ('b -> 'a -> 'b) -> ('b -> 'a t -> 'b)
+  val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a t -> 'm)
+end
+
 module ProfunctorArrow = struct
   module Core : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) = struct
     type (-'a, +'b) p = 'a -> 'b
