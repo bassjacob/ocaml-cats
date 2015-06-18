@@ -121,23 +121,23 @@ struct
   type t = int
   let op x y = x + y
 end
-module SemigroupIntMultiplicative
+module SemigroupMultiplicativeInt
   : (SEMIGROUP with type t = int) =
 struct
   type t = int
   let op x y = x * y
 end
 
-module MonoidIntAdditive
+module MonoidAdditiveInt
   : (MONOID with type t = int) =
 struct
-  include SemigroupIntAdditive
+  include SemigroupAdditiveInt
   let unit = 0
 end
-module MonoidIntMultiplicative
+module MonoidMultiplicativeInt
   : (MONOID with type t = int) =
 struct
-  include SemigroupIntMultiplicative
+  include SemigroupMultiplicativeInt
   let unit = 1
 end
 
@@ -145,10 +145,10 @@ module SemiringInt
   : (SEMIRING with type t = int) =
 struct
   type t = int
-  let zero = MonoidIntAdditive.unit
-  let add x y = MonoidIntAdditive.op x y
-  let one = MonoidIntMultiplicative.unit
-  let mul x y = MonoidIntMultiplicative.op x y
+  let zero = MonoidAdditiveInt.unit
+  let add x y = MonoidAdditiveInt.op x y
+  let one = MonoidMultiplicativeInt.unit
+  let mul x y = MonoidMultiplicativeInt.op x y
 end
 
 module ProfunctorFn = struct
