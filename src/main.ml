@@ -66,7 +66,7 @@ module Profunctor = struct
     type (-'a, +'b) p
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
   end
-  module MANIFEST (T : SIG) = struct
+  module Manifest (T : SIG) = struct
     let lmap : ('a -> 'b) -> (('b, 'c) T.p -> ('a, 'c) T.p)
       = fun f -> T.dimap f id
     let rmap : ('c -> 'd) -> (('b, 'c) T.p -> ('b, 'd) T.p)
@@ -79,22 +79,12 @@ module Functor = struct
     type +'a t
     val map : ('a -> 'b) -> ('a t -> 'b t)
   end
-  module Make (Hom : Profunctor.SIG) = struct
-    type dom
-    type +'a t = (dom, 'a) Hom.p
-    let map f = Hom.dimap id f
-  end
 end
 
 module OpFunctor = struct
   module type SIG = sig
     type -'a t
     val map : ('a -> 'b) -> ('b t -> 'a t)
-  end
-  module Make (Hom : Profunctor.SIG) = struct
-    type cod
-    type -'a t = ('a, cod) Hom.p
-    let map f = Hom.dimap f id
   end
 end
 
@@ -131,16 +121,14 @@ module type MONAD = sig
   include (BIND with type 'a t := 'a m)
 end
 
-module ProfunctorArrow
-  : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) =
-struct
-  type (-'a, +'b) p = 'a -> 'b
-  let dimap f g h = g % h % f
-  let lmap f = dimap f id
-  let rmap f = dimap id f
+module ProfunctorArrow = struct
+  module Core : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) = struct
+    type (-'a, +'b) p = 'a -> 'b
+    let dimap f g h = g % h % f
+  end
+  include Core
+  include Profunctor.Manifest(Core)
 end
-module FunctorArrow = Functor.Make(ProfunctorArrow)
-module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
 
 module SemiringInt
   : (Semiring.SIG with type t = int) =
