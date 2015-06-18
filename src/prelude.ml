@@ -128,11 +128,11 @@ module Sig = struct
 end
 
 module Ext = struct
-  module Profunctor = functor (T : Sig.PROFUNCTOR) -> struct
-    let lmap : ('a -> 'b) -> (('b, 'c) T.p -> ('a, 'c) T.p)
-      = fun f -> T.dimap f (fun x -> x)
-    let rmap : ('c -> 'd) -> (('b, 'c) T.p -> ('b, 'd) T.p)
-      = fun f -> T.dimap (fun x -> x) f
+  module Profunctor = functor (M : Sig.PROFUNCTOR) -> struct
+    let lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p)
+      = fun f -> M.dimap f (fun x -> x)
+    let rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p)
+      = fun f -> M.dimap (fun x -> x) f
   end
 end
 
