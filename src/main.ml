@@ -46,6 +46,12 @@ module Sig = struct
     val mul : t -> t -> t
   end
 
+  module type MODULOSEMIRING = sig
+    include SEMIRING
+    val div : t -> t -> t
+    val modu : t -> t -> t
+  end
+
   module type RING = sig
     include SEMIRING
     val sub : t -> t -> t
@@ -245,6 +251,32 @@ module Semiring = struct
     let add x y = Add.op x y
     let one = Mul.unit
     let mul x y = Mul.op x y
+  end
+end
+
+module ModuloSemiring = struct
+  module Unit
+    : (Sig.MODULOSEMIRING with type t = unit) =
+  struct
+    include Semiring.Unit
+    let div _ _ = ()
+    let modu _ _ = ()
+  end
+
+  module Int
+    : (Sig.MODULOSEMIRING with type t = int) =
+  struct
+    include Semiring.Int
+    let div = (/)
+    let modu = (mod)
+  end
+
+  module Float
+    : (Sig.MODULOSEMIRING with type t = float) =
+  struct
+    include Semiring.Float
+    let div = (/.)
+    let modu = mod_float
   end
 end
 
