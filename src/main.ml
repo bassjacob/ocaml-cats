@@ -50,7 +50,7 @@ module Profunctor = struct
     type (-'a, +'b) p
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
   end
-  module Manifest (T : SIG) = struct
+  module Manifest = functor (T : SIG) -> struct
     let lmap : ('a -> 'b) -> (('b, 'c) T.p -> ('a, 'c) T.p)
       = fun f -> T.dimap f id
     let rmap : ('c -> 'd) -> (('b, 'c) T.p -> ('b, 'd) T.p)
