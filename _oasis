@@ -22,3 +22,13 @@ SourceRepository "master"
 Library "prelude"
   Path: src
   Modules: Prelude
+
+AlphaFeatures: ocamlbuild_more_args
+Document "prelude"
+  Type: ocamlbuild (0.4)
+  BuildTools: ocamldoc
+  Title: API reference for prelude
+  XOCamlbuildPath: .
+  XOCamlbuildExtraArgs:
+    "-docflags '-colorize-code -short-functors -charset utf-8'"
+  XOCamlbuildLibraries: prelude
