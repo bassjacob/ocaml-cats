@@ -135,6 +135,12 @@ module Ext = struct
       = fun f -> M.dimap (fun x -> x) f
   end
 
+  module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
+    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.compose
+    let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
+      fun f g -> M.compose g f
+  end
+
   module Functor = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t) = M.map
     let (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t = fun x f -> f <$-> x
@@ -153,12 +159,6 @@ module Ext = struct
     module E = Bind(M);; open M;; open E;;
     let ap : ('a -> 'b) M.t -> ('a M.t -> 'b M.t) =
       fun mf mx -> mf >>= fun f -> mx >>= fun x -> pure (f x)
-  end
-
-  module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
-    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.compose
-    let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
-      fun f g -> M.compose g f
   end
 end
 
