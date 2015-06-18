@@ -128,6 +128,10 @@ module Sig = struct
 end
 
 module Ext = struct
+  module Semigroup = functor (M : Sig.SEMIGROUP) -> struct
+    let (@) : M.t -> M.t -> M.t = M.op
+  end
+
   module Profunctor = functor (M : Sig.PROFUNCTOR) -> struct
     let lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p)
       = fun f -> M.dimap f (fun x -> x)
