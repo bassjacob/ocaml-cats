@@ -2,6 +2,8 @@
 
 A small OCaml prelude for algebraic and categorical concepts
 
+Inspired by the Purescript prelude.
+
 ## API Reference
 
 See [here](https://rawgit.com/freebroccolo/ocaml-prelude/master/docs/prelude/index.html)
