@@ -16,6 +16,9 @@ let uncurry : 'a 'b 'c. ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
 let ($) : 'a 'b. ('a -> 'b) -> ('a -> 'b) =
   fun f x -> f x
 
+let embed : 'a 'r. 'a -> (('a -> 'r) -> 'r) =
+  fun x k -> k x
+
 let flip : 'a 'b 'c. ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
   fun f x y -> f y x
 
