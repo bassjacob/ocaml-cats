@@ -99,7 +99,7 @@ end
 
 module ProfunctorArrow : PROFUNCTOR = struct
   type (-'a, +'b) t = 'a -> 'b
-  let dimap f g h = fun x -> g (h (f x))
+  let dimap f g h = g % h % f
 end
 module   FunctorArrow =   Functor.Make(ProfunctorArrow)
 module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
