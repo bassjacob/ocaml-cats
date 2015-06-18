@@ -45,20 +45,6 @@ module Semiring = struct
     val one : t
     val mul : t -> t -> t
   end
-  module MakeAdditiveMonoid (T : SIG)
-    : (MONOID with type t := T.t) =
-  struct
-    type t = T.t
-    let unit = T.zero
-    let op = T.add
-  end
-  module MakeMultiplicativeMonoid (T : SIG)
-    : (MONOID with type t := T.t) =
-  struct
-    type t = T.t
-    let unit = T.one
-    let op = T.mul
-  end
 end
 
 module Profunctor = struct
@@ -153,5 +139,3 @@ struct
   let one = 1
   let mul x y = x * y
 end
-module MonoidAdditiveInt = Semiring.MakeAdditiveMonoid(SemiringInt)
-module MonoidMultiplicativeInt = Semiring.MakeMultiplicativeMonoid(SemiringInt)
