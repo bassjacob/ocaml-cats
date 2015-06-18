@@ -1,6 +1,9 @@
 let id : 'a. 'a -> 'a =
   fun x -> x
 
+let cmp : 'a 'b 'c. ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c) =
+  fun g f x -> g (f x)
+
 module type PROFUNCTOR = sig
   type (-'a, +'b) t
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
