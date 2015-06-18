@@ -137,6 +137,11 @@ module Ext = struct
     let ( *@ ) : M.t -> M.t -> M.t = M.mul
   end
 
+  module ModuloSemiring = functor (M : Sig.MODULOSEMIRING) -> struct
+    let (/@) : M.t -> M.t -> M.t = M.div
+    let (%@) : M.t -> M.t -> M.t = M.modulo
+  end
+
   module Ring = functor (M : Sig.RING) -> struct
     let (-@) : M.t -> M.t -> M.t = M.sub
     let negate : M.t -> M.t = fun x -> M.zero -@ x
