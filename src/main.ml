@@ -119,12 +119,28 @@ module type FOLDABLE = sig
   val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a t -> 'm)
 end
 
-module SemiringInt : (Semiring.SIG with type t = int) = struct
+module SemigroupIntAdditive : (SEMIGROUP with type t = int) = struct
   type t = int
-  let zero = 0
-  let add x y = x + y
-  let one = 1
-  let mul x y = x * y
+  let op x y = x + y
+end
+module SemigroupIntMultiplicative : (SEMIGROUP with type t = int) = struct
+  type t = int
+  let op x y = x * y
+end
+module MonoidIntAdditive : (MONOID with type t = int) = struct
+  include SemigroupIntAdditive
+  let unit = 0
+end
+module MonoidIntMultiplicative : (MONOID with type t = int) = struct
+  include SemigroupIntMultiplicative
+  let unit = 1
+end
+module SemiringInt : (SEMIRING with type t = int) = struct
+  type t = int
+  let zero = MonoidIntAdditive.unit
+  let add x y = MonoidIntAdditive.op x y
+  let one = MonoidIntMultiplicative.unit
+  let mul x y = MonoidIntMultiplicative.op x y
 end
 
 module ProfunctorArrow = struct
