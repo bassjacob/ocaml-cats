@@ -21,34 +21,36 @@ module type PROFUNCTOR = sig
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
 end
 
-module type FUNCTOR = sig
-  type +'a t
-  val map : ('a -> 'b) -> ('a t -> 'b t)
+module Functor = struct
+  module type SIG = sig
+    type +'a t
+    val map : ('a -> 'b) -> ('a t -> 'b t)
+  end
+  module Make : functor (Hom : PROFUNCTOR) -> sig
+    type dom
+    type +'a t = (dom, 'a) Hom.t
+    include (SIG with type +'a t := 'a t)
+  end = functor (Hom : PROFUNCTOR) -> struct
+    type dom
+    type +'a t = (dom, 'a) Hom.t
+    let map f = Hom.dimap id f
+  end
 end
 
-module Functor_From_Profunctor : functor (Hom : PROFUNCTOR) -> sig
-  type dom
-  type +'a t = (dom, 'a) Hom.t
-  include (FUNCTOR with type +'a t := 'a t)
-end = functor (Hom : PROFUNCTOR) -> struct
-  type dom
-  type +'a t = (dom, 'a) Hom.t
-  let map f = Hom.dimap id f
-end
-
-module type OPFUNCTOR = sig
-  type -'a t
-  val map : ('a -> 'b) -> ('b t -> 'a t)
-end
-
-module OpFunctor_From_Profunctor : functor (Hom : PROFUNCTOR) -> sig
-  type cod
-  type -'a t = ('a, cod) Hom.t
-  include (OPFUNCTOR with type -'a t := 'a t)
-end = functor (Hom : PROFUNCTOR) -> struct
-  type cod
-  type -'a t = ('a, cod) Hom.t
-  let map f = Hom.dimap f id
+module OpFunctor = struct
+  module type SIG = sig
+    type -'a t
+    val map : ('a -> 'b) -> ('b t -> 'a t)
+  end
+  module Make : functor (Hom : PROFUNCTOR) -> sig
+    type cod
+    type -'a t = ('a, cod) Hom.t
+    include (SIG with type -'a t := 'a t)
+  end = functor (Hom : PROFUNCTOR) -> struct
+    type cod
+    type -'a t = ('a, cod) Hom.t
+    let map f = Hom.dimap f id
+  end
 end
 
 module type SEMICATEGORY = sig
@@ -64,7 +66,7 @@ module type CATEGORY = sig
 end
 
 module type APPLY = sig
-  include FUNCTOR
+  include Functor.SIG
   val apply : ('a -> 'b) t -> ('a t -> 'b t)
 end
 
@@ -88,5 +90,5 @@ module ProfunctorArrow : PROFUNCTOR = struct
   type (-'a, +'b) t = 'a -> 'b
   let dimap f g h = fun x -> g (h (f x))
 end
-module   FunctorArrow =   Functor_From_Profunctor(ProfunctorArrow)
-module OpFunctorArrow = OpFunctor_From_Profunctor(ProfunctorArrow)
+module   FunctorArrow =   Functor.Make(ProfunctorArrow)
+module OpFunctorArrow = OpFunctor.Make(ProfunctorArrow)
