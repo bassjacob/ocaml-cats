@@ -13,6 +13,9 @@ let curry : 'a 'b 'c. ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
 let uncurry : 'a 'b 'c. ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
   fun f (x, y) -> f x y
 
+let ($) : 'a 'b. ('a -> 'b) -> ('a -> 'b) =
+  fun f x -> f x
+
 let flip : 'a 'b 'c. ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
   fun f x y -> f y x
 
