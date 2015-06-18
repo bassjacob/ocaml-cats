@@ -194,192 +194,273 @@ module Ext = struct
 end
 
 module Semigroup = struct
-  module Unit
-    : (Sig.SEMIGROUP with type t = unit) =
-  struct
-    type t = unit
-    let op _ _ = ()
+  module Unit = struct
+    module Def
+      : (Sig.SEMIGROUP with type t = unit) =
+    struct
+      type t = unit
+      let op _ _ = ()
+    end
+    include Def
+    include Ext.Semigroup(Def)
   end
 
-  module String
-    : (Sig.SEMIGROUP with type t = string) =
-  struct
-    type t = string
-    let op x y = String.concat "" [x; y]
+  module String = struct
+    module Def
+      : (Sig.SEMIGROUP with type t = string) =
+    struct
+      type t = string
+      let op x y = String.concat "" [x; y]
+    end
+    include Def
+    include Ext.Semigroup(Def)
   end
 
   module Additive = struct
-    module Int
-      : (Sig.SEMIGROUP with type t = int) =
-    struct
-      type t = int
-      let op x y = x + y
+    module Int = struct
+      module Def
+        : (Sig.SEMIGROUP with type t = int) =
+      struct
+        type t = int
+        let op x y = x + y
+      end
+      include Def
+      include Ext.Semigroup(Def)
     end
 
-    module Float
-      : (Sig.SEMIGROUP with type t = float) =
-    struct
-      type t = float
-      let op x y = x +. y
+    module Float = struct
+      module Def
+        : (Sig.SEMIGROUP with type t = float) =
+      struct
+        type t = float
+        let op x y = x +. y
+      end
+      include Def
+      include Ext.Semigroup(Def)
     end
   end
 
   module Multiplicative = struct
-    module Int
-      : (Sig.SEMIGROUP with type t = int) =
-    struct
-      type t = int
-      let op x y = x * y
+    module Int = struct
+      module Def
+        : (Sig.SEMIGROUP with type t = int) =
+      struct
+        type t = int
+        let op x y = x * y
+      end
+      include Def
+      include Ext.Semigroup(Def)
     end
 
-    module Float
-      : (Sig.SEMIGROUP with type t = float) =
-    struct
-      type t = float
-      let op x y = x *. y
+    module Float = struct
+      module Def
+        : (Sig.SEMIGROUP with type t = float) =
+      struct
+        type t = float
+        let op x y = x *. y
+      end
+      include Def
+      include Ext.Semigroup(Def)
     end
   end
 end
 
 module Monoid = struct
-  module Unit
-    : (Sig.MONOID with type t = unit) =
-  struct
-    include Semigroup.Unit
-    let unit = ()
+  module Unit = struct
+    module Def
+      : (Sig.MONOID with type t = unit) =
+    struct
+      include Semigroup.Unit
+      let unit = ()
+    end
+    include Def
   end
 
   module Additive = struct
-    module Int
-      : (Sig.MONOID with type t = int) =
-    struct
-      include Semigroup.Additive.Int
-      let unit = 0
+    module Int = struct
+      module Def
+        : (Sig.MONOID with type t = int) =
+      struct
+        include Semigroup.Additive.Int
+        let unit = 0
+      end
+      include Def
     end
 
-    module Float
-      : (Sig.MONOID with type t = float) =
-    struct
-      include Semigroup.Additive.Float
-      let unit = 0.0
+    module Float = struct
+      module Def
+        : (Sig.MONOID with type t = float) =
+      struct
+        include Semigroup.Additive.Float
+        let unit = 0.0
+      end
+      include Def
     end
   end
 
   module Multiplicative = struct
-    module Int
-      : (Sig.MONOID with type t = int) =
-    struct
-      include Semigroup.Multiplicative.Int
-      let unit = 1
+    module Int = struct
+      module Def
+        : (Sig.MONOID with type t = int) =
+      struct
+        include Semigroup.Multiplicative.Int
+        let unit = 1
+      end
+      include Def
     end
 
-    module Float
-      : (Sig.MONOID with type t = float) =
-    struct
-      include Semigroup.Multiplicative.Float
-      let unit = 1.0
+    module Float = struct
+      module Def
+        : (Sig.MONOID with type t = float) =
+      struct
+        include Semigroup.Multiplicative.Float
+        let unit = 1.0
+      end
+      include Def
     end
   end
 end
 
 module Semiring = struct
-  module Unit
-    : (Sig.SEMIRING with type t = unit) =
-  struct
-    type t = unit
-    let zero = ()
-    let add _ _ = ()
-    let one = ()
-    let mul _ _ = ()
+  module Unit = struct
+    module Def
+      : (Sig.SEMIRING with type t = unit) =
+    struct
+      type t = unit
+      let zero = ()
+      let add _ _ = ()
+      let one = ()
+      let mul _ _ = ()
+    end
+    include Def
+    include Ext.Semiring(Def)
   end
 
-  module Int
-    : (Sig.SEMIRING with type t = int) =
-  struct
-    module Add = Monoid.Additive.Int
-    module Mul = Monoid.Multiplicative.Int
-    type t = int
-    let zero = Add.unit
-    let add x y = Add.op x y
-    let one = Mul.unit
-    let mul x y = Mul.op x y
+  module Int = struct
+    module Def
+      : (Sig.SEMIRING with type t = int) =
+    struct
+      module Add = Monoid.Additive.Int
+      module Mul = Monoid.Multiplicative.Int
+      type t = int
+      let zero = Add.unit
+      let add x y = Add.op x y
+      let one = Mul.unit
+      let mul x y = Mul.op x y
+    end
+    include Def
+    include Ext.Semiring(Def)
   end
 
-  module Float
-    : (Sig.SEMIRING with type t = float) =
-  struct
-    module Add = Monoid.Additive.Float
-    module Mul = Monoid.Multiplicative.Float
-    type t = float
-    let zero = Add.unit
-    let add x y = Add.op x y
-    let one = Mul.unit
-    let mul x y = Mul.op x y
+  module Float = struct
+    module Def
+      : (Sig.SEMIRING with type t = float) =
+    struct
+      module Add = Monoid.Additive.Float
+      module Mul = Monoid.Multiplicative.Float
+      type t = float
+      let zero = Add.unit
+      let add x y = Add.op x y
+      let one = Mul.unit
+      let mul x y = Mul.op x y
+    end
+    include Def
+    include Ext.Semiring(Def)
   end
 end
 
 module ModuloSemiring = struct
-  module Unit
-    : (Sig.MODULOSEMIRING with type t = unit) =
-  struct
-    include Semiring.Unit
-    let div _ _ = ()
-    let modulo _ _ = ()
+  module Unit = struct
+    module Def
+      : (Sig.MODULOSEMIRING with type t = unit) =
+    struct
+      include Semiring.Unit
+      let div _ _ = ()
+      let modulo _ _ = ()
+    end
+    include Def
+    include Ext.ModuloSemiring(Def)
   end
 
-  module Int
-    : (Sig.MODULOSEMIRING with type t = int) =
-  struct
-    include Semiring.Int
-    let div = (/)
-    let modulo = (mod)
+  module Int = struct
+    module Def
+      : (Sig.MODULOSEMIRING with type t = int) =
+    struct
+      include Semiring.Int
+      let div = (/)
+      let modulo = (mod)
+    end
+    include Def
+    include Ext.ModuloSemiring(Def)
   end
 
-  module Float
-    : (Sig.MODULOSEMIRING with type t = float) =
-  struct
-    include Semiring.Float
-    let div = (/.)
-    let modulo = mod_float
+  module Float = struct
+    module Def
+      : (Sig.MODULOSEMIRING with type t = float) =
+    struct
+      include Semiring.Float
+      let div = (/.)
+      let modulo = mod_float
+    end
+    include Def
+    include Ext.ModuloSemiring(Def)
   end
 end
 
 module Ring = struct
-  module Unit
-    : (Sig.RING with type t = unit) =
-  struct
-    include Semiring.Unit
-    let sub _ _ = ()
+  module Unit = struct
+    module Def
+      : (Sig.RING with type t = unit) =
+    struct
+      include Semiring.Unit
+      let sub _ _ = ()
+    end
+    include Def
+    include Ext.Ring(Def)
   end
 
-  module Int
-    : (Sig.RING with type t = int) =
-  struct
-    include Semiring.Int
-    let sub x y = x - y
+  module Int = struct
+    module Def
+      : (Sig.RING with type t = int) =
+    struct
+      include Semiring.Int
+      let sub x y = x - y
+    end
+    include Def
+    include Ext.Ring(Def)
   end
 
-  module Float
-    : (Sig.RING with type t = float) =
-  struct
-    include Semiring.Float
-    let sub x y = x -. y
+  module Float = struct
+    module Def
+      : (Sig.RING with type t = float) =
+    struct
+      include Semiring.Float
+      let sub x y = x -. y
+    end
+    include Def
+    include Ext.Ring(Def)
   end
 end
 
 module DivisionRing = struct
-  module Unit
-    : (Sig.DIVISIONRING with type t = unit) =
-  struct
-    include Ring.Unit
-    include (ModuloSemiring.Unit : Sig.MODULOSEMIRING with type t := t)
+  module Unit = struct
+    module Def
+      : (Sig.DIVISIONRING with type t = unit) =
+    struct
+      include Ring.Unit
+      include (ModuloSemiring.Unit : Sig.MODULOSEMIRING with type t := t)
+    end
+    include Def
   end
 
-  module Float
-    : (Sig.DIVISIONRING with type t = float) =
-  struct
-    include Ring.Float
-    include (ModuloSemiring.Float : Sig.MODULOSEMIRING with type t := t)
+  module Float = struct
+    module Def
+      : (Sig.DIVISIONRING with type t = float) =
+    struct
+      include Ring.Float
+      include (ModuloSemiring.Float : Sig.MODULOSEMIRING with type t := t)
+    end
+    include Def
   end
 end
 
