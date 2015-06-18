@@ -70,6 +70,5 @@ module ProfunctorArrow : PROFUNCTOR = struct
   type (-'a, +'b) t = 'a -> 'b
   let dimap f g h = fun x -> g (h (f x))
 end
-
 module   FunctorArrow =   Functor_From_Profunctor(ProfunctorArrow)
 module OpFunctorArrow = OpFunctor_From_Profunctor(ProfunctorArrow)
