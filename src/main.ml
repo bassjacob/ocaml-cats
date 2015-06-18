@@ -61,7 +61,7 @@ module Sig = struct
     val map : ('a -> 'b) -> ('b t -> 'a t)
   end
 
-  module type SEMICATEGORY = sig
+  module type SEMIGROUPOID = sig
     include PROFUNCTOR
     val cmp : ('b, 'c) p -> ('a, 'b) p -> ('a, 'c) p
   end
