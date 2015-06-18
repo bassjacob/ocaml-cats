@@ -134,6 +134,12 @@ module Ext = struct
     let rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p)
       = fun f -> M.dimap (fun x -> x) f
   end
+
+  module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
+    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.cmp
+    let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
+      fun f g -> M.cmp g f
+  end
 end
 
 module Semigroup = struct
