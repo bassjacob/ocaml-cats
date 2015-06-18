@@ -57,6 +57,11 @@ module Sig = struct
     val sub : t -> t -> t
   end
 
+  module type DIVISIONRING = sig
+    include RING
+    include (MODULOSEMIRING with type t := t)
+  end
+
   module type PROFUNCTOR = sig
     type (-'a, +'b) p
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
@@ -300,6 +305,22 @@ module Ring = struct
   struct
     include Semiring.Float
     let sub x y = x -. y
+  end
+end
+
+module DivisionRing = struct
+  module Unit
+    : (Sig.DIVISIONRING with type t = unit) =
+  struct
+    include Ring.Unit
+    include (ModuloSemiring.Unit : Sig.MODULOSEMIRING with type t := t)
+  end
+
+  module Float
+    : (Sig.DIVISIONRING with type t = float) =
+  struct
+    include Ring.Float
+    include (ModuloSemiring.Float : Sig.MODULOSEMIRING with type t := t)
   end
 end
 
