@@ -129,41 +129,52 @@ end
 
 module Ext = struct
   module Semigroup = functor (M : Sig.SEMIGROUP) -> struct
-    let (@) : M.t -> M.t -> M.t = M.op
+    let (@) : M.t -> M.t -> M.t =
+      M.op
   end
 
   module Semiring = functor (M : Sig.SEMIRING) -> struct
-    let ( +@ ) : M.t -> M.t -> M.t = M.add
-    let ( *@ ) : M.t -> M.t -> M.t = M.mul
+    let ( +@ ) : M.t -> M.t -> M.t =
+      M.add
+    let ( *@ ) : M.t -> M.t -> M.t =
+      M.mul
   end
 
   module ModuloSemiring = functor (M : Sig.MODULOSEMIRING) -> struct
-    let (/@) : M.t -> M.t -> M.t = M.div
-    let (%@) : M.t -> M.t -> M.t = M.modulo
+    let (/@) : M.t -> M.t -> M.t =
+      M.div
+    let (%@) : M.t -> M.t -> M.t =
+      M.modulo
   end
 
   module Ring = functor (M : Sig.RING) -> struct
-    let (-@) : M.t -> M.t -> M.t = M.sub
-    let negate : M.t -> M.t = fun x -> M.zero -@ x
+    let (-@) : M.t -> M.t -> M.t =
+      M.sub
+    let negate : M.t -> M.t =
+      fun x -> M.zero -@ x
   end
 
   module Profunctor = functor (M : Sig.PROFUNCTOR) -> struct
-    let lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p)
-      = fun f -> M.dimap f (fun x -> x)
-    let rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p)
-      = fun f -> M.dimap (fun x -> x) f
+    let lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p) =
+      fun f -> M.dimap f (fun x -> x)
+    let rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p) =
+      fun f -> M.dimap (fun x -> x) f
   end
 
   module Semigroupoid = functor (M : Sig.SEMIGROUPOID) -> struct
-    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p = M.compose
+    let (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p =
+      M.compose
     let (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p =
       fun f g -> M.compose g f
   end
 
   module Functor = functor (M : Sig.FUNCTOR) -> struct
-    let (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t) = M.map
-    let (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t = fun x f -> f <$-> x
-    let bang : 'a M.t -> unit M.t = fun x -> (fun _ -> ()) <$-> x
+    let (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t) =
+      M.map
+    let (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t =
+      fun x f -> f <$-> x
+    let bang : 'a M.t -> unit M.t =
+      fun x -> (fun _ -> ()) <$-> x
   end
 
   module Apply = functor (M : Sig.APPLY) -> struct
@@ -171,7 +182,8 @@ module Ext = struct
   end
 
   module Bind = functor (M : Sig.BIND) -> struct
-    let (>>=) : 'a M.t -> ('a -> 'b M.t) -> 'b M.t = M.bind
+    let (>>=) : 'a M.t -> ('a -> 'b M.t) -> 'b M.t =
+      M.bind
   end
 
   module Monad = functor (M : Sig.MONAD) -> struct
@@ -377,7 +389,8 @@ module Profunctor = struct
       : (Sig.PROFUNCTOR with type (-'a, +'b) p = 'a -> 'b) =
     struct
       type (-'a, +'b) p = 'a -> 'b
-      let dimap f g h = fun x -> g (h (f x))
+      let dimap f g h =
+        fun x -> g (h (f x))
     end
     include Core
     include Ext.Profunctor(Core)
