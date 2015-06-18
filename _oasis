@@ -19,7 +19,6 @@ SourceRepository "master"
   Branch: master
   Browser: https://github.com/freebroccolo/ocaml-prelude
 
-Executable "main"
+Library "prelude"
   Path: src
-  MainIs: main.ml
-  CompiledObject: best
+  Modules: Prelude
