@@ -1,3 +1,4 @@
+*.docdir
 Makefile
 configure
 setup.ml
