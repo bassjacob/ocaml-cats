@@ -1,3 +1,6 @@
+let const : 'a 'b. 'a -> ('b -> 'a) =
+  fun x _ -> x
+
 let id : 'a. 'a -> 'a =
   fun x -> x
 
