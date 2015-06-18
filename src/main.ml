@@ -62,8 +62,8 @@ module Semiring = struct
 end
 
 module type PROFUNCTOR = sig
-  type (-'a, +'b) t
-  val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) t -> ('a, 'd) t)
+  type (-'a, +'b) p
+  val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
 end
 
 module Functor = struct
@@ -71,13 +71,13 @@ module Functor = struct
     type +'a t
     val map : ('a -> 'b) -> ('a t -> 'b t)
   end
-  module Make : functor (Hom : PROFUNCTOR) -> sig
+  module Make : functor (Hom: PROFUNCTOR) -> sig
     type dom
-    type +'a t = (dom, 'a) Hom.t
+    type +'a t = (dom, 'a) Hom.p
     include (SIG with type +'a t := 'a t)
   end = functor (Hom : PROFUNCTOR) -> struct
     type dom
-    type +'a t = (dom, 'a) Hom.t
+    type +'a t = (dom, 'a) Hom.p
     let map f = Hom.dimap id f
   end
 end
@@ -89,24 +89,24 @@ module OpFunctor = struct
   end
   module Make : functor (Hom : PROFUNCTOR) -> sig
     type cod
-    type -'a t = ('a, cod) Hom.t
+    type -'a t = ('a, cod) Hom.p
     include (SIG with type -'a t := 'a t)
   end = functor (Hom : PROFUNCTOR) -> struct
     type cod
-    type -'a t = ('a, cod) Hom.t
+    type -'a t = ('a, cod) Hom.p
     let map f = Hom.dimap f id
   end
 end
 
 module type SEMICATEGORY = sig
   type (-'a, +'b) hom
-  include (PROFUNCTOR with type (-'a, +'b) t := ('a, 'b) hom)
+  include (PROFUNCTOR with type (-'a, +'b) p := ('a, 'b) hom)
   val cmp : ('b, 'c) hom -> ('a, 'b) hom -> ('a, 'c) hom
 end
 
 module type CATEGORY = sig
   type (-'a, +'b) hom
-  include (PROFUNCTOR with type (-'a, +'b) t := ('a, 'b) hom)
+  include (PROFUNCTOR with type (-'a, +'b) p := ('a, 'b) hom)
   val idn : ('a, 'a) hom
 end
 
@@ -132,7 +132,7 @@ module type MONAD = sig
 end
 
 module ProfunctorArrow : PROFUNCTOR = struct
-  type (-'a, +'b) t = 'a -> 'b
+  type (-'a, +'b) p = 'a -> 'b
   let dimap f g h = g % h % f
 end
 module   FunctorArrow =   Functor.Make(ProfunctorArrow)
