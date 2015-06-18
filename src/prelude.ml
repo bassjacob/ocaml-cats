@@ -29,6 +29,8 @@ external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 *)
 
+(* The Sig module collects structure signatures. *)
+
 module Sig = struct
   module type SEMIGROUP = sig
     type t
@@ -127,6 +129,9 @@ module Sig = struct
   end
 end
 
+(* The Ext module collects structure extensions as module functors, i.e.,
+   derived operations and related functionality. *)
+
 module Ext = struct
   module Semigroup : functor (M : Sig.SEMIGROUP) -> sig
     val (@) : M.t -> M.t -> M.t
@@ -203,6 +208,10 @@ module Ext = struct
     let ap mf mx = mf >>= fun f -> mx >>= fun x -> pure (f x)
   end
 end
+
+(* Individual structure instances are grouped by name and related properties.
+   Each instance, such as Semigroup.Unit, is a combination of the core instance
+   definition packed along with co-instantiated structure extensions. *)
 
 module Semigroup = struct
   module Unit = struct
