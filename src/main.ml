@@ -117,6 +117,12 @@ module type MONAD = sig
   include (BIND with type 'a t := 'a m)
 end
 
+module type EXTEND = sig
+  type +'a w
+  include (FUNCTOR with type 'a t := 'a w)
+  val extend : ('a w -> 'b) -> ('a w -> 'b w)
+end
+
 module ProfunctorArrow = struct
   module Core : (Profunctor.SIG with type (-'a, +'b) p = 'a -> 'b) = struct
     type (-'a, +'b) p = 'a -> 'b
