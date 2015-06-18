@@ -46,6 +46,11 @@ module Sig = struct
     val mul : t -> t -> t
   end
 
+  module type RING = sig
+    include SEMIRING
+    val sub : t -> t -> t
+  end
+
   module type PROFUNCTOR = sig
     type (-'a, +'b) p
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
@@ -223,6 +228,22 @@ module Semiring = struct
     let add x y = Add.op x y
     let one = Mul.unit
     let mul x y = Mul.op x y
+  end
+end
+
+module Ring = struct
+  module Int
+    : (Sig.RING with type t = int) =
+  struct
+    include Semiring.Int
+    let sub x y = x - y
+  end
+
+  module Float
+    : (Sig.RING with type t = float) =
+  struct
+    include Semiring.Float
+    let sub x y = x -. y
   end
 end
 
