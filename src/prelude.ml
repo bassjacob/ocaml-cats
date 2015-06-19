@@ -32,6 +32,14 @@ external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 (* The Sig module collects structure signatures. *)
 
 module Sig = struct
+  module type EXISTS = sig
+    include Ty.Sig.Unary.Inv.ELEM
+    type t
+    type 'r elim = { ap : 'x. 'x el -> 'r }
+    val into : 'a el -> t
+    val from : t -> 'r elim -> 'r
+  end
+
   module type SEMIGROUP = sig
     type t
     val op : t -> t -> t
@@ -211,6 +219,22 @@ end
 (* Individual structure instances are grouped by name and related properties.
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed along with co-instantiated structure extensions. *)
+
+module Exists : functor (T : Ty.Sig.Unary.Inv.ELEM) -> sig
+  include Ty.Sig.Unary.Inv.CODE
+  include (Sig.EXISTS with type 'a el := 'a el)
+end
+  with type 'a el := 'a T.el =
+functor (T : Ty.Sig.Unary.Inv.ELEM) -> struct
+  include Ty.Def.Unary.Inv(T)
+  type 'r elim = { ap : 'x. 'x el -> 'r }
+  module Def = struct
+    type t = Pack : 'x el -> t
+    let into x = Pack(x)
+    let from p k = match p with Pack(e) -> k.ap(e)
+  end
+  include Def
+end
 
 module Semigroup = struct
   module Unit = struct
