@@ -485,13 +485,13 @@ end
 
 module Profunctor = struct
   module Fn = struct
-    module Core
+    module Def
       : (Sig.PROFUNCTOR with type (-'a, +'b) el = 'a -> 'b) =
     struct
       type (-'a, +'b) el = 'a -> 'b
       let dimap f g h x = g (h (f x))
     end
-    include Core
-    include Ext.Profunctor(Core)
+    include Def
+    include Ext.Profunctor(Def)
   end
 end
