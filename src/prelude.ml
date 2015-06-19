@@ -67,13 +67,13 @@ module Sig = struct
   end
 
   module type PROFUNCTOR = sig
-    type (-'a, +'b) p
-    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) p -> ('a, 'd) p)
+    include Ty.Sig.Binary.ConPro.ELEM
+    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
   end
 
   module type FUNCTOR =  sig
-    type +'a t
-    val map : ('a -> 'b) -> ('a t -> 'b t)
+    include Ty.Sig.Unary.Cov.ELEM
+    val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
   module type OPFUNCTOR = sig
@@ -83,49 +83,49 @@ module Sig = struct
 
   module type SEMIGROUPOID = sig
     include PROFUNCTOR
-    val compose : ('b, 'c) p -> ('a, 'b) p -> ('a, 'c) p
+    val compose : ('b, 'c) el -> ('a, 'b) el -> ('a, 'c) el
   end
 
   module type CATEGORY = sig
     include PROFUNCTOR
-    val id : ('a, 'a) p
+    val id : ('a, 'a) el
   end
 
   module type APPLY = sig
     include FUNCTOR
-    val apply : ('a -> 'b) t -> ('a t -> 'b t)
+    val apply : ('a -> 'b) el -> ('a el -> 'b el)
   end
 
   module type APPLICATIVE = sig
     include APPLY
-    val pure : 'a -> 'a t
+    val pure : 'a -> 'a el
   end
 
   module type BIND = sig
     include APPLY
-    val bind : 'a t -> ('a -> 'b t) -> 'b t
+    val bind : 'a el -> ('a -> 'b el) -> 'b el
   end
 
   module type MONAD = sig
     include APPLICATIVE
-    include (BIND with type 'a t := 'a t)
+    include (BIND with type 'a el := 'a el)
   end
 
   module type EXTEND = sig
     include FUNCTOR
-    val extend : ('a t -> 'b) -> ('a t -> 'b t)
+    val extend : ('a el -> 'b) -> ('a el -> 'b el)
   end
 
   module type COMONAD = sig
     include EXTEND
-    val extract : 'a t -> 'a
+    val extract : 'a el -> 'a
   end
 
   module type FOLDABLE = sig
-    type 'a t
-    val foldr : ('a -> 'b -> 'b) -> ('b -> 'a t -> 'b)
-    val foldl : ('b -> 'a -> 'b) -> ('b -> 'a t -> 'b)
-    val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a t -> 'm)
+    include Ty.Sig.Unary.Inv.ELEM
+    val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
+    val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
+    val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
   end
 end
 
@@ -163,48 +163,47 @@ module Ext = struct
     let negate x = M.zero -@ x
   end
 
-  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
-    val lmap : ('a -> 'b) -> (('b, 'c) M.p -> ('a, 'c) M.p)
-    val rmap : ('c -> 'd) -> (('b, 'c) M.p -> ('b, 'd) M.p)
+  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig open M;;
+    val lmap : ('a -> 'b) -> (('b, 'c) el -> ('a, 'c) el)
+    val rmap : ('c -> 'd) -> (('b, 'c) el -> ('b, 'd) el)
   end = functor (M : Sig.PROFUNCTOR) -> struct
     let lmap f = M.dimap f (fun x -> x)
     let rmap f = M.dimap (fun x -> x) f
   end
 
-  module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
-    val (%>) : ('b, 'c) M.p -> ('a, 'b) M.p -> ('a, 'c) M.p
-    val (%<) : ('a, 'b) M.p -> ('b, 'c) M.p -> ('a, 'c) M.p
-  end = functor (M : Sig.SEMIGROUPOID) -> struct
-    let (%>) = M.compose
-    let (%<) f g = M.compose g f
-  end
-
-  module Functor : functor (M : Sig.FUNCTOR) -> sig
-    val (<$->) : ('a -> 'b) -> ('a M.t -> 'b M.t)
-    val (<-$>) : 'a M.t -> ('a -> 'b) -> 'b M.t
-    val bang : 'a M.t -> unit M.t
+  module Functor : functor (M : Sig.FUNCTOR) -> sig open M;;
+    val (<$->) : ('a -> 'b) -> ('a el -> 'b el)
+    val (<-$>) : 'a el -> ('a -> 'b) -> 'b el
+    val bang : 'a el -> unit el
   end = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) = M.map
     let (<-$>) x f = f <$-> x
     let bang x = (fun _ -> ()) <$-> x
   end
 
-  module Apply : functor (M : Sig.APPLY) -> sig
-    val (<*>) : ('a -> 'b) M.t -> ('a M.t -> 'b M.t)
+  module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig open M;;
+    val (%>) : ('b, 'c) el -> ('a, 'b) el -> ('a, 'c) el
+    val (%<) : ('a, 'b) el -> ('b, 'c) el -> ('a, 'c) el
+  end = functor (M : Sig.SEMIGROUPOID) -> struct
+    let (%>) = M.compose
+    let (%<) f g = M.compose g f
+  end
+
+  module Apply : functor (M : Sig.APPLY) -> sig open M;;
+    val (<*>) : ('a -> 'b) el -> ('a el -> 'b el)
   end = functor (M : Sig.APPLY) -> struct
     let (<*>) = M.apply
   end
 
-  module Bind : functor (M : Sig.BIND) -> sig
-    val (>>=) : 'a M.t -> ('a -> 'b M.t) -> 'b M.t
+  module Bind : functor (M : Sig.BIND) -> sig open M;;
+    val (>>=) : 'a el -> ('a -> 'b el) -> 'b el
   end = functor (M : Sig.BIND) -> struct
     let (>>=) = M.bind
   end
 
-  module Monad : functor (M : Sig.MONAD) -> sig
-    val ap : ('a -> 'b) M.t -> ('a M.t -> 'b M.t)
-  end = functor (M : Sig.MONAD) -> struct
-    module E = Bind(M);; open M;; open E;;
+  module Monad : functor (M : Sig.MONAD) -> sig open M;;
+    val ap : ('a -> 'b) el -> ('a el -> 'b el)
+  end = functor (M : Sig.MONAD) -> struct module E = Bind(M);; open M;; open E;;
     let ap mf mx = mf >>= fun f -> mx >>= fun x -> pure (f x)
   end
 end
@@ -487,9 +486,9 @@ end
 module Profunctor = struct
   module Fn = struct
     module Core
-      : (Sig.PROFUNCTOR with type (-'a, +'b) p = 'a -> 'b) =
+      : (Sig.PROFUNCTOR with type (-'a, +'b) el = 'a -> 'b) =
     struct
-      type (-'a, +'b) p = 'a -> 'b
+      type (-'a, +'b) el = 'a -> 'b
       let dimap f g h x = g (h (f x))
     end
     include Core
