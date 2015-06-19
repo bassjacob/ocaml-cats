@@ -507,19 +507,6 @@ module DivisionRing = struct
   end
 end
 
-module Functor = struct
-  module List = struct
-    module Def
-      : (Sig.FUNCTOR with type +'a el = 'a list) =
-    struct
-      type +'a el = 'a list
-      let map = List.map
-    end
-    include Def
-    include Ext.Functor(Def)
-  end
-end
-
 module Profunctor = struct
   module Fn = struct
     module Def
@@ -530,6 +517,19 @@ module Profunctor = struct
     end
     include Def
     include Ext.Profunctor(Def)
+  end
+end
+
+module Functor = struct
+  module List = struct
+    module Def
+      : (Sig.FUNCTOR with type +'a el = 'a list) =
+    struct
+      type +'a el = 'a list
+      let map = List.map
+    end
+    include Def
+    include Ext.Functor(Def)
   end
 end
 
