@@ -163,46 +163,46 @@ module Ext = struct
     let negate x = M.zero -@ x
   end
 
-  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig open M;;
-    val lmap : ('a -> 'b) -> (('b, 'c) el -> ('a, 'c) el)
-    val rmap : ('c -> 'd) -> (('b, 'c) el -> ('b, 'd) el)
+  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
+    val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
+    val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
   end = functor (M : Sig.PROFUNCTOR) -> struct
     let lmap f = M.dimap f (fun x -> x)
     let rmap f = M.dimap (fun x -> x) f
   end
 
-  module Functor : functor (M : Sig.FUNCTOR) -> sig open M;;
-    val (<$->) : ('a -> 'b) -> ('a el -> 'b el)
-    val (<-$>) : 'a el -> ('a -> 'b) -> 'b el
-    val bang : 'a el -> unit el
+  module Functor : functor (M : Sig.FUNCTOR) -> sig
+    val (<$->) : ('a -> 'b) -> ('a M.el -> 'b M.el)
+    val (<-$>) : 'a M.el -> ('a -> 'b) -> 'b M.el
+    val bang : 'a M.el -> unit M.el
   end = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) = M.map
     let (<-$>) x f = f <$-> x
     let bang x = (fun _ -> ()) <$-> x
   end
 
-  module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig open M;;
-    val (%>) : ('b, 'c) el -> ('a, 'b) el -> ('a, 'c) el
-    val (%<) : ('a, 'b) el -> ('b, 'c) el -> ('a, 'c) el
+  module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
+    val (%>) : ('b, 'c) M.el -> ('a, 'b) M.el -> ('a, 'c) M.el
+    val (%<) : ('a, 'b) M.el -> ('b, 'c) M.el -> ('a, 'c) M.el
   end = functor (M : Sig.SEMIGROUPOID) -> struct
     let (%>) = M.compose
     let (%<) f g = M.compose g f
   end
 
-  module Apply : functor (M : Sig.APPLY) -> sig open M;;
-    val (<*>) : ('a -> 'b) el -> ('a el -> 'b el)
+  module Apply : functor (M : Sig.APPLY) -> sig
+    val (<*>) : ('a -> 'b) M.el -> ('a M.el -> 'b M.el)
   end = functor (M : Sig.APPLY) -> struct
     let (<*>) = M.apply
   end
 
-  module Bind : functor (M : Sig.BIND) -> sig open M;;
-    val (>>=) : 'a el -> ('a -> 'b el) -> 'b el
+  module Bind : functor (M : Sig.BIND) -> sig
+    val (>>=) : 'a M.el -> ('a -> 'b M.el) -> 'b M.el
   end = functor (M : Sig.BIND) -> struct
     let (>>=) = M.bind
   end
 
-  module Monad : functor (M : Sig.MONAD) -> sig open M;;
-    val ap : ('a -> 'b) el -> ('a el -> 'b el)
+  module Monad : functor (M : Sig.MONAD) -> sig
+    val ap : ('a -> 'b) M.el -> ('a M.el -> 'b M.el)
   end = functor (M : Sig.MONAD) -> struct module E = Bind(M);; open M;; open E;;
     let ap mf mx = mf >>= fun f -> mx >>= fun x -> pure (f x)
   end
