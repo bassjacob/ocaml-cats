@@ -235,8 +235,8 @@ functor (T : Ty.Sig.Unary.Inv.ELEM) -> struct
   type 'r elim = { ap : 'x. 'x el -> 'r }
   module Def = struct
     type t = Pack : 'x el -> t
-    let into x = Pack(x)
-    let from p k = match p with Pack(e) -> k.ap(e)
+    let into x = Pack x
+    let from p k = match p with Pack e -> k.ap e
   end
   include Def
 end
