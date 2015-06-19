@@ -79,6 +79,11 @@ module Sig = struct
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
   end
 
+  module type BIFUNCTOR = sig
+    include Ty.Sig.Binary.Cov.ELEM
+    val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
+  end
+
   module type FUNCTOR =  sig
     include Ty.Sig.Unary.Cov.ELEM
     val map : ('a -> 'b) -> ('a el -> 'b el)
@@ -517,6 +522,18 @@ module Profunctor = struct
     end
     include Def
     include Ext.Profunctor(Def)
+  end
+end
+
+module Bifunctor = struct
+  module Product = struct
+    module Def
+      : (Sig.BIFUNCTOR with type ('a, 'b) el = 'a * 'b) =
+    struct
+      type ('a, 'b) el = 'a * 'b
+      let bimap f g (x, y) = (f x, g y)
+    end
+    include Def
   end
 end
 
