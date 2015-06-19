@@ -557,3 +557,8 @@ let ex0 () : int =
   let module E = Exists(Functor.List) in
   let pkg = E.into [0; 1; 2; 3; 4] in (* pack *)
   E.from pkg { E.ap = List.length }   (* elim *)
+
+(* Bifunctor for product *)
+let ex1 () : int * string =
+  Bifunctor.Product.bimap (fun x -> x * 2) string_of_float
+    (42, 3.14159)
