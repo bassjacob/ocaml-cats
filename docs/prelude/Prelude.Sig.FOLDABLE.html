@@ -20,9 +20,8 @@
 
 <pre><span class="keyword">module type</span> FOLDABLE = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.FOLDABLE.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+<pre><span class="keyword">include</span> Ty.Sig.Unary.Inv.ELEM</pre>
 
-
-<pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">('a -> 'b -> 'b) -> 'b -> 'a <a href="Prelude.Sig.FOLDABLE.html#TYPEt">t</a> -> 'b</code></pre>
-<pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a <a href="Prelude.Sig.FOLDABLE.html#TYPEt">t</a> -> 'b</code></pre>
-<pre><span id="VALfoldMap"><span class="keyword">val</span> foldMap</span> : <code class="type">(module Prelude.Sig.MONOID with type t = 'm) -><br>       ('a -> 'm) -> 'a <a href="Prelude.Sig.FOLDABLE.html#TYPEt">t</a> -> 'm</code></pre></body></html>
+<pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">('a -> 'b -> 'b) -> 'b -> 'a el -> 'b</code></pre>
+<pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a el -> 'b</code></pre>
+<pre><span id="VALfoldMap"><span class="keyword">val</span> foldMap</span> : <code class="type">(module Prelude.Sig.MONOID with type t = 'm) -> ('a -> 'm) -> 'a el -> 'm</code></pre></body></html>

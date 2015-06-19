@@ -22,7 +22,6 @@
 
 <pre><span class="keyword">module type</span> PROFUNCTOR = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.PROFUNCTOR.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEp"><span class="keyword">type</span> <code class="type">(-'a, +'b)</code> p</span> </pre>
+<pre><span class="keyword">include</span> Ty.Sig.Binary.ConPro.ELEM</pre>
 
-
-<pre><span id="VALdimap"><span class="keyword">val</span> dimap</span> : <code class="type">('a -> 'b) -><br>       ('c -> 'd) -><br>       ('b, 'c) <a href="Prelude.Sig.PROFUNCTOR.html#TYPEp">p</a> -> ('a, 'd) <a href="Prelude.Sig.PROFUNCTOR.html#TYPEp">p</a></code></pre></body></html>
+<pre><span id="VALdimap"><span class="keyword">val</span> dimap</span> : <code class="type">('a -> 'b) -> ('c -> 'd) -> ('b, 'c) el -> ('a, 'd) el</code></pre></body></html>

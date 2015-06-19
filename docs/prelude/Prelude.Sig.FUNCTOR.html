@@ -22,7 +22,6 @@
 
 <pre><span class="keyword">module type</span> FUNCTOR = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.FUNCTOR.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">+'a</code> t</span> </pre>
+<pre><span class="keyword">include</span> Ty.Sig.Unary.Cov.ELEM</pre>
 
-
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="Prelude.Sig.FUNCTOR.html#TYPEt">t</a> -> 'b <a href="Prelude.Sig.FUNCTOR.html#TYPEt">t</a></code></pre></body></html>
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a el -> 'b el</code></pre></body></html>
