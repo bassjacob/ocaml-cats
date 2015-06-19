@@ -270,7 +270,7 @@ module Semigroup = struct
         : (Sig.SEMIGROUP with type t = int) =
       struct
         type t = int
-        let op x y = x + y
+        let op = (+)
       end
       include Def
       include Ext.Semigroup(Def)
@@ -281,7 +281,7 @@ module Semigroup = struct
         : (Sig.SEMIGROUP with type t = float) =
       struct
         type t = float
-        let op x y = x +. y
+        let op = (+.)
       end
       include Def
       include Ext.Semigroup(Def)
@@ -392,9 +392,9 @@ module Semiring = struct
       module Mul = Monoid.Multiplicative.Int.Def
       type t = int
       let zero = Add.unit
-      let add x y = Add.op x y
+      let add = Add.op
       let one = Mul.unit
-      let mul x y = Mul.op x y
+      let mul = Mul.op
     end
     include Def
     include Ext.Semiring(Def)
@@ -408,9 +408,9 @@ module Semiring = struct
       module Mul = Monoid.Multiplicative.Float.Def
       type t = float
       let zero = Add.unit
-      let add x y = Add.op x y
+      let add = Add.op
       let one = Mul.unit
-      let mul x y = Mul.op x y
+      let mul = Mul.op
     end
     include Def
     include Ext.Semiring(Def)
@@ -472,7 +472,7 @@ module Ring = struct
       : (Sig.RING with type t = int) =
     struct
       include Semiring.Int.Def
-      let sub x y = x - y
+      let sub = (-)
     end
     include Def
     include Ext.Ring(Def)
@@ -483,7 +483,7 @@ module Ring = struct
       : (Sig.RING with type t = float) =
     struct
       include Semiring.Float.Def
-      let sub x y = x -. y
+      let sub = (-.)
     end
     include Def
     include Ext.Ring(Def)
