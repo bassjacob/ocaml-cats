@@ -21,7 +21,7 @@ SourceRepository "master"
 
 Library "prelude"
   Path: src
-  Modules: Prelude
+  Modules: Ambient, Prelude, Ty
 
 AlphaFeatures: ocamlbuild_more_args
 Document "prelude"
