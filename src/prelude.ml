@@ -4,14 +4,6 @@ let undefined ?(message = "Undefined") _ = failwith message
 let const : 'a -> ('b -> 'a) =
   fun x _ -> x
 
-external id : 'a -> 'a = "%identity"
-
-let (%>) : ('a -> 'b) -> ('b -> 'c) -> ('a -> 'c) =
-  fun g f x -> f (g x)
-
-let (%) : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c) =
-  fun g f x -> g (f x)
-
 let flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
   fun f x y -> f y x
 
