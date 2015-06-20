@@ -1,25 +1,31 @@
-(*
-let curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
-  fun f x y -> f (x, y)
-
-let uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
-  fun f (x, y) -> f x y
-
-let tap f x : ('a -> unit) -> ('a -> 'a)
-  = f x; x
-*)
-
 let undefined ?(message = "Undefined") _ = failwith message
 
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
-
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
-let const : 'a -> ('b -> 'a) =
-  fun x _ -> x
+module Global : sig
+  val id : 'a -> 'a
+  val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
+  val const : 'a -> ('b -> 'a)
+  val flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c)
+  val bang : 'a -> unit
+  val diagonal : 'a -> 'a * 'a
+  val curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c))
+  val uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c)
+  val tap : ('a -> unit) -> ('a -> 'a)
+end = struct
+  let id x = x
+  let compose g f x = g (f x)
+  let const x _ = x
+  let flip f x y = f y x
+  let bang _ = ()
+  let diagonal x = (x, x)
+  let curry f x y = f (x, y)
+  let uncurry f (x, y) = f x y
+  let tap f x = f x; x
+end
 
-let flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
-  fun f x y -> f y x
+type void
 
 (* The Sig module collects structure signatures. *)
 
@@ -172,18 +178,18 @@ module Ext = struct
     val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
     val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
   end = functor (M : Sig.PROFUNCTOR) -> struct
-    let lmap f = M.dimap f (fun x -> x)
-    let rmap f = M.dimap (fun x -> x) f
+    let lmap f = M.dimap f Global.id
+    let rmap f = M.dimap Global.id f
   end
 
   module Functor : functor (M : Sig.FUNCTOR) -> sig
     val (<$->) : ('a -> 'b) -> ('a M.el -> 'b M.el)
-    val (<-$>) : 'a M.el -> ('a -> 'b) -> 'b M.el
+    val (<-$>) : 'a M.el -> (('a -> 'b) -> 'b M.el)
     val bang : 'a M.el -> unit M.el
   end = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) = M.map
-    let (<-$>) x f = f <$-> x
-    let bang x = (fun _ -> ()) <$-> x
+    let (<-$>) x = Global.flip (<$->) x
+    let bang x = Global.bang <$-> x
   end
 
   module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
@@ -191,7 +197,7 @@ module Ext = struct
     val (%<) : ('a, 'b) M.el -> ('b, 'c) M.el -> ('a, 'c) M.el
   end = functor (M : Sig.SEMIGROUPOID) -> struct
     let (%>) = M.compose
-    let (%<) f g = M.compose g f
+    let (%<) f = Global.flip M.compose f
   end
 
   module Apply : functor (M : Sig.APPLY) -> sig
@@ -286,7 +292,7 @@ module Semigroup = struct
         : (Sig.SEMIGROUP with type t = int) =
       struct
         type t = int
-        let op x y = x * y
+        let op = ( * )
       end
       include Def
       include Ext.Semigroup(Def)
@@ -297,7 +303,7 @@ module Semigroup = struct
         : (Sig.SEMIGROUP with type t = float) =
       struct
         type t = float
-        let op x y = x *. y
+        let op = ( *. )
       end
       include Def
       include Ext.Semigroup(Def)
@@ -548,7 +554,7 @@ module Semigroupoid = struct
       include (Sig.SEMIGROUPOID with type (-'a, +'b) el = 'a -> 'b)
     end = struct
       include Profunctor.Fn.Def
-      let compose g f x = g (f x)
+      let compose = Global.compose
     end
     include Def
     include Ext.Semigroupoid(Def)
@@ -561,7 +567,7 @@ module Category = struct
       include (Sig.CATEGORY with type (-'a, +'b) el = 'a -> 'b)
     end = struct
       include Profunctor.Fn.Def
-      let id x = x
+      let id = Global.id
     end
     include Def
   end
