@@ -13,6 +13,11 @@ module Global : sig
     val inl : 'a -> ('a, 'b) t
     val inr : 'b -> ('a, 'b) t
   end
+  module Product : sig
+    type ('a, 'b) t = 'a * 'b
+    val fst : ('a, 'b) t -> 'a
+    val snd : ('a, 'b) t -> 'b
+  end
   val id : 'a -> 'a
   val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
   val const : 'a -> ('b -> 'a)
@@ -35,6 +40,11 @@ end = struct
       | InL a -> f a
       | InR b -> g b
   end
+  module Product = struct
+    type ('a, 'b) t = 'a * 'b
+    let fst (x, y) = x
+    let snd (x, y) = y
+    let pair f g (x, y) = (f x, g y)
   end
   let id x = x
   let compose g f x = g (f x)
