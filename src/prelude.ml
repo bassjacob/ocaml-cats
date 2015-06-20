@@ -3,9 +3,6 @@ let undefined ?(message = "Undefined") _ = failwith message
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
-type void = Ambient.Initial.t
-type ('a, 'b) sum = ('a, 'b) Ambient.Coproduct.t
-
 (* The Sig module collects structure signatures. *)
 
 module Sig = struct
