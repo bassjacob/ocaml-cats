@@ -51,9 +51,9 @@ module Sig = struct
     include MODULOSEMIRING with type t := t
   end
 
-  module type PROFUNCTOR = sig
-    include Ty.Sig.Binary.ContraCovariant.CODE
-    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
+  module type FUNCTOR = sig
+    include Ty.Sig.Unary.Covariant.CODE
+    val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
   module type BIFUNCTOR = sig
@@ -61,14 +61,14 @@ module Sig = struct
     val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
   end
 
-  module type FUNCTOR = sig
-    include Ty.Sig.Unary.Covariant.CODE
-    val map : ('a -> 'b) -> ('a el -> 'b el)
-  end
-
   module type PRESHEAF = sig
     include Ty.Sig.Unary.Contravariant.CODE
     val premap : ('a -> 'b) -> ('b el -> 'a el)
+  end
+
+  module type PROFUNCTOR = sig
+    include Ty.Sig.Binary.ContraCovariant.CODE
+    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
   end
 
   module type SEMIGROUPOID = sig
@@ -169,14 +169,6 @@ module Ext = struct
     let negate x = M.zero -@ x
   end
 
-  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
-    val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
-    val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
-  end = functor (M : Sig.PROFUNCTOR) -> struct
-    let lmap f = M.dimap f Ambient.id
-    let rmap f = M.dimap Ambient.id f
-  end
-
   module Functor : functor (M : Sig.FUNCTOR) -> sig
     val (<$->) : ('a -> 'b) -> ('a M.el -> 'b M.el)
     val (<-$>) : 'a M.el -> (('a -> 'b) -> 'b M.el)
@@ -185,6 +177,14 @@ module Ext = struct
     let (<$->) = M.map
     let (<-$>) x = Ambient.flip (<$->) x
     let bang x = Ambient.bang <$-> x
+  end
+
+  module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
+    val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
+    val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
+  end = functor (M : Sig.PROFUNCTOR) -> struct
+    let lmap f = M.dimap f Ambient.id
+    let rmap f = M.dimap Ambient.id f
   end
 
   module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
@@ -458,15 +458,15 @@ module DivisionRing = struct
   end
 end
 
-module Profunctor = struct
-  module Fn = struct
-    module El = struct type (-'a, +'b) el = 'a -> 'b end
-    module Def : Sig.PROFUNCTOR with type (-'a, +'b) el = ('a, 'b) El.el = struct
-      include Ty.Make.Binary.ContraCovariant(El)
-      let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
+module Functor = struct
+  module List = struct
+    module El = struct type +'a el = 'a list end
+    module Def : Sig.FUNCTOR with type +'a el = 'a El.el = struct
+      include Ty.Make.Unary.Covariant(El)
+      let map = List.map
     end
     include Def
-    include Ext.Profunctor(Def)
+    include Ext.Functor(Def)
   end
 end
 
@@ -494,15 +494,15 @@ module Bifunctor = struct
   end
 end
 
-module Functor = struct
-  module List = struct
-    module El = struct type +'a el = 'a list end
-    module Def : Sig.FUNCTOR with type +'a el = 'a El.el = struct
-      include Ty.Make.Unary.Covariant(El)
-      let map = List.map
+module Profunctor = struct
+  module Fn = struct
+    module El = struct type (-'a, +'b) el = 'a -> 'b end
+    module Def : Sig.PROFUNCTOR with type (-'a, +'b) el = ('a, 'b) El.el = struct
+      include Ty.Make.Binary.ContraCovariant(El)
+      let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
     end
     include Def
-    include Ext.Functor(Def)
+    include Ext.Profunctor(Def)
   end
 end
 
