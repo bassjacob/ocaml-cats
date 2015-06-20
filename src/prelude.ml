@@ -4,6 +4,12 @@ external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
 module Global : sig
+  module Initial : sig
+    type t
+  end
+  module Coproduct : sig
+    type ('a, 'b) t = InL of 'a | InR of 'b
+  end
   val id : 'a -> 'a
   val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
   val const : 'a -> ('b -> 'a)
@@ -14,6 +20,12 @@ module Global : sig
   val uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c)
   val tap : ('a -> unit) -> ('a -> 'a)
 end = struct
+  module Initial = struct
+    type t
+  end
+  module Coproduct = struct
+    type ('a, 'b) t = InL of 'a | InR of 'b
+  end
   let id x = x
   let compose g f x = g (f x)
   let const x _ = x
@@ -25,9 +37,8 @@ end = struct
   let tap f x = f x; x
 end
 
-type void
-
-type ('a, 'b) sum = InL of 'a | InR of 'b
+type void = Global.Initial.t
+type ('a, 'b) sum = ('a, 'b) Global.Coproduct.t
 
 (* The Sig module collects structure signatures. *)
 
