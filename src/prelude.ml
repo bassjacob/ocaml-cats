@@ -27,6 +27,8 @@ end
 
 type void
 
+type ('a, 'b) sum = InL of 'a | InR of 'b
+
 (* The Sig module collects structure signatures. *)
 
 module Sig = struct
