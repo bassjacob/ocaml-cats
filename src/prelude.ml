@@ -550,6 +550,31 @@ module Functor = struct
   end
 end
 
+module Semigroupoid = struct
+  module Fn = struct
+    module Def : sig
+      include (Sig.SEMIGROUPOID with type (-'a, +'b) el = 'a -> 'b)
+    end = struct
+      include Profunctor.Fn.Def
+      let compose g f x = g (f x)
+    end
+    include Def
+    include Ext.Semigroupoid(Def)
+  end
+end
+
+module Category = struct
+  module Fn = struct
+    module Def : sig
+      include (Sig.CATEGORY with type (-'a, +'b) el = 'a -> 'b)
+    end = struct
+      include Profunctor.Fn.Def
+      let id x = x
+    end
+    include Def
+  end
+end
+
 (** Examples **)
 
 (* Existentials for List functor *)
