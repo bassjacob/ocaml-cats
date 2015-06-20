@@ -301,6 +301,16 @@ module Semigroup = struct
       include Ext.Semigroup(Def)
     end
   end
+
+  module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
+    module Def : Sig.SEMIGROUP
+      with type t = T.el list =
+    struct
+      type t = T.el list
+      let op = List.append
+    end
+    include Def
+  end
 end
 
 module Monoid = struct
