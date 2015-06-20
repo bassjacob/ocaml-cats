@@ -24,7 +24,7 @@ If you have `opam` installed you can fetch the other two:
 
 Once the buildchain is installed you can generate a `Makefile`:
 
-1. `opam install oasis`
+1. `opam pin add prelude . -n`
 2. `oasis setup -setup-update dynamic`
 3. `make`
 
