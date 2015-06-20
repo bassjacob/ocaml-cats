@@ -81,9 +81,9 @@ module Sig = struct
     val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
-  module type OPFUNCTOR = sig
+  module type PRESHEAF = sig
     include Ty.Sig.Unary.Con.ELEM
-    val map : ('a -> 'b) -> ('b el -> 'a el)
+    val premap : ('a -> 'b) -> ('b el -> 'a el)
   end
 
   module type SEMIGROUPOID = sig
