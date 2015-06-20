@@ -377,6 +377,18 @@ module Monoid = struct
       include Def
     end
   end
+
+  module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
+    module SG = Semigroup.List(T)
+    module Def : Sig.MONOID
+      with type t = SG.Def.t =
+    struct
+      include SG.Def
+      let unit = []
+    end
+    include Def
+  end
+
 end
 
 module Semiring = struct
@@ -652,3 +664,8 @@ let ex1 () : int * string =
 (* Semigroupoid for (->) *)
 let ex2 () : int = let open Semigroupoid.Fn in
   (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
+
+(* Monoid for list *)
+let ex3 () : int list =
+  let module M = Monoid.List(struct type el = int end) in
+  M.op [0;1;2;3] [4;5;6;7]
