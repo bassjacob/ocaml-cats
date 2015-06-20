@@ -300,6 +300,14 @@ module Monoid = struct
     include Def
   end
 
+  module String = struct
+    module Def : Sig.MONOID with type t = string = struct
+      include Semigroup.String.Def
+      let unit = ""
+    end
+    include Def
+  end
+
   module Additive = struct
     module Int = struct
       module Def : Sig.MONOID with type t = Semigroup.Additive.Int.Def.t = struct
