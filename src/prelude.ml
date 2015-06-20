@@ -215,7 +215,7 @@ end
 
 (* Individual structure instances are grouped by name and related properties.
    Each instance, such as Semigroup.Unit, is a combination of the core instance
-   definition packed along with co-instantiated structure extensions. *)
+   definition packed alongside co-instantiated structure extensions. *)
 
 module Exists : functor (T : Ty.Sig.Unary.Inv.ELEM) -> sig
   include Ty.Sig.Unary.Inv.CODE
