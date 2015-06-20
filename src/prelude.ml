@@ -581,4 +581,4 @@ let ex1 () : int * string =
 
 (* Semigroupoid for (->) *)
 let ex2 () : int = let open Semigroupoid.Fn in
-  ((fun x -> x + 1) %> (fun x -> x * 2)) 10
+  (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
