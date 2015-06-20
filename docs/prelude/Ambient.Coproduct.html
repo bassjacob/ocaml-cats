@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Ambient.Initial.html">
+<link rel="next" href="Ambient.Product.html">
+<link rel="Up" href="Ambient.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Ambient" rel="Chapter" href="Ambient.html">
+<link title="Prelude" rel="Chapter" href="Prelude.html">
+<link title="Ty" rel="Chapter" href="Ty.html"><title>Ambient.Coproduct</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Ambient.Initial.html" title="Ambient.Initial">Previous</a>
+&nbsp;<a class="up" href="Ambient.html" title="Ambient">Up</a>
+&nbsp;<a class="post" href="Ambient.Product.html" title="Ambient.Product">Next</a>
+</div>
+<h1>Module <a href="type_Ambient.Coproduct.html">Ambient.Coproduct</a></h1>
+
+<pre><span class="keyword">module</span> Coproduct: <code class="code"><span class="keyword">sig</span></code> <a href="Ambient.Coproduct.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+
+<pre><code><span id="TYPEt"><span class="keyword">type</span> <code class="type">('a, 'b)</code> t</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTt.InL"><span class="constructor">InL</span></span> <span class="keyword">of</span> <code class="type">'a</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTt.InR"><span class="constructor">InR</span></span> <span class="keyword">of</span> <code class="type">'b</code></code></td>
+
+</tr></table>
+
+
+
+<pre><span id="VALinl"><span class="keyword">val</span> inl</span> : <code class="type">'a -> ('a, 'b) <a href="Ambient.Coproduct.html#TYPEt">t</a></code></pre>
+<pre><span id="VALinr"><span class="keyword">val</span> inr</span> : <code class="type">'b -> ('a, 'b) <a href="Ambient.Coproduct.html#TYPEt">t</a></code></pre>
+<pre><span id="VALcase"><span class="keyword">val</span> case</span> : <code class="type">('a -> 'x) -> ('b -> 'x) -> ('a, 'b) <a href="Ambient.Coproduct.html#TYPEt">t</a> -> 'x</code></pre></body></html>

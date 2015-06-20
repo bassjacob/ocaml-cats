@@ -6,13 +6,18 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Prelude" rel="Chapter" href="Prelude.html"><title>Prelude.Sig.FOLDABLE</title>
+<link title="Ambient" rel="Chapter" href="Ambient.html">
+<link title="Prelude" rel="Chapter" href="Prelude.html">
+<link title="Ty" rel="Chapter" href="Ty.html"><title>Prelude.Sig.FOLDABLE</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;el<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;tc<br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;code&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;el&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a,&nbsp;tc)&nbsp;<span class="constructor">Ty</span>.ap&nbsp;=&nbsp;<span class="string">"%identity"</span><br>
+&nbsp;&nbsp;<span class="keyword">external</span>&nbsp;elem&nbsp;:&nbsp;(<span class="keywordsign">'</span>a,&nbsp;tc)&nbsp;<span class="constructor">Ty</span>.ap&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;el&nbsp;=&nbsp;<span class="string">"%identity"</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;foldr&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;el&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;foldl&nbsp;:&nbsp;(<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;el&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;foldMap&nbsp;:<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;fold_map&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">module</span>&nbsp;<span class="constructor">Prelude</span>.<span class="constructor">Sig</span>.<span class="constructor">MONOID</span>&nbsp;<span class="keyword">with</span>&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;<span class="keywordsign">'</span>m)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>m)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;el&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>m<br>
 <span class="keyword">end</span></code></body></html>

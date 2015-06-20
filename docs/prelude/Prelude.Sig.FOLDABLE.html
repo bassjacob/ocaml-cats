@@ -10,7 +10,9 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Prelude" rel="Chapter" href="Prelude.html"><title>Prelude.Sig.FOLDABLE</title>
+<link title="Ambient" rel="Chapter" href="Ambient.html">
+<link title="Prelude" rel="Chapter" href="Prelude.html">
+<link title="Ty" rel="Chapter" href="Ty.html"><title>Prelude.Sig.FOLDABLE</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Prelude.Sig.COMONAD.html" title="Prelude.Sig.COMONAD">Previous</a>
@@ -20,8 +22,8 @@
 
 <pre><span class="keyword">module type</span> FOLDABLE = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.FOLDABLE.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span class="keyword">include</span> Ty.Sig.Unary.Invariant.ELEM</pre>
+<pre><span class="keyword">include</span> <a href="Ty.Sig.Unary.Invariant.CODE.html">Ty.Sig.Unary.Invariant.CODE</a></pre>
 
 <pre><span id="VALfoldr"><span class="keyword">val</span> foldr</span> : <code class="type">('a -> 'b -> 'b) -> 'b -> 'a el -> 'b</code></pre>
 <pre><span id="VALfoldl"><span class="keyword">val</span> foldl</span> : <code class="type">('b -> 'a -> 'b) -> 'b -> 'a el -> 'b</code></pre>
-<pre><span id="VALfoldMap"><span class="keyword">val</span> foldMap</span> : <code class="type">(module Prelude.Sig.MONOID with type t = 'm) -> ('a -> 'm) -> 'a el -> 'm</code></pre></body></html>
+<pre><span id="VALfold_map"><span class="keyword">val</span> fold_map</span> : <code class="type">(module Prelude.Sig.MONOID with type t = 'm) -> ('a -> 'm) -> 'a el -> 'm</code></pre></body></html>
