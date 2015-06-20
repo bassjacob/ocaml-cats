@@ -6,9 +6,12 @@ external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 module Global : sig
   module Initial : sig
     type t
+    val abort : t -> 'a
   end
   module Coproduct : sig
     type ('a, 'b) t = InL of 'a | InR of 'b
+    val inl : 'a -> ('a, 'b) t
+    val inr : 'b -> ('a, 'b) t
   end
   val id : 'a -> 'a
   val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
@@ -22,9 +25,16 @@ module Global : sig
 end = struct
   module Initial = struct
     type t
+    let abort _ = failwith "Initial.abort"
   end
   module Coproduct = struct
     type ('a, 'b) t = InL of 'a | InR of 'b
+    let inl a = InL a
+    let inr b = InR b
+    let case f g x = match x with
+      | InL a -> f a
+      | InR b -> g b
+  end
   end
   let id x = x
   let compose g f x = g (f x)
