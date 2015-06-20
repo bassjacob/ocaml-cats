@@ -669,7 +669,7 @@ end
 
 (** Examples **)
 
-(* Existentials for List functor *)
+(* Existentials for list functor *)
 let ex0 () : int = let module E = Exists(Functor.List) in
   let pkg = E.into [0; 1; 2; 3; 4] in (* pack *)
   E.from pkg { E.ap = List.length }   (* elim *)
