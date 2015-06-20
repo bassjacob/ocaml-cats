@@ -233,7 +233,9 @@ end
 
 module Semigroup = struct
   module Unit = struct
-    module Def : Sig.SEMIGROUP with type t = unit = struct
+    module Def : Sig.SEMIGROUP
+      with type t = unit =
+    struct
       type t = unit
       let op _ _ = ()
     end
@@ -242,7 +244,9 @@ module Semigroup = struct
   end
 
   module String = struct
-    module Def : Sig.SEMIGROUP with type t = string = struct
+    module Def : Sig.SEMIGROUP
+      with type t = string =
+    struct
       type t = string
       let op x y = String.concat "" [x; y]
     end
@@ -252,7 +256,9 @@ module Semigroup = struct
 
   module Additive = struct
     module Int = struct
-      module Def : Sig.SEMIGROUP with type t = int = struct
+      module Def : Sig.SEMIGROUP
+        with type t = int =
+      struct
         type t = int
         let op = (+)
       end
@@ -261,7 +267,9 @@ module Semigroup = struct
     end
 
     module Float = struct
-      module Def : Sig.SEMIGROUP with type t = float = struct
+      module Def : Sig.SEMIGROUP
+        with type t = float =
+      struct
         type t = float
         let op = (+.)
       end
@@ -272,7 +280,9 @@ module Semigroup = struct
 
   module Multiplicative = struct
     module Int = struct
-      module Def : Sig.SEMIGROUP with type t = int = struct
+      module Def : Sig.SEMIGROUP
+        with type t = int =
+      struct
         type t = int
         let op = ( * )
       end
@@ -281,7 +291,9 @@ module Semigroup = struct
     end
 
     module Float = struct
-      module Def : Sig.SEMIGROUP with type t = float = struct
+      module Def : Sig.SEMIGROUP
+        with type t = float =
+      struct
         type t = float
         let op = ( *. )
       end
@@ -293,7 +305,9 @@ end
 
 module Monoid = struct
   module Unit = struct
-    module Def : Sig.MONOID with type t = unit = struct
+    module Def : Sig.MONOID
+      with type t = Semigroup.Unit.Def.t =
+    struct
       include Semigroup.Unit.Def
       let unit = ()
     end
@@ -301,7 +315,9 @@ module Monoid = struct
   end
 
   module String = struct
-    module Def : Sig.MONOID with type t = string = struct
+    module Def : Sig.MONOID
+      with type t = Semigroup.String.Def.t =
+    struct
       include Semigroup.String.Def
       let unit = ""
     end
@@ -310,7 +326,9 @@ module Monoid = struct
 
   module Additive = struct
     module Int = struct
-      module Def : Sig.MONOID with type t = Semigroup.Additive.Int.Def.t = struct
+      module Def : Sig.MONOID
+        with type t = Semigroup.Additive.Int.Def.t =
+      struct
         include Semigroup.Additive.Int.Def
         let unit = 0
       end
@@ -318,7 +336,9 @@ module Monoid = struct
     end
 
     module Float = struct
-      module Def : Sig.MONOID with type t = float = struct
+      module Def : Sig.MONOID
+        with type t = Semigroup.Additive.Float.Def.t =
+      struct
         include Semigroup.Additive.Float.Def
         let unit = 0.0
       end
@@ -328,7 +348,9 @@ module Monoid = struct
 
   module Multiplicative = struct
     module Int = struct
-      module Def : Sig.MONOID with type t = Semigroup.Multiplicative.Int.Def.t = struct
+      module Def : Sig.MONOID
+        with type t = Semigroup.Multiplicative.Int.Def.t =
+      struct
         include Semigroup.Multiplicative.Int.Def
         let unit = 1
       end
@@ -336,7 +358,9 @@ module Monoid = struct
     end
 
     module Float = struct
-      module Def : Sig.MONOID with type t = float = struct
+      module Def : Sig.MONOID
+        with type t = Semigroup.Multiplicative.Float.Def.t =
+      struct
         include Semigroup.Multiplicative.Float.Def
         let unit = 1.0
       end
@@ -347,7 +371,9 @@ end
 
 module Semiring = struct
   module Unit = struct
-    module Def : Sig.SEMIRING with type t = unit = struct
+    module Def : Sig.SEMIRING
+      with type t = unit =
+    struct
       type t = unit
       let zero = ()
       let add _ _ = ()
@@ -359,7 +385,9 @@ module Semiring = struct
   end
 
   module Int = struct
-    module Def : Sig.SEMIRING with type t = int = struct
+    module Def : Sig.SEMIRING
+      with type t = int =
+    struct
       module Add = Monoid.Additive.Int.Def
       module Mul = Monoid.Multiplicative.Int.Def
       type t = int
@@ -373,7 +401,9 @@ module Semiring = struct
   end
 
   module Float = struct
-    module Def : Sig.SEMIRING with type t = float = struct
+    module Def : Sig.SEMIRING
+      with type t = float =
+    struct
       module Add = Monoid.Additive.Float.Def
       module Mul = Monoid.Multiplicative.Float.Def
       type t = float
@@ -389,7 +419,9 @@ end
 
 module ModuloSemiring = struct
   module Unit = struct
-    module Def : Sig.MODULOSEMIRING with type t = unit = struct
+    module Def : Sig.MODULOSEMIRING
+      with type t = Semiring.Unit.Def.t =
+    struct
       include Semiring.Unit.Def
       let div _ _ = ()
       let modulo _ _ = ()
@@ -399,7 +431,9 @@ module ModuloSemiring = struct
   end
 
   module Int = struct
-    module Def : Sig.MODULOSEMIRING with type t = int = struct
+    module Def : Sig.MODULOSEMIRING
+      with type t = Semiring.Int.Def.t =
+    struct
       include Semiring.Int.Def
       let div = (/)
       let modulo = (mod)
@@ -409,7 +443,9 @@ module ModuloSemiring = struct
   end
 
   module Float = struct
-    module Def : Sig.MODULOSEMIRING with type t = float = struct
+    module Def : Sig.MODULOSEMIRING
+      with type t = Semiring.Float.Def.t =
+    struct
       include Semiring.Float.Def
       let div = (/.)
       let modulo = mod_float
@@ -421,7 +457,9 @@ end
 
 module Ring = struct
   module Unit = struct
-    module Def : Sig.RING with type t = unit = struct
+    module Def : Sig.RING
+      with type t = Semiring.Unit.Def.t =
+    struct
       include Semiring.Unit.Def
       let sub _ _ = ()
     end
@@ -430,7 +468,9 @@ module Ring = struct
   end
 
   module Int = struct
-    module Def : Sig.RING with type t = int = struct
+    module Def : Sig.RING
+      with type t = Semiring.Int.Def.t =
+    struct
       include Semiring.Int.Def
       let sub = (-)
     end
@@ -439,7 +479,9 @@ module Ring = struct
   end
 
   module Float = struct
-    module Def : Sig.RING with type t = float = struct
+    module Def : Sig.RING
+      with type t = Semiring.Float.Def.t =
+    struct
       include Semiring.Float.Def
       let sub = (-.)
     end
@@ -450,17 +492,23 @@ end
 
 module DivisionRing = struct
   module Unit = struct
-    module Def : Sig.DIVISIONRING with type t = unit = struct
+    module Def : Sig.DIVISIONRING
+      with type t = Ring.Unit.Def.t =
+    struct
       include Ring.Unit.Def
-      include (ModuloSemiring.Unit.Def : Sig.MODULOSEMIRING with type t := t)
+      include (ModuloSemiring.Unit.Def :
+        Sig.MODULOSEMIRING with type t := t)
     end
     include Def
   end
 
   module Float = struct
-    module Def : Sig.DIVISIONRING with type t = float = struct
+    module Def : Sig.DIVISIONRING
+      with type t = Ring.Float.Def.t =
+    struct
       include Ring.Float.Def
-      include (ModuloSemiring.Float.Def : Sig.MODULOSEMIRING with type t := t)
+      include (ModuloSemiring.Float.Def :
+        Sig.MODULOSEMIRING with type t := t)
     end
     include Def
   end
@@ -469,7 +517,9 @@ end
 module Functor = struct
   module List = struct
     module El = struct type +'a el = 'a list end
-    module Def : Sig.FUNCTOR with type +'a el = 'a El.el = struct
+    module Def : Sig.FUNCTOR
+      with type +'a el = 'a El.el =
+    struct
       include Ty.Make.Unary.Covariant(El)
       let map = List.map
     end
@@ -482,7 +532,9 @@ module Bifunctor = struct
   module Tuple = struct
     open Ambient
     module El = struct type (+'a, +'b) el = ('a, 'b) Product.t end
-    module Def : Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) El.el = struct
+    module Def : Sig.BIFUNCTOR
+      with type ('a, 'b) el = ('a, 'b) El.el =
+    struct
       include Ty.Make.Binary.Covariant(El)
       let bimap f g = let open Product in
         let (%>) = Ambient.compose in pair (f %> fst) (g %> snd)
@@ -493,7 +545,9 @@ module Bifunctor = struct
   module Variant = struct
     open Ambient
     module El = struct type (+'a, +'b) el = ('a, 'b) Coproduct.t end
-    module Def : Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) El.el = struct
+    module Def : Sig.BIFUNCTOR
+      with type ('a, 'b) el = ('a, 'b) El.el =
+    struct
       include Ty.Make.Binary.Covariant(El)
       let bimap f g = let open Coproduct in
         let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
@@ -505,7 +559,9 @@ end
 module Profunctor = struct
   module Fn = struct
     module El = struct type (-'a, +'b) el = 'a -> 'b end
-    module Def : Sig.PROFUNCTOR with type (-'a, +'b) el = ('a, 'b) El.el = struct
+    module Def : Sig.PROFUNCTOR
+      with type (-'a, +'b) el = ('a, 'b) El.el =
+    struct
       include Ty.Make.Binary.ContraCovariant(El)
       let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
     end
@@ -516,9 +572,9 @@ end
 
 module Semigroupoid = struct
   module Fn = struct
-    module Def : sig
-      include Sig.SEMIGROUPOID with type (-'a, +'b) el = 'a -> 'b
-    end = struct
+    module Def : Sig.SEMIGROUPOID
+      with type (-'a, +'b) el = 'a -> 'b =
+    struct
       include Profunctor.Fn.Def
       let compose = Ambient.compose
     end
@@ -529,9 +585,9 @@ end
 
 module Category = struct
   module Fn = struct
-    module Def : sig
-      include Sig.CATEGORY with type (-'a, +'b) el = 'a -> 'b
-    end = struct
+    module Def : Sig.CATEGORY
+      with type (-'a, +'b) el = 'a -> 'b =
+    struct
       include Profunctor.Fn.Def
       let id = Ambient.id
     end
