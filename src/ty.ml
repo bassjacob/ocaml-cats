@@ -127,7 +127,7 @@ module Def = struct
   module Binary = struct
     open Sig.Binary
 
-    module Cov
+    module Covariant
       : functor (T : Covariant.ELEM) -> Covariant.CODE with type (+'a, +'b) el = ('a, 'b) T.el
       = functor (T : Covariant.ELEM) ->
     struct
