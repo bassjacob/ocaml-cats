@@ -665,6 +665,22 @@ module Foldable = struct
   end
 end
 
+module Apply = struct
+  module List = struct
+    module Def : Sig.APPLY
+      with type 'a el = 'a Functor.List.El.el =
+    struct
+      include Functor.List
+      let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
+        let module F = Functor.List in
+        let module M = Monoid.List(struct type el = b end) in
+        match fs with
+        | [] -> []
+        | (f::fs) -> M.op (F.map f xs) (apply fs xs)
+    end
+  end
+end
+
 (** Examples **)
 
 (* Existentials for list functor *)
