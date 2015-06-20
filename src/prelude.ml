@@ -509,7 +509,7 @@ module Profunctor = struct
       : (Sig.PROFUNCTOR with type (-'a, +'b) el = 'a -> 'b) =
     struct
       type (-'a, +'b) el = 'a -> 'b
-      let dimap f g h x = g (h (f x))
+      let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
     end
     include Def
     include Ext.Profunctor(Def)
