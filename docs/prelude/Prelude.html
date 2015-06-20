@@ -16,14 +16,36 @@
 &nbsp;</div>
 <h1>Module <a href="type_Prelude.html">Prelude</a></h1>
 
-<pre><span class="keyword">module</span> Prelude: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span class="keyword">module</span> Prelude: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Examples *<br>
+</div>
+<hr width="100%">
+
+<pre><span id="VALundefined"><span class="keyword">val</span> undefined</span> : <code class="type">?message:string -> 'a -> 'b</code></pre>
+<pre><span id="VAL(@@)"><span class="keyword">val</span> (@@)</span> : <code class="type">('a -> 'b) -> 'a -> 'b</code></pre>
+<pre><span id="VAL(|>)"><span class="keyword">val</span> (|&gt;)</span> : <code class="type">'a -> ('a -> 'r) -> 'r</code></pre>
+<pre><span id="TYPEvoid"><span class="keyword">type</span> <code class="type"></code>void</span> = <code class="type">Ambient.Initial.t</code> </pre>
+
+
+<pre><span id="TYPEsum"><span class="keyword">type</span> <code class="type">('a, 'b)</code> sum</span> = <code class="type">('a, 'b) Ambient.Coproduct.t</code> </pre>
+
 
 <pre><span class="keyword">module</span> <a href="Prelude.Sig.html">Sig</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Ext.html">Ext</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Ext.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Exists.html">Exists</a>:  <code class="code">(</code><code class="code"><span class="constructor">T</span></code><code class="code"> : </code><code class="type">Ty.Sig.Unary.Invariant.ELEM</code><code class="code">) </code>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Exists.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Semigroup.html">Semigroup</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semigroup.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Monoid.html">Monoid</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Monoid.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Semiring.html">Semiring</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semiring.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.ModuloSemiring.html">ModuloSemiring</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.ModuloSemiring.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.Ring.html">Ring</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Ring.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
 <pre><span class="keyword">module</span> <a href="Prelude.DivisionRing.html">DivisionRing</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.DivisionRing.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
-<pre><span class="keyword">module</span> <a href="Prelude.Profunctor.html">Profunctor</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Profunctor.html">..</a> <code class="code"><span class="keyword">end</span></code></pre></body></html>
+<pre><span class="keyword">module</span> <a href="Prelude.Profunctor.html">Profunctor</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Profunctor.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Bifunctor.html">Bifunctor</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Bifunctor.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Functor.html">Functor</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Functor.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Semigroupoid.html">Semigroupoid</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Semigroupoid.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Category.html">Category</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Category.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Product.html">Product</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Product.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span class="keyword">module</span> <a href="Prelude.Coproduct.html">Coproduct</a>: <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Coproduct.html">..</a> <code class="code"><span class="keyword">end</span></code></pre>
+<pre><span id="VALex0"><span class="keyword">val</span> ex0</span> : <code class="type">unit -> int</code></pre>
+<pre><span id="VALex1"><span class="keyword">val</span> ex1</span> : <code class="type">unit -> int * string</code></pre>
+<pre><span id="VALex2"><span class="keyword">val</span> ex2</span> : <code class="type">unit -> int</code></pre></body></html>

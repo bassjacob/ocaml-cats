@@ -11,18 +11,17 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Prelude" rel="Chapter" href="Prelude.html"><title>Prelude.Sig.OPFUNCTOR</title>
+<link title="Prelude" rel="Chapter" href="Prelude.html"><title>Prelude.Sig.PRESHEAF</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Prelude.Sig.FUNCTOR.html" title="Prelude.Sig.FUNCTOR">Previous</a>
 &nbsp;<a class="up" href="Prelude.Sig.html" title="Prelude.Sig">Up</a>
 &nbsp;<a class="post" href="Prelude.Sig.SEMIGROUPOID.html" title="Prelude.Sig.SEMIGROUPOID">Next</a>
 </div>
-<h1>Module type <a href="type_Prelude.Sig.OPFUNCTOR.html">Prelude.Sig.OPFUNCTOR</a></h1>
+<h1>Module type <a href="type_Prelude.Sig.PRESHEAF.html">Prelude.Sig.PRESHEAF</a></h1>
 
-<pre><span class="keyword">module type</span> OPFUNCTOR = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.OPFUNCTOR.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
+<pre><span class="keyword">module type</span> PRESHEAF = <code class="code"><span class="keyword">sig</span></code> <a href="Prelude.Sig.PRESHEAF.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><hr width="100%">
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">-'a</code> t</span> </pre>
+<pre><span class="keyword">include</span> Ty.Sig.Unary.Contravariant.ELEM</pre>
 
-
-<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'b <a href="Prelude.Sig.OPFUNCTOR.html#TYPEt">t</a> -> 'a <a href="Prelude.Sig.OPFUNCTOR.html#TYPEt">t</a></code></pre></body></html>
+<pre><span id="VALpremap"><span class="keyword">val</span> premap</span> : <code class="type">('a -> 'b) -> 'b el -> 'a el</code></pre></body></html>
