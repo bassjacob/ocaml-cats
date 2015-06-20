@@ -517,7 +517,7 @@ module Profunctor = struct
 end
 
 module Bifunctor = struct
-  module Coproduct = struct
+  module Variant = struct
     open Ambient
     module Def
       : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Coproduct.t) =
@@ -528,7 +528,7 @@ module Bifunctor = struct
     end
   end
 
-  module Product = struct
+  module Tuple = struct
     open Ambient
     module Def
       : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Product.t) =
@@ -586,9 +586,9 @@ let ex0 () : int = let module E = Exists(Functor.List) in
   let pkg = E.into [0; 1; 2; 3; 4] in (* pack *)
   E.from pkg { E.ap = List.length }   (* elim *)
 
-(* Bifunctor for product *)
+(* Bifunctor for tuple *)
 let ex1 () : int * string =
-  Bifunctor.Product.bimap (fun x -> x * 2) string_of_float
+  Bifunctor.Tuple.bimap (fun x -> x * 2) string_of_float
     (42, 3.14159)
 
 (* Semigroupoid for (->) *)
