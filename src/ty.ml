@@ -78,7 +78,7 @@ module Sig = struct
   end
 end
 
-module Def = struct
+module Make = struct
   module Op = struct
     type tc
     external code : 'el -> 'tc = "%identity"

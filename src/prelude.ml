@@ -222,7 +222,7 @@ module Exists : functor (T : Ty.Sig.Unary.Invariant.ELEM) -> sig
 end
   with type 'a el := 'a T.el =
 functor (T : Ty.Sig.Unary.Invariant.ELEM) -> struct
-  include Ty.Def.Unary.Invariant(T)
+  include Ty.Make.Unary.Invariant(T)
   type 'r elim = { ap : 'x. 'x el -> 'r }
   module Def = struct
     type t = Pack : 'x el -> t
