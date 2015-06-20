@@ -3,62 +3,8 @@ let undefined ?(message = "Undefined") _ = failwith message
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
-module Global : sig
-  module Initial : sig
-    type t
-    val abort : t -> 'a
-  end
-  module Coproduct : sig
-    type ('a, 'b) t = InL of 'a | InR of 'b
-    val inl : 'a -> ('a, 'b) t
-    val inr : 'b -> ('a, 'b) t
-  end
-  module Product : sig
-    type ('a, 'b) t = 'a * 'b
-    val fst : ('a, 'b) t -> 'a
-    val snd : ('a, 'b) t -> 'b
-  end
-  val id : 'a -> 'a
-  val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
-  val const : 'a -> ('b -> 'a)
-  val flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c)
-  val bang : 'a -> unit
-  val diagonal : 'a -> 'a * 'a
-  val curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c))
-  val uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c)
-  val tap : ('a -> unit) -> ('a -> 'a)
-end = struct
-  module Initial = struct
-    type t
-    let abort _ = failwith "Initial.abort"
-  end
-  module Coproduct = struct
-    type ('a, 'b) t = InL of 'a | InR of 'b
-    let inl a = InL a
-    let inr b = InR b
-    let case f g x = match x with
-      | InL a -> f a
-      | InR b -> g b
-  end
-  module Product = struct
-    type ('a, 'b) t = 'a * 'b
-    let fst (x, y) = x
-    let snd (x, y) = y
-    let pair f g (x, y) = (f x, g y)
-  end
-  let id x = x
-  let compose g f x = g (f x)
-  let const x _ = x
-  let flip f x y = f y x
-  let bang _ = ()
-  let diagonal x = (x, x)
-  let curry f x y = f (x, y)
-  let uncurry f (x, y) = f x y
-  let tap f x = f x; x
-end
-
-type void = Global.Initial.t
-type ('a, 'b) sum = ('a, 'b) Global.Coproduct.t
+type void = Ambient.Initial.t
+type ('a, 'b) sum = ('a, 'b) Ambient.Coproduct.t
 
 (* The Sig module collects structure signatures. *)
 
@@ -225,8 +171,8 @@ module Ext = struct
     val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
     val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
   end = functor (M : Sig.PROFUNCTOR) -> struct
-    let lmap f = M.dimap f Global.id
-    let rmap f = M.dimap Global.id f
+    let lmap f = M.dimap f Ambient.id
+    let rmap f = M.dimap Ambient.id f
   end
 
   module Functor : functor (M : Sig.FUNCTOR) -> sig
@@ -235,8 +181,8 @@ module Ext = struct
     val bang : 'a M.el -> unit M.el
   end = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) = M.map
-    let (<-$>) x = Global.flip (<$->) x
-    let bang x = Global.bang <$-> x
+    let (<-$>) x = Ambient.flip (<$->) x
+    let bang x = Ambient.bang <$-> x
   end
 
   module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
@@ -244,7 +190,7 @@ module Ext = struct
     val (%<) : ('a, 'b) M.el -> ('b, 'c) M.el -> ('a, 'c) M.el
   end = functor (M : Sig.SEMIGROUPOID) -> struct
     let (%>) = M.compose
-    let (%<) f = Global.flip M.compose f
+    let (%<) f = Ambient.flip M.compose f
   end
 
   module Apply : functor (M : Sig.APPLY) -> sig
@@ -601,7 +547,7 @@ module Semigroupoid = struct
       include (Sig.SEMIGROUPOID with type (-'a, +'b) el = 'a -> 'b)
     end = struct
       include Profunctor.Fn.Def
-      let compose = Global.compose
+      let compose = Ambient.compose
     end
     include Def
     include Ext.Semigroupoid(Def)
@@ -614,7 +560,7 @@ module Category = struct
       include (Sig.CATEGORY with type (-'a, +'b) el = 'a -> 'b)
     end = struct
       include Profunctor.Fn.Def
-      let id = Global.id
+      let id = Ambient.id
     end
     include Def
   end
