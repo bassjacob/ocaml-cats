@@ -104,6 +104,20 @@ module Sig = struct
     val id : ('a, 'a) el
   end
 
+  module type PRODUCT = sig
+    include BIFUNCTOR
+    val fst : ('a, 'b) el -> 'a
+    val snd : ('a, 'b) el -> 'b
+    val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) el)
+  end
+
+  module type COPRODUCT = sig
+    include BIFUNCTOR
+    val inl : 'a -> ('a, 'b) el
+    val inr : 'b -> ('a, 'b) el
+    val case : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) el -> 'x)
+  end
+
   module type APPLY = sig
     include FUNCTOR
     val apply : ('a -> 'b) el -> ('a el -> 'b el)
