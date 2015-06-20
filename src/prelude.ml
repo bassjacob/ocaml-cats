@@ -131,7 +131,7 @@ module Sig = struct
     include Ty.Sig.Unary.Invariant.CODE
     val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
     val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
-    val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
+    val fold_map : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
   end
 end
 
