@@ -16,7 +16,7 @@ module Product = struct
   type ('a, 'b) t = 'a * 'b
   let fst (x, y) = x
   let snd (x, y) = y
-  let pair f g (x, y) = (f x, g y)
+  let pair f g p = (f p, g p)
 end
 
 let id x = x
