@@ -538,6 +538,7 @@ module Bifunctor = struct
       let bimap f g = let open Coproduct in
         let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
     end
+    include Def
   end
 end
 
@@ -574,6 +575,34 @@ module Category = struct
     end = struct
       include Profunctor.Fn.Def
       let id = Ambient.id
+    end
+    include Def
+  end
+end
+
+module Product = struct
+  module Tuple = struct
+    open Ambient
+    module Def : sig
+      include (module type of Bifunctor.Tuple.Def)
+      include (Sig.PRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Tuple.Def.el)
+    end = struct
+      include Bifunctor.Tuple.Def
+      include Ambient.Product
+    end
+    include Def
+  end
+end
+
+module Coproduct = struct
+  module Variant = struct
+    open Ambient
+    module Def : sig
+      include (module type of Bifunctor.Variant.Def)
+      include (Sig.COPRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Variant.Def.el)
+    end = struct
+      include Bifunctor.Variant.Def
+      include Ambient.Coproduct
     end
     include Def
   end
