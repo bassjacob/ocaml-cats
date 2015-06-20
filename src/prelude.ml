@@ -10,7 +10,7 @@ type ('a, 'b) sum = ('a, 'b) Ambient.Coproduct.t
 
 module Sig = struct
   module type EXISTS = sig
-    include Ty.Sig.Unary.Invariant.ELEM
+    include Ty.Sig.Unary.Invariant.CODE
     type t
     type 'r elim = { ap : 'x. 'x el -> 'r }
     val into : 'a el -> t
@@ -52,22 +52,22 @@ module Sig = struct
   end
 
   module type PROFUNCTOR = sig
-    include Ty.Sig.Binary.ContraCovariant.ELEM
+    include Ty.Sig.Binary.ContraCovariant.CODE
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
   end
 
   module type BIFUNCTOR = sig
-    include Ty.Sig.Binary.Covariant.ELEM
+    include Ty.Sig.Binary.Covariant.CODE
     val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
   end
 
-    include Ty.Sig.Unary.Covariant.ELEM
   module type FUNCTOR = sig
+    include Ty.Sig.Unary.Covariant.CODE
     val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
   module type PRESHEAF = sig
-    include Ty.Sig.Unary.Contravariant.ELEM
+    include Ty.Sig.Unary.Contravariant.CODE
     val premap : ('a -> 'b) -> ('b el -> 'a el)
   end
 
@@ -112,7 +112,7 @@ module Sig = struct
 
   module type MONAD = sig
     include APPLICATIVE
-    include (BIND with type 'a el := 'a el)
+    include (BIND with type 'a el := 'a el and type tc := tc)
   end
 
   module type EXTEND = sig
@@ -126,7 +126,7 @@ module Sig = struct
   end
 
   module type FOLDABLE = sig
-    include Ty.Sig.Unary.Invariant.ELEM
+    include Ty.Sig.Unary.Invariant.CODE
     val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
     val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
     val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
@@ -216,16 +216,13 @@ end
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed alongside co-instantiated structure extensions. *)
 
-module Exists : functor (T : Ty.Sig.Unary.Invariant.ELEM) -> sig
-  include Ty.Sig.Unary.Invariant.CODE
-  include (Sig.EXISTS with type 'a el := 'a el)
-end
-  with type 'a el := 'a T.el =
-functor (T : Ty.Sig.Unary.Invariant.ELEM) -> struct
-  include Ty.Make.Unary.Invariant(T)
-  type 'r elim = { ap : 'x. 'x el -> 'r }
+module Exists : functor (T : Ty.Sig.Unary.Invariant.CODE) -> sig
+  include (Sig.EXISTS with type 'a el := 'a T.el)
+end = functor (T : Ty.Sig.Unary.Invariant.CODE) -> struct
+  include T
+  type 'r elim = { ap : 'x. 'x T.el -> 'r }
   module Def = struct
-    type t = Pack : 'x el -> t
+    type t = Pack : 'x T.el -> t
     let into x = Pack x
     let from p k = match p with Pack e -> k.ap e
   end
@@ -318,7 +315,7 @@ module Monoid = struct
   module Additive = struct
     module Int = struct
       module Def
-        : (Sig.MONOID with type t = int) =
+        : (Sig.MONOID with type t = Semigroup.Additive.Int.Def.t) =
       struct
         include Semigroup.Additive.Int.Def
         let unit = 0
@@ -340,7 +337,7 @@ module Monoid = struct
   module Multiplicative = struct
     module Int = struct
       module Def
-        : (Sig.MONOID with type t = int) =
+        : (Sig.MONOID with type t = Semigroup.Multiplicative.Int.Def.t) =
       struct
         include Semigroup.Multiplicative.Int.Def
         let unit = 1
@@ -505,10 +502,11 @@ end
 
 module Profunctor = struct
   module Fn = struct
+    module El = struct type (-'a, +'b) el = 'a -> 'b end
     module Def
-      : (Sig.PROFUNCTOR with type (-'a, +'b) el = 'a -> 'b) =
+      : (Sig.PROFUNCTOR with type (-'a, +'b) el = ('a, 'b) El.el) =
     struct
-      type (-'a, +'b) el = 'a -> 'b
+      include Ty.Make.Binary.ContraCovariant(El)
       let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
     end
     include Def
@@ -519,10 +517,11 @@ end
 module Bifunctor = struct
   module Tuple = struct
     open Ambient
+    module El = struct type (+'a, +'b) el = ('a, 'b) Product.t end
     module Def
-      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Product.t) =
+      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) El.el) =
     struct
-      type ('a, 'b) el = ('a, 'b) Product.t
+      include Ty.Make.Binary.Covariant(El)
       let bimap f g = let open Product in
         let (%>) = Ambient.compose in pair (f %> fst) (g %> snd)
     end
@@ -531,10 +530,11 @@ module Bifunctor = struct
 
   module Variant = struct
     open Ambient
+    module El = struct type (+'a, +'b) el = ('a, 'b) Coproduct.t end
     module Def
-      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Coproduct.t) =
+      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) El.el) =
     struct
-      type ('a, 'b) el = ('a, 'b) Coproduct.t
+      include Ty.Make.Binary.Covariant(El)
       let bimap f g = let open Coproduct in
         let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
     end
@@ -544,10 +544,11 @@ end
 
 module Functor = struct
   module List = struct
+    module El = struct type +'a el = 'a list end
     module Def
-      : (Sig.FUNCTOR with type +'a el = 'a list) =
+      : (Sig.FUNCTOR with type +'a el = 'a El.el) =
     struct
-      type +'a el = 'a list
+      include Ty.Make.Unary.Covariant(El)
       let map = List.map
     end
     include Def
@@ -585,7 +586,7 @@ module Product = struct
     open Ambient
     module Def : sig
       include (module type of Bifunctor.Tuple.Def)
-      include (Sig.PRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Tuple.Def.el)
+      include (Sig.PRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Tuple.Def.el and type tc := Bifunctor.Tuple.Def.tc)
     end = struct
       include Bifunctor.Tuple.Def
       include Ambient.Product
@@ -599,7 +600,7 @@ module Coproduct = struct
     open Ambient
     module Def : sig
       include (module type of Bifunctor.Variant.Def)
-      include (Sig.COPRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Variant.Def.el)
+      include (Sig.COPRODUCT with type ('a, 'b) el := ('a, 'b) Bifunctor.Variant.Def.el and type tc := Bifunctor.Variant.Def.tc)
     end = struct
       include Bifunctor.Variant.Def
       include Ambient.Coproduct
