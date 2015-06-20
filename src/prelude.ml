@@ -517,17 +517,6 @@ module Profunctor = struct
 end
 
 module Bifunctor = struct
-  module Variant = struct
-    open Ambient
-    module Def
-      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Coproduct.t) =
-    struct
-      type ('a, 'b) el = ('a, 'b) Coproduct.t
-      let bimap f g = let open Coproduct in
-        let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
-    end
-  end
-
   module Tuple = struct
     open Ambient
     module Def
@@ -538,6 +527,17 @@ module Bifunctor = struct
         let (%>) = Ambient.compose in pair (f %> fst) (g %> snd)
     end
     include Def
+  end
+
+  module Variant = struct
+    open Ambient
+    module Def
+      : (Sig.BIFUNCTOR with type ('a, 'b) el = ('a, 'b) Coproduct.t) =
+    struct
+      type ('a, 'b) el = ('a, 'b) Coproduct.t
+      let bimap f g = let open Coproduct in
+        let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
+    end
   end
 end
 
