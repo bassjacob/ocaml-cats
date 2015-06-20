@@ -128,7 +128,8 @@ module Sig = struct
     include Ty.Sig.Unary.Invariant.CODE
     val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
     val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
-    val fold_map : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
+    val fold_map : (module MONOID with type t = 'm)
+      -> ('a -> 'm) -> ('a el -> 'm)
   end
 end
 
@@ -515,8 +516,8 @@ module DivisionRing = struct
       with type t = Ring.Unit.Def.t =
     struct
       include Ring.Unit.Def
-      include (ModuloSemiring.Unit.Def :
-        Sig.MODULOSEMIRING with type t := t)
+      include (ModuloSemiring.Unit.Def : Sig.MODULOSEMIRING
+        with type t := t)
     end
     include Def
   end
@@ -526,8 +527,8 @@ module DivisionRing = struct
       with type t = Ring.Float.Def.t =
     struct
       include Ring.Float.Def
-      include (ModuloSemiring.Float.Def :
-        Sig.MODULOSEMIRING with type t := t)
+      include (ModuloSemiring.Float.Def : Sig.MODULOSEMIRING
+        with type t := t)
     end
     include Def
   end
@@ -654,7 +655,7 @@ module Foldable = struct
       include Ty.Make.Unary.Invariant(Functor.List.El)
       let foldr f i xs = List.fold_right f xs i
       let foldl = List.fold_left
-      let fold_map (type t) (module M : Sig.MONOID with type t = t) act =
+      let fold_map (type m) (module M : Sig.MONOID with type t = m) act =
         let rec go acc rest = match rest with
           | [] -> acc
           | (x::xs) -> go (M.op (act x) acc) xs in
