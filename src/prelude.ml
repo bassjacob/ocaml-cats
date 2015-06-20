@@ -649,6 +649,24 @@ module Coproduct = struct
   end
 end
 
+module Foldable = struct
+  module List = struct
+    module Def : Sig.FOLDABLE
+      with type 'a el = 'a Functor.List.El.el =
+    struct
+      include Ty.Make.Unary.Invariant(Functor.List.El)
+      let foldr f i xs = List.fold_right f xs i
+      let foldl = List.fold_left
+      let fold_map (type t) (module M : Sig.MONOID with type t = t) act =
+        let rec go acc rest = match rest with
+          | [] -> acc
+          | (x::xs) -> go (M.op (act x) acc) xs in
+        go M.unit
+    end
+    include Def
+  end
+end
+
 (** Examples **)
 
 (* Existentials for List functor *)
@@ -669,3 +687,13 @@ let ex2 () : int = let open Semigroupoid.Fn in
 let ex3 () : int list =
   let module M = Monoid.List(struct type el = int end) in
   M.op [0;1;2;3] [4;5;6;7]
+
+(* Foldable for list *)
+let ex4 () : int =
+  let module F = Foldable.List in
+  let module Add = Monoid.Additive.Int in
+  let module Mul = Monoid.Multiplicative.Int in
+  let input = [1; 2; 3; 4; 5] in
+  let lhs = F.fold_map (module Add) Ambient.id input in
+  let rhs = F.fold_map (module Mul) Ambient.id input in
+    Add.op lhs rhs
