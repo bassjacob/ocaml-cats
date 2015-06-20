@@ -10,7 +10,7 @@ type ('a, 'b) sum = ('a, 'b) Ambient.Coproduct.t
 
 module Sig = struct
   module type EXISTS = sig
-    include Ty.Sig.Unary.Invariant.CODE
+    include Ty.Sig.Unary.Invariant.ELEM
     type t
     type 'r elim = { ap : 'x. 'x el -> 'r }
     val into : 'a el -> t
@@ -218,9 +218,9 @@ end
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed alongside co-instantiated structure extensions. *)
 
-module Exists : functor (T : Ty.Sig.Unary.Invariant.CODE) -> sig
+module Exists : functor (T : Ty.Sig.Unary.Invariant.ELEM) -> sig
   include Sig.EXISTS with type 'a el := 'a T.el
-end = functor (T : Ty.Sig.Unary.Invariant.CODE) -> struct
+end = functor (T : Ty.Sig.Unary.Invariant.ELEM) -> struct
   include T
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   module Def = struct
