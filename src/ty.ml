@@ -2,7 +2,7 @@ type ('a, 'tc) ap
 
 module Sig = struct
   module Nullary = struct
-    module Inv = struct
+    module Invariant = struct
       module type ELEM = sig type el end
       module type CODE = sig
         include ELEM
@@ -14,7 +14,7 @@ module Sig = struct
   end
 
   module Unary = struct
-    module Cov = struct
+    module Covariant = struct
       module type ELEM = sig type +'a el end
       module type CODE = sig
         include ELEM
@@ -24,7 +24,7 @@ module Sig = struct
       end
     end
 
-    module Inv = struct
+    module Invariant = struct
       module type ELEM = sig type 'a el end
       module type CODE = sig
         include ELEM
@@ -34,7 +34,7 @@ module Sig = struct
       end
     end
 
-    module Con = struct
+    module Contravariant = struct
       module type ELEM = sig type -'a el end
       module type CODE = sig
         include ELEM
@@ -46,7 +46,7 @@ module Sig = struct
   end
 
   module Binary = struct
-    module Cov = struct
+    module Covariant = struct
       module type ELEM = sig type (+'a, +'b) el end
       module type CODE = sig
         include ELEM
@@ -56,7 +56,7 @@ module Sig = struct
       end
     end
 
-    module Inv = struct
+    module Invariant = struct
       module type ELEM = sig type ('a, 'b) el end
       module type CODE = sig
         include ELEM
@@ -66,7 +66,7 @@ module Sig = struct
       end
     end
 
-    module ConPro = struct
+    module ContraCovariant = struct
       module type ELEM = sig type (-'a, +'b) el end
       module type CODE = sig
         include ELEM
@@ -87,9 +87,9 @@ module Def = struct
 
   module Nullary = struct
     open Sig.Nullary
-    module Inv
-      : functor (T : Inv.ELEM) -> Inv.CODE with type el = T.el
-      = functor (T : Inv.ELEM) ->
+    module Invariant
+      : functor (T : Invariant.ELEM) -> Invariant.CODE with type el = T.el
+      = functor (T : Invariant.ELEM) ->
     struct
       type el = T.el
       include Op
@@ -99,25 +99,25 @@ module Def = struct
   module Unary = struct
     open Sig.Unary
 
-    module Cov
-      : functor (T : Cov.ELEM) -> Cov.CODE with type +'a el = 'a T.el
-      = functor (T : Cov.ELEM) ->
+    module Covariant
+      : functor (T : Covariant.ELEM) -> Covariant.CODE with type +'a el = 'a T.el
+      = functor (T : Covariant.ELEM) ->
     struct
       type +'a el = 'a T.el
       include Op
     end
 
-    module Inv
-      : functor (T : Inv.ELEM) -> Inv.CODE with type 'a el = 'a T.el
-      = functor (T : Inv.ELEM) ->
+    module Invariant
+      : functor (T : Invariant.ELEM) -> Invariant.CODE with type 'a el = 'a T.el
+      = functor (T : Invariant.ELEM) ->
     struct
       type 'a el = 'a T.el
       include Op
     end
 
-    module Con
-      : functor (T : Con.ELEM) -> Con.CODE with type -'a el = 'a T.el
-      = functor (T : Con.ELEM) ->
+    module Contravariant
+      : functor (T : Contravariant.ELEM) -> Contravariant.CODE with type -'a el = 'a T.el
+      = functor (T : Contravariant.ELEM) ->
     struct
       type -'a el = 'a T.el
       include Op
@@ -128,24 +128,24 @@ module Def = struct
     open Sig.Binary
 
     module Cov
-      : functor (T : Cov.ELEM) -> Cov.CODE with type (+'a, +'b) el = ('a, 'b) T.el
-      = functor (T : Cov.ELEM) ->
+      : functor (T : Covariant.ELEM) -> Covariant.CODE with type (+'a, +'b) el = ('a, 'b) T.el
+      = functor (T : Covariant.ELEM) ->
     struct
       type (+'a, +'b) el = ('a, 'b) T.el
       include Op
     end
 
-    module Inv
-      : functor (T : Inv.ELEM) -> Inv.CODE with type ('a, 'b) el = ('a, 'b) T.el
-      = functor (T : Inv.ELEM) ->
+    module Invariant
+      : functor (T : Invariant.ELEM) -> Invariant.CODE with type ('a, 'b) el = ('a, 'b) T.el
+      = functor (T : Invariant.ELEM) ->
     struct
       type ('a, 'b) el = ('a, 'b) T.el
       include Op
     end
 
-    module ConPro
-      : functor (T : ConPro.ELEM) -> ConPro.CODE with type (-'a, +'b) el = ('a, 'b) T.el
-      = functor (T : ConPro.ELEM) ->
+    module ContraCovariant
+      : functor (T : ContraCovariant.ELEM) -> ContraCovariant.CODE with type (-'a, +'b) el = ('a, 'b) T.el
+      = functor (T : ContraCovariant.ELEM) ->
     struct
       type (-'a, +'b) el = ('a, 'b) T.el
       include Op

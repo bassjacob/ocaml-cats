@@ -25,7 +25,7 @@ external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
 module Sig = struct
   module type EXISTS = sig
-    include Ty.Sig.Unary.Inv.ELEM
+    include Ty.Sig.Unary.Invariant.ELEM
     type t
     type 'r elim = { ap : 'x. 'x el -> 'r }
     val into : 'a el -> t
@@ -67,22 +67,22 @@ module Sig = struct
   end
 
   module type PROFUNCTOR = sig
-    include Ty.Sig.Binary.ConPro.ELEM
+    include Ty.Sig.Binary.ContraCovariant.ELEM
     val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
   end
 
   module type BIFUNCTOR = sig
-    include Ty.Sig.Binary.Cov.ELEM
+    include Ty.Sig.Binary.Covariant.ELEM
     val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
   end
 
   module type FUNCTOR =  sig
-    include Ty.Sig.Unary.Cov.ELEM
+    include Ty.Sig.Unary.Covariant.ELEM
     val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
   module type PRESHEAF = sig
-    include Ty.Sig.Unary.Con.ELEM
+    include Ty.Sig.Unary.Contravariant.ELEM
     val premap : ('a -> 'b) -> ('b el -> 'a el)
   end
 
@@ -127,7 +127,7 @@ module Sig = struct
   end
 
   module type FOLDABLE = sig
-    include Ty.Sig.Unary.Inv.ELEM
+    include Ty.Sig.Unary.Invariant.ELEM
     val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
     val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
     val foldMap : (module MONOID with type t = 'm) -> ('a -> 'm) -> ('a el -> 'm)
@@ -217,13 +217,13 @@ end
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed alongside co-instantiated structure extensions. *)
 
-module Exists : functor (T : Ty.Sig.Unary.Inv.ELEM) -> sig
-  include Ty.Sig.Unary.Inv.CODE
+module Exists : functor (T : Ty.Sig.Unary.Invariant.ELEM) -> sig
+  include Ty.Sig.Unary.Invariant.CODE
   include (Sig.EXISTS with type 'a el := 'a el)
 end
   with type 'a el := 'a T.el =
-functor (T : Ty.Sig.Unary.Inv.ELEM) -> struct
-  include Ty.Def.Unary.Inv(T)
+functor (T : Ty.Sig.Unary.Invariant.ELEM) -> struct
+  include Ty.Def.Unary.Invariant(T)
   type 'r elim = { ap : 'x. 'x el -> 'r }
   module Def = struct
     type t = Pack : 'x el -> t
