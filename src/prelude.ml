@@ -586,3 +586,7 @@ let ex0 () : int = let module E = Exists(Functor.List) in
 let ex1 () : int * string =
   Bifunctor.Product.bimap (fun x -> x * 2) string_of_float
     (42, 3.14159)
+
+(* Semigroupoid for (->) *)
+let ex2 () : int = let open Semigroupoid.Fn in
+  ((fun x -> x + 1) %> (fun x -> x * 2)) 10
