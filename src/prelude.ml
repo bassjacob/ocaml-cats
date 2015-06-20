@@ -1,10 +1,4 @@
 (*
-let const : 'a -> ('b -> 'a) =
-  fun x _ -> x
-
-let flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
-  fun f x y -> f y x
-
 let curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c)) =
   fun f x y -> f (x, y)
 
@@ -20,6 +14,12 @@ let undefined ?(message = "Undefined") _ = failwith message
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
+
+let const : 'a -> ('b -> 'a) =
+  fun x _ -> x
+
+let flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c) =
+  fun f x y -> f y x
 
 (* The Sig module collects structure signatures. *)
 
