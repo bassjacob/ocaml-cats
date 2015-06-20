@@ -82,8 +82,8 @@ module Sig = struct
   end
 
   module type OPFUNCTOR = sig
-    type -'a t
-    val map : ('a -> 'b) -> ('b t -> 'a t)
+    include Ty.Sig.Unary.Con.ELEM
+    val map : ('a -> 'b) -> ('b el -> 'a el)
   end
 
   module type SEMIGROUPOID = sig
