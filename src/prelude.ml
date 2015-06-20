@@ -61,8 +61,8 @@ module Sig = struct
     val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
   end
 
-  module type FUNCTOR =  sig
     include Ty.Sig.Unary.Covariant.ELEM
+  module type FUNCTOR = sig
     val map : ('a -> 'b) -> ('a el -> 'b el)
   end
 
