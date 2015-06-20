@@ -1,6 +1,4 @@
 (*
-let undefined ?(message = "Undefined") _ = failwith message
-
 let const : 'a -> ('b -> 'a) =
   fun x _ -> x
 
@@ -15,11 +13,13 @@ let uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c) =
 
 let tap f x : ('a -> unit) -> ('a -> 'a)
   = f x; x
+*)
+
+let undefined ?(message = "Undefined") _ = failwith message
 
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
-*)
 
 (* The Sig module collects structure signatures. *)
 
