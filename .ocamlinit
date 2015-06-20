@@ -7,3 +7,4 @@ in Sys.chdir root;;
 
 #use "topfind";;
 #directory "_build/src";;
+#load "prelude.cma";;
