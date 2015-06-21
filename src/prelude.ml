@@ -671,6 +671,8 @@ module Apply = struct
         | [] -> []
         | (f::fs) -> S.op (map f xs) (apply fs xs)
     end
+    include Def
+    include Ext.Apply(Def)
   end
 end
 
