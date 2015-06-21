@@ -377,11 +377,11 @@ module Monoid = struct
   end
 
   module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
-    module SG = Semigroup.List(T)
+    module S = Semigroup.List(T)
     module Def : Sig.MONOID
-      with type t = SG.Def.t =
+      with type t = S.Def.t =
     struct
-      include SG.Def
+      include S.Def
       let unit = []
     end
     include Def
@@ -673,10 +673,10 @@ module Apply = struct
       include Functor.List
       let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
         let module F = Functor.List in
-        let module SG = Semigroup.List(struct type el = b end) in
+        let module S = Semigroup.List(struct type el = b end) in
         match fs with
         | [] -> []
-        | (f::fs) -> SG.op (F.map f xs) (apply fs xs)
+        | (f::fs) -> S.op (F.map f xs) (apply fs xs)
     end
   end
 end
