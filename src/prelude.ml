@@ -131,6 +131,15 @@ module Sig = struct
     val fold_map : (module MONOID with type t = 'm)
       -> ('a -> 'm) -> ('a el -> 'm)
   end
+
+  module type TRAVERSABLE = sig
+    include FUNCTOR
+    include FOLDABLE
+      with type +'a el := 'a el
+       and type tc := tc
+    val traverse : (module APPLICATIVE with type tc = 'm)
+      -> ('a -> ('b, 'm) Ty.ap) -> ('a el -> ('b el, 'm) Ty.ap)
+  end
 end
 
 (* The Ext module collects structure extensions as module functors, i.e.,
