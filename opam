@@ -7,11 +7,8 @@ license: "MIT"
 homepage: "https://github.com/freebroccolo/ocaml-prelude"
 dev-repo: "https://github.com/freebroccolo/ocaml-prelude.git"
 build: [
-  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
-  ["ocaml" "setup.ml" "-build"]
+  ["./script/build"]
 ]
-install: ["ocaml" "setup.ml" "-install"]
 depends: [
-  ("oasis" {>= "0.4"} | "oasis-mirage" {>= "0.4"})
   "ocamlfind"
 ]
