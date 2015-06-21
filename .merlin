@@ -1,2 +1,2 @@
-S src
-B _build/src
+S src/prelude
+B _build/src/prelude
