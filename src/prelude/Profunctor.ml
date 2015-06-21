@@ -1,3 +1,13 @@
+module Join
+    (* FIXME: is there a better name for this? *)
+  : functor (P : Sig.PROFUNCTOR) -> Ty.Sig.Unary.Invariant.CODE
+  = functor (P : Sig.PROFUNCTOR) ->
+struct
+  include Ty.Make.Unary.Invariant(struct
+    type 'a el = ('a, 'a) P.T.el
+  end)
+end
+
 module Fun = struct
   module Def : Sig.PROFUNCTOR
     with module T = Ty.Con.Fun.Poly =
