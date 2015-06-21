@@ -679,7 +679,7 @@ module Apply = struct
     module Def : Sig.APPLY
       with type 'a el = 'a Functor.List.El.el =
     struct
-      include Functor.List
+      include Functor.List.Def
       let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
         let module S = Semigroup.List(struct type el = b end) in
         match fs with
