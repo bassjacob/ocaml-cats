@@ -7,138 +7,134 @@ external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
 module Sig = struct
   module type EXISTS = sig
-    include Ty.Sig.Unary.Invariant.ELEM
+    module T : Ty.Sig.Unary.Invariant.CODE
     type t
-    type 'r elim = { ap : 'x. 'x el -> 'r }
-    val into : 'a el -> t
+    type 'r elim = { ap : 'x. 'x T.el -> 'r }
+    val into : 'a T.el -> t
     val from : t -> 'r elim -> 'r
   end
 
   module type SEMIGROUP = sig
-    type t
-    val op : t -> t -> t
+    module T : Ty.Sig.Nullary.Invariant.CODE
+    val op : T.el -> T.el -> T.el
   end
 
   module type MONOID = sig
     include SEMIGROUP
-    val unit : t
+    val unit : T.el
   end
 
   module type SEMIRING = sig
-    type t
-    val zero : t
-    val add : t -> t -> t
-    val one : t
-    val mul : t -> t -> t
+    module T : Ty.Sig.Nullary.Invariant.CODE
+    val zero : T.el
+    val add : T.el -> T.el -> T.el
+    val one : T.el
+    val mul : T.el -> T.el -> T.el
   end
 
   module type MODULOSEMIRING = sig
     include SEMIRING
-    val div : t -> t -> t
-    val modulo : t -> t -> t
+    val div : T.el -> T.el -> T.el
+    val modulo : T.el -> T.el -> T.el
   end
 
   module type RING = sig
     include SEMIRING
-    val sub : t -> t -> t
+    val sub : T.el -> T.el -> T.el
   end
 
   module type DIVISIONRING = sig
     include RING
-    include MODULOSEMIRING with type t := t
+    include MODULOSEMIRING with module T := T
   end
 
   module type FUNCTOR = sig
-    include Ty.Sig.Unary.Covariant.CODE
-    val map : ('a -> 'b) -> ('a el -> 'b el)
+    module T : Ty.Sig.Unary.Covariant.CODE
+    val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
   end
 
   module type BIFUNCTOR = sig
-    include Ty.Sig.Binary.Covariant.CODE
-    val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) el -> ('b, 'd) el)
+    module T : Ty.Sig.Binary.Covariant.CODE
+    val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) T.el -> ('b, 'd) T.el)
   end
 
   module type PRESHEAF = sig
-    include Ty.Sig.Unary.Contravariant.CODE
-    val premap : ('a -> 'b) -> ('b el -> 'a el)
+    module T : Ty.Sig.Unary.Contravariant.CODE
+    val premap : ('a -> 'b) -> ('b T.el -> 'a T.el)
   end
 
   module type PROFUNCTOR = sig
-    include Ty.Sig.Binary.ContraCovariant.CODE
-    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) el -> ('a, 'd) el)
+    module T : Ty.Sig.Binary.ContraCovariant.CODE
+    val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) T.el -> ('a, 'd) T.el)
   end
 
   module type SEMIGROUPOID = sig
     include PROFUNCTOR
-    val compose : ('b, 'c) el -> ('a, 'b) el -> ('a, 'c) el
+    val compose : ('b, 'c) T.el -> ('a, 'b) T.el -> ('a, 'c) T.el
   end
 
   module type CATEGORY = sig
     include PROFUNCTOR
-    val id : ('a, 'a) el
+    val id : ('a, 'a) T.el
   end
 
   module type PRODUCT = sig
     include BIFUNCTOR
-    val fst : ('a, 'b) el -> 'a
-    val snd : ('a, 'b) el -> 'b
-    val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) el)
+    val fst : ('a, 'b) T.el -> 'a
+    val snd : ('a, 'b) T.el -> 'b
+    val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) T.el)
   end
 
   module type COPRODUCT = sig
     include BIFUNCTOR
-    val inl : 'a -> ('a, 'b) el
-    val inr : 'b -> ('a, 'b) el
-    val case : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) el -> 'x)
+    val inl : 'a -> ('a, 'b) T.el
+    val inr : 'b -> ('a, 'b) T.el
+    val case : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) T.el -> 'x)
   end
 
   module type APPLY = sig
     include FUNCTOR
-    val apply : ('a -> 'b) el -> ('a el -> 'b el)
+    val apply : ('a -> 'b) T.el -> ('a T.el -> 'b T.el)
   end
 
   module type APPLICATIVE = sig
     include APPLY
-    val pure : 'a -> 'a el
+    val pure : 'a -> 'a T.el
   end
 
   module type BIND = sig
     include APPLY
-    val bind : 'a el -> ('a -> 'b el) -> 'b el
+    val bind : 'a T.el -> ('a -> 'b T.el) -> 'b T.el
   end
 
   module type MONAD = sig
     include APPLICATIVE
-    include BIND
-      with type 'a el := 'a el
-       and type tc := tc
+    include BIND with module T := T
   end
 
   module type EXTEND = sig
     include FUNCTOR
-    val extend : ('a el -> 'b) -> ('a el -> 'b el)
+    val extend : ('a T.el -> 'b) -> ('a T.el -> 'b T.el)
   end
 
   module type COMONAD = sig
     include EXTEND
-    val extract : 'a el -> 'a
+    val extract : 'a T.el -> 'a
   end
 
   module type FOLDABLE = sig
-    include Ty.Sig.Unary.Invariant.CODE
-    val foldr : ('a -> 'b -> 'b) -> ('b -> 'a el -> 'b)
-    val foldl : ('b -> 'a -> 'b) -> ('b -> 'a el -> 'b)
-    val fold_map : (module MONOID with type t = 'm)
-      -> ('a -> 'm) -> ('a el -> 'm)
+    module T : Ty.Sig.Unary.Invariant.CODE
+    val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
+    val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
+    val fold_map : (module MONOID with type T.el = 'm)
+      -> ('a -> 'm) -> ('a T.el -> 'm)
   end
 
   module type TRAVERSABLE = sig
     include FUNCTOR
-    include FOLDABLE
-      with type +'a el := 'a el
-       and type tc := tc
-    val traverse : (module APPLICATIVE with type tc = 'm)
-      -> ('a -> ('b, 'm) Ty.ap) -> ('a el -> ('b el, 'm) Ty.ap)
+    include FOLDABLE with module T := T
+    val traverse : (module APPLICATIVE with type T.tc = 'm)
+      -> ('a -> ('b, 'm) Ty.ap) -> ('a T.el -> ('b T.el, 'm) Ty.ap)
   end
 end
 
@@ -147,39 +143,39 @@ end
 
 module Ext = struct
   module Semigroup : functor (M : Sig.SEMIGROUP) -> sig
-    val (@) : M.t -> M.t -> M.t
+    val (@) : M.T.el -> M.T.el -> M.T.el
   end = functor (M : Sig.SEMIGROUP) -> struct
     let (@) = M.op
   end
 
   module Semiring : functor (M : Sig.SEMIRING) -> sig
-    val ( +@ ) : M.t -> M.t -> M.t
-    val ( *@ ) : M.t -> M.t -> M.t
+    val ( +@ ) : M.T.el -> M.T.el -> M.T.el
+    val ( *@ ) : M.T.el -> M.T.el -> M.T.el
   end = functor (M : Sig.SEMIRING) -> struct
     let ( +@ ) = M.add
     let ( *@ ) = M.mul
   end
 
   module ModuloSemiring : functor (M : Sig.MODULOSEMIRING) -> sig
-    val (/@) : M.t -> M.t -> M.t
-    val (%@) : M.t -> M.t -> M.t
+    val (/@) : M.T.el -> M.T.el -> M.T.el
+    val (%@) : M.T.el -> M.T.el -> M.T.el
   end = functor (M : Sig.MODULOSEMIRING) -> struct
     let (/@) = M.div
     let (%@) = M.modulo
   end
 
   module Ring : functor (M : Sig.RING) -> sig
-    val (-@) : M.t -> M.t -> M.t
-    val negate : M.t -> M.t
+    val (-@) : M.T.el -> M.T.el -> M.T.el
+    val negate : M.T.el -> M.T.el
   end = functor (M : Sig.RING) -> struct
     let (-@) = M.sub
     let negate x = M.zero -@ x
   end
 
   module Functor : functor (M : Sig.FUNCTOR) -> sig
-    val (<$->) : ('a -> 'b) -> ('a M.el -> 'b M.el)
-    val (<-$>) : 'a M.el -> (('a -> 'b) -> 'b M.el)
-    val bang : 'a M.el -> unit M.el
+    val (<$->) : ('a -> 'b) -> ('a M.T.el -> 'b M.T.el)
+    val (<-$>) : 'a M.T.el -> (('a -> 'b) -> 'b M.T.el)
+    val bang : 'a M.T.el -> unit M.T.el
   end = functor (M : Sig.FUNCTOR) -> struct
     let (<$->) = M.map
     let (<-$>) x = Ambient.flip (<$->) x
@@ -187,35 +183,35 @@ module Ext = struct
   end
 
   module Profunctor : functor (M : Sig.PROFUNCTOR) -> sig
-    val lmap : ('a -> 'b) -> (('b, 'c) M.el -> ('a, 'c) M.el)
-    val rmap : ('c -> 'd) -> (('b, 'c) M.el -> ('b, 'd) M.el)
+    val lmap : ('a -> 'b) -> (('b, 'c) M.T.el -> ('a, 'c) M.T.el)
+    val rmap : ('c -> 'd) -> (('b, 'c) M.T.el -> ('b, 'd) M.T.el)
   end = functor (M : Sig.PROFUNCTOR) -> struct
     let lmap f = M.dimap f Ambient.id
     let rmap f = M.dimap Ambient.id f
   end
 
   module Semigroupoid : functor (M : Sig.SEMIGROUPOID) -> sig
-    val (%>) : ('b, 'c) M.el -> ('a, 'b) M.el -> ('a, 'c) M.el
-    val (%<) : ('a, 'b) M.el -> ('b, 'c) M.el -> ('a, 'c) M.el
+    val (%>) : ('b, 'c) M.T.el -> ('a, 'b) M.T.el -> ('a, 'c) M.T.el
+    val (%<) : ('a, 'b) M.T.el -> ('b, 'c) M.T.el -> ('a, 'c) M.T.el
   end = functor (M : Sig.SEMIGROUPOID) -> struct
     let (%>) = M.compose
     let (%<) f = Ambient.flip M.compose f
   end
 
   module Apply : functor (M : Sig.APPLY) -> sig
-    val (<*>) : ('a -> 'b) M.el -> ('a M.el -> 'b M.el)
+    val (<*>) : ('a -> 'b) M.T.el -> ('a M.T.el -> 'b M.T.el)
   end = functor (M : Sig.APPLY) -> struct
     let (<*>) = M.apply
   end
 
   module Bind : functor (M : Sig.BIND) -> sig
-    val (>>=) : 'a M.el -> ('a -> 'b M.el) -> 'b M.el
+    val (>>=) : 'a M.T.el -> ('a -> 'b M.T.el) -> 'b M.T.el
   end = functor (M : Sig.BIND) -> struct
     let (>>=) = M.bind
   end
 
   module Monad : functor (M : Sig.MONAD) -> sig
-    val ap : ('a -> 'b) M.el -> ('a M.el -> 'b M.el)
+    val ap : ('a -> 'b) M.T.el -> ('a M.T.el -> 'b M.T.el)
   end = functor (M : Sig.MONAD) -> struct module E = Bind(M);; open M;; open E;;
     let ap mf mx = mf >>= fun f -> mx >>= fun x -> pure (f x)
   end
@@ -225,10 +221,8 @@ end
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed alongside co-instantiated structure extensions. *)
 
-module Exists : functor (T : Ty.Sig.Unary.Invariant.ELEM) -> sig
-  include Sig.EXISTS with type 'a el := 'a T.el
-end = functor (T : Ty.Sig.Unary.Invariant.ELEM) -> struct
-  include T
+module Exists = functor (E : Ty.Sig.Unary.Invariant.CODE) -> struct
+  module T = E
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   module Def = struct
     type t = Pack : 'x T.el -> t
@@ -241,9 +235,9 @@ end
 module Semigroup = struct
   module Unit = struct
     module Def : Sig.SEMIGROUP
-      with type t = unit =
+      with module T = Ty.Con.Unit =
     struct
-      type t = unit
+      module T = Ty.Con.Unit
       let op _ _ = ()
     end
     include Def
@@ -252,9 +246,9 @@ module Semigroup = struct
 
   module String = struct
     module Def : Sig.SEMIGROUP
-      with type t = string =
+      with module T = Ty.Con.String =
     struct
-      type t = string
+      module T = Ty.Con.String
       let op x y = String.concat "" [x; y]
     end
     include Def
@@ -264,9 +258,9 @@ module Semigroup = struct
   module Additive = struct
     module Int = struct
       module Def : Sig.SEMIGROUP
-        with type t = int =
+        with module T = Ty.Con.Int =
       struct
-        type t = int
+        module T = Ty.Con.Int
         let op = (+)
       end
       include Def
@@ -275,9 +269,9 @@ module Semigroup = struct
 
     module Float = struct
       module Def : Sig.SEMIGROUP
-        with type t = float =
+        with module T = Ty.Con.Float =
       struct
-        type t = float
+        module T = Ty.Con.Float
         let op = (+.)
       end
       include Def
@@ -288,9 +282,9 @@ module Semigroup = struct
   module Multiplicative = struct
     module Int = struct
       module Def : Sig.SEMIGROUP
-        with type t = int =
+        with module T = Ty.Con.Int =
       struct
-        type t = int
+        module T = Ty.Con.Int
         let op = ( * )
       end
       include Def
@@ -299,9 +293,9 @@ module Semigroup = struct
 
     module Float = struct
       module Def : Sig.SEMIGROUP
-        with type t = float =
+        with module T = Ty.Con.Float =
       struct
-        type t = float
+        module T = Ty.Con.Float
         let op = ( *. )
       end
       include Def
@@ -311,9 +305,9 @@ module Semigroup = struct
 
   module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
     module Def : Sig.SEMIGROUP
-      with type t = T.el list =
+      with module T = Ty.Con.List.Mono(T) =
     struct
-      type t = T.el list
+      module T = Ty.Con.List.Mono(T)
       let op = List.append
     end
     include Def
@@ -323,7 +317,7 @@ end
 module Monoid = struct
   module Unit = struct
     module Def : Sig.MONOID
-      with type t = Semigroup.Unit.Def.t =
+      with module T = Semigroup.Unit.Def.T =
     struct
       include Semigroup.Unit.Def
       let unit = ()
@@ -333,7 +327,7 @@ module Monoid = struct
 
   module String = struct
     module Def : Sig.MONOID
-      with type t = Semigroup.String.Def.t =
+      with module T = Semigroup.String.Def.T =
     struct
       include Semigroup.String.Def
       let unit = ""
@@ -344,7 +338,7 @@ module Monoid = struct
   module Additive = struct
     module Int = struct
       module Def : Sig.MONOID
-        with type t = Semigroup.Additive.Int.Def.t =
+        with module T = Semigroup.Additive.Int.Def.T =
       struct
         include Semigroup.Additive.Int.Def
         let unit = 0
@@ -354,7 +348,7 @@ module Monoid = struct
 
     module Float = struct
       module Def : Sig.MONOID
-        with type t = Semigroup.Additive.Float.Def.t =
+        with module T = Semigroup.Additive.Float.Def.T =
       struct
         include Semigroup.Additive.Float.Def
         let unit = 0.0
@@ -366,7 +360,7 @@ module Monoid = struct
   module Multiplicative = struct
     module Int = struct
       module Def : Sig.MONOID
-        with type t = Semigroup.Multiplicative.Int.Def.t =
+        with module T = Semigroup.Multiplicative.Int.Def.T =
       struct
         include Semigroup.Multiplicative.Int.Def
         let unit = 1
@@ -376,7 +370,7 @@ module Monoid = struct
 
     module Float = struct
       module Def : Sig.MONOID
-        with type t = Semigroup.Multiplicative.Float.Def.t =
+        with module T = Semigroup.Multiplicative.Float.Def.T =
       struct
         include Semigroup.Multiplicative.Float.Def
         let unit = 1.0
@@ -388,22 +382,21 @@ module Monoid = struct
   module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
     module S = Semigroup.List(T)
     module Def : Sig.MONOID
-      with type t = S.Def.t =
+      with module T = S.Def.T =
     struct
       include S.Def
       let unit = []
     end
     include Def
   end
-
 end
 
 module Semiring = struct
   module Unit = struct
     module Def : Sig.SEMIRING
-      with type t = unit =
+      with module T = Ty.Con.Unit =
     struct
-      type t = unit
+      module T = Ty.Con.Unit
       let zero = ()
       let add _ _ = ()
       let one = ()
@@ -415,11 +408,11 @@ module Semiring = struct
 
   module Int = struct
     module Def : Sig.SEMIRING
-      with type t = int =
+      with module T = Ty.Con.Int =
     struct
       module Add = Monoid.Additive.Int.Def
       module Mul = Monoid.Multiplicative.Int.Def
-      type t = int
+      module T = Ty.Con.Int
       let zero = Add.unit
       let add = Add.op
       let one = Mul.unit
@@ -431,11 +424,11 @@ module Semiring = struct
 
   module Float = struct
     module Def : Sig.SEMIRING
-      with type t = float =
+      with module T = Ty.Con.Float =
     struct
       module Add = Monoid.Additive.Float.Def
       module Mul = Monoid.Multiplicative.Float.Def
-      type t = float
+      module T = Ty.Con.Float
       let zero = Add.unit
       let add = Add.op
       let one = Mul.unit
@@ -449,7 +442,7 @@ end
 module ModuloSemiring = struct
   module Unit = struct
     module Def : Sig.MODULOSEMIRING
-      with type t = Semiring.Unit.Def.t =
+      with module T = Semiring.Unit.Def.T =
     struct
       include Semiring.Unit.Def
       let div _ _ = ()
@@ -461,7 +454,7 @@ module ModuloSemiring = struct
 
   module Int = struct
     module Def : Sig.MODULOSEMIRING
-      with type t = Semiring.Int.Def.t =
+      with module T = Semiring.Int.Def.T =
     struct
       include Semiring.Int.Def
       let div = (/)
@@ -473,7 +466,7 @@ module ModuloSemiring = struct
 
   module Float = struct
     module Def : Sig.MODULOSEMIRING
-      with type t = Semiring.Float.Def.t =
+      with module T = Semiring.Float.Def.T =
     struct
       include Semiring.Float.Def
       let div = (/.)
@@ -487,7 +480,7 @@ end
 module Ring = struct
   module Unit = struct
     module Def : Sig.RING
-      with type t = Semiring.Unit.Def.t =
+      with module T = Semiring.Unit.Def.T =
     struct
       include Semiring.Unit.Def
       let sub _ _ = ()
@@ -498,7 +491,7 @@ module Ring = struct
 
   module Int = struct
     module Def : Sig.RING
-      with type t = Semiring.Int.Def.t =
+      with module T = Semiring.Int.Def.T =
     struct
       include Semiring.Int.Def
       let sub = (-)
@@ -509,7 +502,7 @@ module Ring = struct
 
   module Float = struct
     module Def : Sig.RING
-      with type t = Semiring.Float.Def.t =
+      with module T = Semiring.Float.Def.T =
     struct
       include Semiring.Float.Def
       let sub = (-.)
@@ -522,22 +515,22 @@ end
 module DivisionRing = struct
   module Unit = struct
     module Def : Sig.DIVISIONRING
-      with type t = Ring.Unit.Def.t =
+      with module T = Ring.Unit.Def.T =
     struct
       include Ring.Unit.Def
       include (ModuloSemiring.Unit.Def : Sig.MODULOSEMIRING
-        with type t := t)
+        with module T := T)
     end
     include Def
   end
 
   module Float = struct
     module Def : Sig.DIVISIONRING
-      with type t = Ring.Float.Def.t =
+      with module T = Ring.Float.Def.T =
     struct
       include Ring.Float.Def
       include (ModuloSemiring.Float.Def : Sig.MODULOSEMIRING
-        with type t := t)
+        with module T := T)
     end
     include Def
   end
@@ -545,11 +538,10 @@ end
 
 module Functor = struct
   module List = struct
-    module El = struct type +'a el = 'a list end
     module Def : Sig.FUNCTOR
-      with type +'a el = 'a El.el =
+      with module T = Ty.Con.List.Poly =
     struct
-      include Ty.Make.Unary.Covariant(El)
+      module T = Ty.Con.List.Poly
       let map = List.map
     end
     include Def
@@ -560,11 +552,10 @@ end
 module Bifunctor = struct
   module Tuple = struct
     open Ambient
-    module El = struct type (+'a, +'b) el = ('a, 'b) Product.t end
     module Def : Sig.BIFUNCTOR
-      with type ('a, 'b) el = ('a, 'b) El.el =
+      with module T = Ty.Con.Tuple.Poly =
     struct
-      include Ty.Make.Binary.Covariant(El)
+      module T = Ty.Con.Tuple.Poly
       let bimap f g = let open Product in
         let (%>) = Ambient.compose in pair (f %> fst) (g %> snd)
     end
@@ -573,11 +564,10 @@ module Bifunctor = struct
 
   module Variant = struct
     open Ambient
-    module El = struct type (+'a, +'b) el = ('a, 'b) Coproduct.t end
     module Def : Sig.BIFUNCTOR
-      with type ('a, 'b) el = ('a, 'b) El.el =
+      with module T = Ty.Con.Variant.Poly =
     struct
-      include Ty.Make.Binary.Covariant(El)
+      module T = Ty.Con.Variant.Poly
       let bimap f g = let open Coproduct in
         let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
     end
@@ -586,12 +576,11 @@ module Bifunctor = struct
 end
 
 module Profunctor = struct
-  module Fn = struct
-    module El = struct type (-'a, +'b) el = 'a -> 'b end
+  module Fun = struct
     module Def : Sig.PROFUNCTOR
-      with type (-'a, +'b) el = ('a, 'b) El.el =
+      with module T = Ty.Con.Fun.Poly =
     struct
-      include Ty.Make.Binary.ContraCovariant(El)
+      module T = Ty.Con.Fun.Poly
       let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
     end
     include Def
@@ -600,11 +589,11 @@ module Profunctor = struct
 end
 
 module Semigroupoid = struct
-  module Fn = struct
+  module Fun = struct
     module Def : Sig.SEMIGROUPOID
-      with type (-'a, +'b) el = 'a -> 'b =
+      with module T = Profunctor.Fun.Def.T =
     struct
-      include Profunctor.Fn.Def
+      include Profunctor.Fun.Def
       let compose = Ambient.compose
     end
     include Def
@@ -615,9 +604,9 @@ end
 module Category = struct
   module Fn = struct
     module Def : Sig.CATEGORY
-      with type (-'a, +'b) el = 'a -> 'b =
+      with module T = Semigroupoid.Fun.Def.T =
     struct
-      include Profunctor.Fn.Def
+      include Semigroupoid.Fun.Def
       let id = Ambient.id
     end
     include Def
@@ -627,12 +616,9 @@ end
 module Product = struct
   module Tuple = struct
     open Ambient
-    module Def : sig
-      include (module type of Bifunctor.Tuple.Def)
-      include Sig.PRODUCT
-        with type ('a, 'b) el := ('a, 'b) Bifunctor.Tuple.Def.el
-         and type tc := Bifunctor.Tuple.Def.tc
-    end = struct
+    module Def : Sig.PRODUCT
+      with module T = Ty.Con.Tuple.Poly =
+    struct
       include Bifunctor.Tuple.Def
       include Ambient.Product
     end
@@ -643,12 +629,9 @@ end
 module Coproduct = struct
   module Variant = struct
     open Ambient
-    module Def : sig
-      include (module type of Bifunctor.Variant.Def)
-      include Sig.COPRODUCT
-        with type ('a, 'b) el := ('a, 'b) Bifunctor.Variant.Def.el
-         and type tc := Bifunctor.Variant.Def.tc
-    end = struct
+    module Def : Sig.COPRODUCT
+      with module T = Ty.Con.Variant.Poly =
+    struct
       include Bifunctor.Variant.Def
       include Ambient.Coproduct
     end
@@ -659,12 +642,12 @@ end
 module Foldable = struct
   module List = struct
     module Def : Sig.FOLDABLE
-      with type 'a el = 'a Functor.List.El.el =
+      with module T = Ty.Con.List.Poly =
     struct
-      include Ty.Make.Unary.Invariant(Functor.List.El)
+      module T = Ty.Con.List.Poly
       let foldr f i xs = List.fold_right f xs i
       let foldl = List.fold_left
-      let fold_map (type m) (module M : Sig.MONOID with type t = m) act =
+      let fold_map (type m) (module M : Sig.MONOID with type T.el = m) act =
         let rec go acc rest = match rest with
           | [] -> acc
           | (x::xs) -> go (M.op (act x) acc) xs in
@@ -677,7 +660,7 @@ end
 module Apply = struct
   module List = struct
     module Def : Sig.APPLY
-      with type 'a el = 'a Functor.List.El.el =
+      with module T = Functor.List.Def.T =
     struct
       include Functor.List.Def
       let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
@@ -692,7 +675,7 @@ end
 module Applicative = struct
   module List = struct
     module Def : Sig.APPLICATIVE
-      with type 'a el = 'a Functor.List.El.el =
+      with module T = Functor.List.Def.T =
     struct
       include Apply.List.Def
       let pure x = [x]
@@ -704,7 +687,7 @@ end
 (** Examples **)
 
 (* Existentials for list functor *)
-let ex0 () : int = let module E = Exists(Functor.List) in
+let ex0 () : int = let module E = Exists(Functor.List.T) in
   let pkg = E.into [0; 1; 2; 3; 4] in (* pack *)
   E.from pkg { E.ap = List.length }   (* elim *)
 
@@ -714,7 +697,7 @@ let ex1 () : int * string =
     (42, 3.14159)
 
 (* Semigroupoid for (->) *)
-let ex2 () : int = let open Semigroupoid.Fn in
+let ex2 () : int = let open Semigroupoid.Fun in
   (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
 
 (* Monoid for list *)
