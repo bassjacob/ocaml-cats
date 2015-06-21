@@ -681,6 +681,18 @@ module Apply = struct
   end
 end
 
+module Applicative = struct
+  module List = struct
+    module Def : Sig.APPLICATIVE
+      with type 'a el = 'a Functor.List.El.el =
+    struct
+      include Apply.List.Def
+      let pure x = [x]
+    end
+    include Def
+  end
+end
+
 (** Examples **)
 
 (* Existentials for list functor *)
@@ -711,3 +723,8 @@ let ex4 () : int =
   let lhs = F.fold_map (module Add) Ambient.id input in
   let rhs = F.fold_map (module Mul) Ambient.id input in
     Add.op lhs rhs
+
+(* Applicative for list *)
+let ex5 () : int list =
+  let module A = Applicative.List in
+  A.apply [(fun x -> x * 2); (fun x -> x * 4); (fun x -> x * 8)] [1; 2; 3]
