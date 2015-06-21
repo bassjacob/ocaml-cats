@@ -23,7 +23,7 @@ let undefined ?(message = "Undefined") _ = failwith message
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
-let id x = x
+external id : 'a -> 'a = "%identity"
 let compose g f x = g (f x)
 let const x _ = x
 let flip f x y = f y x
