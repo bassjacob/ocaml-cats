@@ -72,6 +72,14 @@ module type CATEGORY = sig
   val id : ('a, 'a) T.el
 end
 
+module type END = sig
+  module Hom : PROFUNCTOR
+  type t
+  type poly = { hom : 'x. ('x, 'x) Hom.T.el }
+  val into : poly -> t
+  val from : t -> poly
+end
+
 module type PRODUCT = sig
   include BIFUNCTOR
   val fst : ('a, 'b) T.el -> 'a
