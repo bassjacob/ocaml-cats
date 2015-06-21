@@ -1,2 +1,4 @@
+S src
 S src/prelude
+B _build/src
 B _build/src/prelude
