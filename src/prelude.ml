@@ -699,15 +699,15 @@ module Traversable = struct
         let cons = fun h t -> h :: t in
         let rec go xs = match xs with
           | [] -> A.pure []
-          | (x::xs) -> A.apply (A.map cons (A.T.elem %> f @@ x)) (go xs) in
+          | (x::xs) -> A.apply (A.map cons %> A.T.elem %> f @@ x) @@ go xs in
         A.T.code %> go
-      let sequence (type m) (module A : Sig.APPLICATIVE with type T.tc = m) xs =
+      let sequence (type m) (module A : Sig.APPLICATIVE with type T.tc = m) =
         let open Semigroupoid.Fun in
         let cons = fun h t -> h :: t in
         let rec go xs = match xs with
           | [] -> A.pure []
-          | (x::xs) -> A.apply (A.map cons (A.T.elem x)) (go xs) in
-        A.T.code %> go @@ xs
+          | (x::xs) -> A.apply (A.map cons %> A.T.elem @@ x) @@ go xs in
+        A.T.code %> go
     end
     include Def
   end
