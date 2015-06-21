@@ -39,6 +39,20 @@ let ex4 () : int =
   let lhs = F.fold_map (module Add) Ambient.id input in
   let rhs = F.fold_map (module Mul) Ambient.id input in
     Add.op lhs rhs
+
+(* Applicative for list *)
+let ex5 () : int list =
+  let module A = Applicative.List in
+  A.apply [(fun x -> x * 2); (fun x -> x * 4); (fun x -> x * 8)] [1; 2; 3]
+
+(* Traversable for list *)
+let ex6 () : int list list =
+  let open Semigroupoid.Fun in
+  let module A = Applicative.List in
+  let module T = Traversable.List in
+  (* not very interesting but it works … *)
+  let res = T.traverse (module A) (A.T.code %> A.pure) [0; 1; 2; 3; 4] in
+  A.T.elem res (* = [[0; 1; 2; 3; 4]] *)
 ```
 
 ### Building
