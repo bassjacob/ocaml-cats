@@ -673,10 +673,10 @@ module Apply = struct
       include Functor.List
       let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
         let module F = Functor.List in
-        let module M = Monoid.List(struct type el = b end) in
+        let module SG = Semigroup.List(struct type el = b end) in
         match fs with
         | [] -> []
-        | (f::fs) -> M.op (F.map f xs) (apply fs xs)
+        | (f::fs) -> SG.op (F.map f xs) (apply fs xs)
     end
   end
 end
