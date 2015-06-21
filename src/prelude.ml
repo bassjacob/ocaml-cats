@@ -223,7 +223,10 @@ end
    Each instance, such as Semigroup.Unit, is a combination of the core instance
    definition packed alongside co-instantiated structure extensions. *)
 
-module Exists = functor (E : Ty.Sig.Unary.Invariant.CODE) -> struct
+module Exists
+  : functor (E : Ty.Sig.Unary.Invariant.CODE) -> Sig.EXISTS with module T := E
+  = functor (E : Ty.Sig.Unary.Invariant.CODE) ->
+struct
   module T = E
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   module Def = struct
