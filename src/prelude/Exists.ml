@@ -1,5 +1,6 @@
 module Make
-  : functor (E : Ty.Sig.Unary.Invariant.CODE) -> Sig.EXISTS with module T := E
+  : functor (E : Ty.Sig.Unary.Invariant.CODE) -> Sig.EXISTENTIAL
+      with module T := E
   = functor (E : Ty.Sig.Unary.Invariant.CODE) ->
 struct
   module T = E

@@ -1,6 +1,6 @@
 (* The Sig module collects structure signatures. *)
 
-module type EXISTS = sig
+module type EXISTENTIAL = sig
   module T : Ty.Sig.Unary.Invariant.CODE
   type t
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
