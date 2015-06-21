@@ -135,6 +135,8 @@ module Sig = struct
     include FOLDABLE with module T := T
     val traverse : (module APPLICATIVE with type T.tc = 'm)
       -> ('a -> ('b, 'm) Ty.ap) -> ('a T.el -> ('b T.el, 'm) Ty.ap)
+    val sequence : (module APPLICATIVE with type T.tc = 'm)
+      -> ('a, 'm) Ty.ap T.el -> ('a T.el, 'm) Ty.ap
   end
 end
 
@@ -699,6 +701,13 @@ module Traversable = struct
           | [] -> A.pure []
           | (x::xs) -> A.apply (A.map cons (A.T.elem %> f @@ x)) (go xs) in
         A.T.code %> go
+      let sequence (type m) (module A : Sig.APPLICATIVE with type T.tc = m) xs =
+        let open Semigroupoid.Fun in
+        let cons = fun h t -> h :: t in
+        let rec go xs = match xs with
+          | [] -> A.pure []
+          | (x::xs) -> A.apply (A.map cons (A.T.elem x)) (go xs) in
+        A.T.code %> go @@ xs
     end
     include Def
   end
