@@ -152,3 +152,62 @@ module Make = struct
     end
   end
 end
+
+module Con : sig
+  module Fun : sig
+    module Poly : Sig.Binary.ContraCovariant.CODE
+      with type (-'a, +'b) el = 'a -> 'b
+  end
+  module Unit : Sig.Nullary.Invariant.CODE
+    with type el = unit
+  module Int : Sig.Nullary.Invariant.CODE
+    with type el = int
+  module Float : Sig.Nullary.Invariant.CODE
+    with type el = float
+  module String : Sig.Nullary.Invariant.CODE
+    with type el = string
+  module List : sig
+    module Mono : functor (T : Sig.Nullary.Invariant.ELEM) -> Sig.Nullary.Invariant.CODE
+        with type el = T.el list
+    module Poly : Sig.Unary.Covariant.CODE
+      with type +'a el = 'a list
+  end
+  module Tuple : sig
+    module Poly : Sig.Binary.Covariant.CODE
+      with type (+'a, +'b) el = ('a, 'b) Ambient.Product.t
+  end
+  module Variant : sig
+    module Poly : Sig.Binary.Covariant.CODE
+      with type (+'a, +'b) el = ('a, 'b) Ambient.Coproduct.t
+  end
+end = struct
+  module Fun = struct
+    module Poly = Make.Binary.ContraCovariant(struct
+        type (-'a, +'b) el = 'a -> 'b
+      end)
+  end
+  module Unit =
+    Make.Nullary.Invariant(struct type el = unit end)
+  module Int =
+    Make.Nullary.Invariant(struct type el = int end)
+  module Float =
+    Make.Nullary.Invariant(struct type el = float end)
+  module String =
+    Make.Nullary.Invariant(struct type el = string end)
+  module List = struct
+    module Mono = functor (T : Sig.Nullary.Invariant.ELEM) -> struct
+      include Make.Nullary.Invariant(struct type el = T.el list end)
+    end
+    module Poly = Make.Unary.Covariant(struct type +'a el = 'a list end)
+  end
+  module Tuple = struct
+    module Poly = Make.Binary.Covariant(struct
+        type (+'a, +'b) el = ('a, 'b) Ambient.Product.t
+      end)
+  end
+  module Variant = struct
+    module Poly = Make.Binary.Covariant(struct
+        type (+'a, +'b) el = ('a, 'b) Ambient.Coproduct.t
+      end)
+  end
+end
