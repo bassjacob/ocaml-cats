@@ -5,7 +5,7 @@ module type EXISTS = sig
   type t
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   val into : 'a T.el -> t
-  val from : t -> 'r elim -> 'r
+  val from : t -> ('r elim -> 'r)
 end
 
 module type SEMIGROUP = sig
