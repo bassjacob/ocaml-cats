@@ -672,11 +672,10 @@ module Apply = struct
     struct
       include Functor.List
       let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
-        let module F = Functor.List in
         let module S = Semigroup.List(struct type el = b end) in
         match fs with
         | [] -> []
-        | (f::fs) -> S.op (F.map f xs) (apply fs xs)
+        | (f::fs) -> S.op (map f xs) (apply fs xs)
     end
   end
 end
