@@ -4,10 +4,6 @@ A small OCaml prelude for algebraic and categorical concepts
 
 Inspired by the Purescript prelude.
 
-## API Reference
-
-See [here](https://rawgit.com/freebroccolo/ocaml-prelude/master/docs/prelude/index.html)
-
 ### Examples
 
 ```ocaml
@@ -59,33 +55,22 @@ let ex6 () : int list list =
 
 Building the code requires the following:
 
-* `opam`
 * `ocaml`
-* `oasis`
 
-If you have `opam` installed you can fetch the other two:
+If you have `opam` you may optionally to switch to a new ocaml environment:
 
-1. # install opam with OS package manager, e.g., `brew install opam`
-2. `opam switch install prelude -A 4.02.2` # (optional) switch to a new ocaml env
-3. `opam install oasis`
+1. `opam switch install prelude -A 4.02.2` # (optional) switch to a new ocaml env
+2. `opam pin add prelude . -n`
 
-Once the buildchain is installed you can generate a `Makefile`:
+The `prelude` library can be built with `ocamlbuild` using the build script:
 
-1. `opam pin add prelude . -n`
-2. `oasis setup -setup-update dynamic`
-3. `make`
+1. `./script/build`
 
 ### Experimenting
 
-I recommend running the code with the excellent
-[`utop`](https://github.com/diml/utop) toplevel:
+With [`utop`](https://github.com/diml/utop) installed (`opam install utop`) you
+can compile and load the library in the toplevel:
 
-1. # follow the build steps and run `make`
-2. `utop -init .ocamlinit`
+1. `./script/top`
 
-Once `utop` is loaded, definitions are available (with completion) per module:
-
-```
-utop # Prelude.ex4 ();;
-- : int = 135
-```
+Once `utop` is loaded, definitions are available under the `Prelude` module.
