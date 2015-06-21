@@ -19,6 +19,10 @@ module Product = struct
   let pair f g p = (f p, g p)
 end
 
+let undefined ?(message = "Undefined") _ = failwith message
+external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
+external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
+
 let id x = x
 let compose g f x = g (f x)
 let const x _ = x
