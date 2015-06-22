@@ -189,6 +189,13 @@ module Con : sig
   module String : Nullary.CO
     with type el = string
 
+  module Option : sig
+    module Mono : functor (T : Nullary.EL) -> Nullary.CO
+      with type el = T.el option
+    module Poly : Unary.Covariant.CO
+      with type +'a el = 'a option
+  end
+
   module List : sig
     module Mono : functor (T : Nullary.EL) -> Nullary.CO
       with type el = T.el list
@@ -229,6 +236,17 @@ end = struct
   module String = Make.Nullary(struct
     type el = string
   end)
+
+  module Option = struct
+    module Mono = functor (T : Nullary.EL) -> struct
+      include Make.Nullary(struct
+        type el = T.el option
+      end)
+    end
+    module Poly = Make.Unary.Covariant(struct
+      type +'a el = 'a option
+    end)
+  end
 
   module List = struct
     module Mono = functor (T : Nullary.EL) -> struct
