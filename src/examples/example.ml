@@ -44,12 +44,12 @@ let ex6 () : int list list =
   A.T.el res (* = [[0; 1; 2; 3; 4]] *)
 
 (* Natural transformations *)
-let ex7 () : _ =
+let ex7 () : int list =
   let open Functor in let module N = Natural.Make(Option)(List) in
-  N.ap { N.nat = fun x -> match x with
+  { N.ap = fun x -> match x with
     | None -> []
     | Some x -> [x]
-  }
+  }.N.ap (Some 10)
 
 let () =
   bang @@ ex0 ();
