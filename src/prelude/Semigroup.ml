@@ -68,7 +68,7 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Ty.Sig.Nullary.Invariant.ELEM) -> struct
+module List = functor (T : Ty.Sig.Nullary.Invariant.EL) -> struct
   module Def : Sig.SEMIGROUP
     with module T = Ty.Con.List.Mono(T) =
   struct

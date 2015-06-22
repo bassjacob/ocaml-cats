@@ -1,6 +1,6 @@
 module Join
     (* FIXME: is there a better name for this? *)
-  : functor (P : Sig.PROFUNCTOR) -> Ty.Sig.Unary.Invariant.CODE
+  : functor (P : Sig.PROFUNCTOR) -> Ty.Sig.Unary.Invariant.CO
   = functor (P : Sig.PROFUNCTOR) ->
 struct
   include Ty.Make.Unary.Invariant(struct

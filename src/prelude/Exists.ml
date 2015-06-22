@@ -1,7 +1,7 @@
 module Make
-  : functor (E : Ty.Sig.Unary.Invariant.CODE) -> Sig.EXISTENTIAL
+  : functor (E : Ty.Sig.Unary.Invariant.CO) -> Sig.EXISTENTIAL
       with module T := E
-  = functor (E : Ty.Sig.Unary.Invariant.CODE) ->
+  = functor (E : Ty.Sig.Unary.Invariant.CO) ->
 struct
   module T = E
   type 'r elim = { ap : 'x. 'x T.el -> 'r }

@@ -41,8 +41,8 @@ let ex6 () : int list list =
   let module A = Applicative.List in
   let module T = Traversable.List in
   (* not very interesting but it works … *)
-  let res = T.traverse (module A) (A.T.code %> A.pure) [0; 1; 2; 3; 4] in
-  A.T.elem res (* = [[0; 1; 2; 3; 4]] *)
+  let res = T.traverse (module A) (A.T.co %> A.pure) [0; 1; 2; 3; 4] in
+  A.T.el res (* = [[0; 1; 2; 3; 4]] *)
 
 let () =
   bang @@ ex0 ();

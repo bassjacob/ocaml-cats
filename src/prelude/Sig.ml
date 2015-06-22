@@ -1,7 +1,7 @@
 (* The Sig module collects structure signatures. *)
 
 module type EXISTENTIAL = sig
-  module T : Ty.Sig.Unary.Invariant.CODE
+  module T : Ty.Sig.Unary.Invariant.CO
   type t
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   val into : 'a T.el -> t
@@ -9,7 +9,7 @@ module type EXISTENTIAL = sig
 end
 
 module type SEMIGROUP = sig
-  module T : Ty.Sig.Nullary.Invariant.CODE
+  module T : Ty.Sig.Nullary.Invariant.CO
   val op : T.el -> T.el -> T.el
 end
 
@@ -19,7 +19,7 @@ module type MONOID = sig
 end
 
 module type SEMIRING = sig
-  module T : Ty.Sig.Nullary.Invariant.CODE
+  module T : Ty.Sig.Nullary.Invariant.CO
   val zero : T.el
   val add : T.el -> T.el -> T.el
   val one : T.el
@@ -43,22 +43,22 @@ module type DIVISIONRING = sig
 end
 
 module type FUNCTOR = sig
-  module T : Ty.Sig.Unary.Covariant.CODE
+  module T : Ty.Sig.Unary.Covariant.CO
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
 end
 
 module type BIFUNCTOR = sig
-  module T : Ty.Sig.Binary.Covariant.CODE
+  module T : Ty.Sig.Binary.Covariant.CO
   val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) T.el -> ('b, 'd) T.el)
 end
 
 module type PRESHEAF = sig
-  module T : Ty.Sig.Unary.Contravariant.CODE
+  module T : Ty.Sig.Unary.Contravariant.CO
   val premap : ('a -> 'b) -> ('b T.el -> 'a T.el)
 end
 
 module type PROFUNCTOR = sig
-  module T : Ty.Sig.Binary.ContraCovariant.CODE
+  module T : Ty.Sig.Binary.ContraCovariant.CO
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) T.el -> ('a, 'd) T.el)
 end
 
@@ -93,7 +93,7 @@ module type RAN = sig
   module H : FUNCTOR
   type 'a t
   type 'f nat = { ap : 'x. ('x G.T.el, 'f) Ty.ap -> 'x H.T.el }
-  val into : (module FUNCTOR with type T.tc = 'f)
+  val into : (module FUNCTOR with type T.co = 'f)
     -> 'f nat -> (('a, 'f) Ty.ap -> 'a t)
 end
 
@@ -102,7 +102,7 @@ module type LAN = sig
   module H : FUNCTOR
   type 'a t
   type 'f nat = { ap : 'x. 'x H.T.el -> ('x G.T.el, 'f) Ty.ap }
-  val into : (module FUNCTOR with type T.tc = 'f)
+  val into : (module FUNCTOR with type T.co = 'f)
     -> 'f nat -> ('a t -> ('a, 'f) Ty.ap)
 end
 
@@ -151,7 +151,7 @@ module type COMONAD = sig
 end
 
 module type FOLDABLE = sig
-  module T : Ty.Sig.Unary.Invariant.CODE
+  module T : Ty.Sig.Unary.Invariant.CO
   val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
   val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
   val fold_map : (module MONOID with type T.el = 'm)
@@ -161,8 +161,8 @@ end
 module type TRAVERSABLE = sig
   include FUNCTOR
   include FOLDABLE with module T := T
-  val traverse : (module APPLICATIVE with type T.tc = 'm)
+  val traverse : (module APPLICATIVE with type T.co = 'm)
     -> ('a -> ('b, 'm) Ty.ap) -> ('a T.el -> ('b T.el, 'm) Ty.ap)
-  val sequence : (module APPLICATIVE with type T.tc = 'm)
+  val sequence : (module APPLICATIVE with type T.co = 'm)
     -> ('a, 'm) Ty.ap T.el -> ('a T.el, 'm) Ty.ap
 end
