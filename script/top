@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 function main {
-    ocamlbuild src/prelude.cma
+    ocamlbuild -j 8 src/prelude.cma
     utop -init .ocamlinit
     exit 0
 }

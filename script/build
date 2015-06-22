@@ -4,8 +4,8 @@ set -eu
 set -o pipefail
 
 function main {
-    ocamlbuild src/prelude.cmxa
-    ocamlbuild src/examples/example.native
+    ocamlbuild -j 8 src/prelude.cmxa
+    ocamlbuild -j 8 src/examples/example.native
     exit 0
 }
 
