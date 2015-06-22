@@ -1,23 +1,17 @@
 open Sig
 
 module Unit = struct
-  module Def : DIVISIONRING
-    with module T = Ring.Unit.Def.T =
-  struct
+  module Def = struct
     include Ring.Unit.Def
-    include (ModuloSemiring.Unit.Def : MODULOSEMIRING
-      with module T := T)
+    include (ModuloSemiring.Unit.Def : MODULOSEMIRING with module T := T)
   end
   include Def
 end
 
 module Float = struct
-  module Def : Sig.DIVISIONRING
-    with module T = Ring.Float.Def.T =
-  struct
+  module Def = struct
     include Ring.Float.Def
-    include (ModuloSemiring.Float.Def : MODULOSEMIRING
-      with module T := T)
+    include (ModuloSemiring.Float.Def : MODULOSEMIRING with module T := T)
   end
   include Def
 end

@@ -1,9 +1,7 @@
 open Sig
 
 module Unit = struct
-  module Def : RING
-    with module T = Semiring.Unit.Def.T =
-  struct
+  module Def = struct
     include Semiring.Unit.Def
     let sub _ _ = ()
   end
@@ -12,9 +10,7 @@ module Unit = struct
 end
 
 module Int = struct
-  module Def : RING
-    with module T = Semiring.Int.Def.T =
-  struct
+  module Def = struct
     include Semiring.Int.Def
     let sub = (-)
   end
@@ -23,9 +19,7 @@ module Int = struct
 end
 
 module Float = struct
-  module Def : RING
-    with module T = Semiring.Float.Def.T =
-  struct
+  module Def = struct
     include Semiring.Float.Def
     let sub = (-.)
   end

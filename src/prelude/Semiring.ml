@@ -2,9 +2,7 @@ open Sig
 open Ty
 
 module Unit = struct
-  module Def : SEMIRING
-    with module T = Con.Unit =
-  struct
+  module Def = struct
     module T = Con.Unit
     let zero = ()
     let add _ _ = ()
@@ -16,9 +14,7 @@ module Unit = struct
 end
 
 module Int = struct
-  module Def : SEMIRING
-    with module T = Con.Int =
-  struct
+  module Def = struct
     module Add = Monoid.Additive.Int.Def
     module Mul = Monoid.Multiplicative.Int.Def
     module T = Con.Int
@@ -32,9 +28,7 @@ module Int = struct
 end
 
 module Float = struct
-  module Def : SEMIRING
-    with module T = Con.Float =
-  struct
+  module Def = struct
     module Add = Monoid.Additive.Float.Def
     module Mul = Monoid.Multiplicative.Float.Def
     module T = Ty.Con.Float

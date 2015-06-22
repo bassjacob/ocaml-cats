@@ -1,9 +1,7 @@
 open Sig
 
 module List = struct
-  module Def : APPLY
-    with module T = Functor.List.Def.T =
-  struct
+  module Def = struct
     include Functor.List.Def
     let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
       let module S = Semigroup.List(struct type el = b end) in

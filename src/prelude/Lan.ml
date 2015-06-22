@@ -1,10 +1,7 @@
 open Semigroupoid.Fun
 open Sig
 
-module Make
-  : functor (G : FUNCTOR) (H : FUNCTOR) -> LAN
-  = functor (G : FUNCTOR) (H : FUNCTOR) ->
-struct
+module Make (G : FUNCTOR) (H : FUNCTOR) = struct
   module G = G
   module H = H
   type 'a t = Lan : ('x G.T.el -> 'a) * 'x H.T.el -> 'a t

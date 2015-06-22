@@ -2,9 +2,7 @@ open Ambient
 open Sig
 
 module Fun = struct
-  module Def : CATEGORY
-    with module T = Semigroupoid.Fun.Def.T =
-  struct
+  module Def = struct
     include Semigroupoid.Fun.Def
     let id = id
   end

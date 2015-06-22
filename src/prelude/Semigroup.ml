@@ -3,9 +3,7 @@ open Ty
 open Ty.Sig
 
 module Unit = struct
-  module Def : SEMIGROUP
-    with module T = Con.Unit =
-  struct
+  module Def = struct
     module T = Con.Unit
     let op _ _ = ()
   end
@@ -14,9 +12,7 @@ module Unit = struct
 end
 
 module String = struct
-  module Def : SEMIGROUP
-    with module T = Con.String =
-  struct
+  module Def = struct
     module T = Con.String
     let op x y = String.concat "" [x; y]
   end
@@ -26,9 +22,7 @@ end
 
 module Additive = struct
   module Int = struct
-    module Def : SEMIGROUP
-      with module T = Con.Int =
-    struct
+    module Def = struct
       module T = Con.Int
       let op = (+)
     end
@@ -37,9 +31,7 @@ module Additive = struct
   end
 
   module Float = struct
-    module Def : SEMIGROUP
-      with module T = Con.Float =
-    struct
+    module Def = struct
       module T = Con.Float
       let op = (+.)
     end
@@ -50,9 +42,7 @@ end
 
 module Multiplicative = struct
   module Int = struct
-    module Def : SEMIGROUP
-      with module T = Con.Int =
-    struct
+    module Def = struct
       module T = Con.Int
       let op = ( * )
     end
@@ -61,9 +51,7 @@ module Multiplicative = struct
   end
 
   module Float = struct
-    module Def : SEMIGROUP
-      with module T = Con.Float =
-    struct
+    module Def = struct
       module T = Con.Float
       let op = ( *. )
     end
@@ -72,10 +60,8 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Nullary.EL) -> struct
-  module Def : SEMIGROUP
-    with module T = Con.List.Mono(T) =
-  struct
+module List (T : Nullary.EL) = struct
+  module Def = struct
     module T = Con.List.Mono(T)
     let op = List.append
   end

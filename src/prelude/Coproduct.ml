@@ -3,9 +3,7 @@ open Ty
 
 module Variant = struct
   open Ambient
-  module Def : COPRODUCT
-    with module T = Con.Variant.Poly =
-  struct
+  module Def = struct
     include Bifunctor.Variant.Def
     include Ambient.Coproduct
   end

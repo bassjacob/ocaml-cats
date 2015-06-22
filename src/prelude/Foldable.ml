@@ -2,9 +2,7 @@ open Sig
 open Ty
 
 module List = struct
-  module Def : FOLDABLE
-    with module T = Con.List.Poly =
-  struct
+  module Def = struct
     module T = Con.List.Poly
     let foldr f i xs = List.fold_right f xs i
     let foldl = List.fold_left

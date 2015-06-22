@@ -1,9 +1,7 @@
 open Sig
 
 module Unit = struct
-  module Def : MODULOSEMIRING
-    with module T = Semiring.Unit.Def.T =
-  struct
+  module Def = struct
     include Semiring.Unit.Def
     let div _ _ = ()
     let modulo _ _ = ()
@@ -13,9 +11,7 @@ module Unit = struct
 end
 
 module Int = struct
-  module Def : MODULOSEMIRING
-    with module T = Semiring.Int.Def.T =
-  struct
+  module Def = struct
     include Semiring.Int.Def
     let div = (/)
     let modulo = (mod)
@@ -25,9 +21,7 @@ module Int = struct
 end
 
 module Float = struct
-  module Def : MODULOSEMIRING
-    with module T = Semiring.Float.Def.T =
-  struct
+  module Def = struct
     include Semiring.Float.Def
     let div = (/.)
     let modulo = mod_float
