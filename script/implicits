@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+function main {
+    ocamlbuild -j 8 src/prelude.cmxa
+    ocamlbuild -j 8 src/implicits.cmxa
+    ocamlbuild -j 8 src/examples/ExPrelude.native
+    ocamlbuild -j 8 src/examples/ExImplicits.native
+    exit 0
+}
+
+main "${@}"
