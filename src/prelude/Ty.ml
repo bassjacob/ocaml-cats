@@ -214,17 +214,21 @@ end = struct
     end)
   end
 
-  module Unit =
-    Make.Nullary(struct type el = unit end)
+  module Unit = Make.Nullary(struct
+    type el = unit
+  end)
 
-  module Int =
-    Make.Nullary(struct type el = int end)
+  module Int = Make.Nullary(struct
+    type el = int
+  end)
 
-  module Float =
-    Make.Nullary(struct type el = float end)
+  module Float = Make.Nullary(struct
+    type el = float
+  end)
 
-  module String =
-    Make.Nullary(struct type el = string end)
+  module String = Make.Nullary(struct
+    type el = string
+  end)
 
   module List = struct
     module Mono = functor (T : Nullary.EL) -> struct
