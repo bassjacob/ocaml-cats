@@ -1,5 +1,6 @@
 open Prelude
 open Ambient
+open Semigroupoid.Fun
 
 (* Existentials for list functor *)
 let ex0 () : int = let module E = Exists.Make(Functor.List.T) in
@@ -12,8 +13,7 @@ let ex1 () : int * string =
     (42, 3.14159)
 
 (* Semigroupoid for (->) *)
-let ex2 () : int = let open Semigroupoid.Fun in
-  (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
+let ex2 () : int = (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
 
 (* Monoid for list *)
 let ex3 () : int list =
@@ -37,7 +37,6 @@ let ex5 () : int list =
 
 (* Traversable for list *)
 let ex6 () : int list list =
-  let open Semigroupoid.Fun in
   let module A = Applicative.List in
   let module T = Traversable.List in
   (* not very interesting but it works … *)
