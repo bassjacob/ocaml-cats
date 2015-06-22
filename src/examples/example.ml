@@ -26,8 +26,8 @@ let ex4 () : int =
   let module Add = Monoid.Additive.Int in
   let module Mul = Monoid.Multiplicative.Int in
   let input = [1; 2; 3; 4; 5] in
-  let lhs = F.fold_map (module Add) Ambient.id input in
-  let rhs = F.fold_map (module Mul) Ambient.id input in
+  let lhs = F.fold_map (module Add) id input in
+  let rhs = F.fold_map (module Mul) id input in
     Add.op lhs rhs
 
 (* Applicative for list *)
