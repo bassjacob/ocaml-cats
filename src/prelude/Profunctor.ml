@@ -3,15 +3,9 @@ open Sig
 open Ty
 open Ty.Sig
 
-module Join
-    (* FIXME: is there a better name for this? *)
-  : functor (P : PROFUNCTOR) -> Unary.Invariant.CO
-  = functor (P : PROFUNCTOR) ->
-struct
-  include Ty.Make.Unary.Invariant(struct
-    type 'a el = ('a, 'a) P.T.el
-  end)
-end
+module Join = functor (P : PROFUNCTOR) -> Ty.Make.Unary.Invariant(struct
+  type 'a el = ('a, 'a) P.T.el
+end)
 
 module Fun = struct
   module Def : PROFUNCTOR
