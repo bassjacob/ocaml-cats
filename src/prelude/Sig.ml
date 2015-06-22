@@ -4,8 +4,8 @@ open Ty.Sig
 
 module type EXISTENTIAL = sig
   module T : Unary.Invariant.CO
-  type t
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
+  type t
   val into : 'a T.el -> t
   val from : t -> ('r elim -> 'r)
 end
@@ -76,16 +76,16 @@ end
 
 module type END = sig
   module Hom : PROFUNCTOR
+  type poly = { ap : 'x. ('x, 'x) Hom.T.el }
   type t
-  type poly = { hom : 'x. ('x, 'x) Hom.T.el }
   val into : poly -> t
   val from : t -> poly
 end
 
 module type COEND = sig
   module Hom : PROFUNCTOR
-  type t
   type 'r elim = { ap : 'x. ('x, 'x) Hom.T.el -> 'r }
+  type t
   val into : ('a, 'a) Hom.T.el -> t
   val from : t -> ('r elim -> 'r)
 end
