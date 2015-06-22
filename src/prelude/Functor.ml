@@ -1,8 +1,11 @@
+open Sig
+open Ty
+
 module List = struct
-  module Def : Sig.FUNCTOR
-    with module T = Ty.Con.List.Poly =
+  module Def : FUNCTOR
+    with module T = Con.List.Poly =
   struct
-    module T = Ty.Con.List.Poly
+    module T = Con.List.Poly
     let map = List.map
   end
   include Def

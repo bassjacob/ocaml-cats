@@ -1,5 +1,8 @@
+open Sig
+open Ty.Sig
+
 module Unit = struct
-  module Def : Sig.MONOID
+  module Def : MONOID
     with module T = Semigroup.Unit.Def.T =
   struct
     include Semigroup.Unit.Def
@@ -9,7 +12,7 @@ module Unit = struct
 end
 
 module String = struct
-  module Def : Sig.MONOID
+  module Def : MONOID
     with module T = Semigroup.String.Def.T =
   struct
     include Semigroup.String.Def
@@ -20,7 +23,7 @@ end
 
 module Additive = struct
   module Int = struct
-    module Def : Sig.MONOID
+    module Def : MONOID
       with module T = Semigroup.Additive.Int.Def.T =
     struct
       include Semigroup.Additive.Int.Def
@@ -30,7 +33,7 @@ module Additive = struct
   end
 
   module Float = struct
-    module Def : Sig.MONOID
+    module Def : MONOID
       with module T = Semigroup.Additive.Float.Def.T =
     struct
       include Semigroup.Additive.Float.Def
@@ -42,7 +45,7 @@ end
 
 module Multiplicative = struct
   module Int = struct
-    module Def : Sig.MONOID
+    module Def : MONOID
       with module T = Semigroup.Multiplicative.Int.Def.T =
     struct
       include Semigroup.Multiplicative.Int.Def
@@ -52,7 +55,7 @@ module Multiplicative = struct
   end
 
   module Float = struct
-    module Def : Sig.MONOID
+    module Def : MONOID
       with module T = Semigroup.Multiplicative.Float.Def.T =
     struct
       include Semigroup.Multiplicative.Float.Def
@@ -62,9 +65,9 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Ty.Sig.Nullary.Invariant.EL) -> struct
+module List = functor (T : Nullary.Invariant.EL) -> struct
   module S = Semigroup.List(T)
-  module Def : Sig.MONOID
+  module Def : MONOID
     with module T = S.Def.T =
   struct
     include S.Def

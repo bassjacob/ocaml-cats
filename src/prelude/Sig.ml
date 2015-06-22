@@ -1,7 +1,9 @@
+open Ty.Sig
+
 (* The Sig module collects structure signatures. *)
 
 module type EXISTENTIAL = sig
-  module T : Ty.Sig.Unary.Invariant.CO
+  module T : Unary.Invariant.CO
   type t
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   val into : 'a T.el -> t
@@ -9,7 +11,7 @@ module type EXISTENTIAL = sig
 end
 
 module type SEMIGROUP = sig
-  module T : Ty.Sig.Nullary.Invariant.CO
+  module T : Nullary.Invariant.CO
   val op : T.el -> T.el -> T.el
 end
 
@@ -19,7 +21,7 @@ module type MONOID = sig
 end
 
 module type SEMIRING = sig
-  module T : Ty.Sig.Nullary.Invariant.CO
+  module T : Nullary.Invariant.CO
   val zero : T.el
   val add : T.el -> T.el -> T.el
   val one : T.el
@@ -43,22 +45,22 @@ module type DIVISIONRING = sig
 end
 
 module type FUNCTOR = sig
-  module T : Ty.Sig.Unary.Covariant.CO
+  module T : Unary.Covariant.CO
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
 end
 
 module type BIFUNCTOR = sig
-  module T : Ty.Sig.Binary.Covariant.CO
+  module T : Binary.Covariant.CO
   val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) T.el -> ('b, 'd) T.el)
 end
 
 module type PRESHEAF = sig
-  module T : Ty.Sig.Unary.Contravariant.CO
+  module T : Unary.Contravariant.CO
   val premap : ('a -> 'b) -> ('b T.el -> 'a T.el)
 end
 
 module type PROFUNCTOR = sig
-  module T : Ty.Sig.Binary.ContraCovariant.CO
+  module T : Binary.ContraCovariant.CO
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) T.el -> ('a, 'd) T.el)
 end
 
@@ -151,7 +153,7 @@ module type COMONAD = sig
 end
 
 module type FOLDABLE = sig
-  module T : Ty.Sig.Unary.Invariant.CO
+  module T : Unary.Invariant.CO
   val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
   val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
   val fold_map : (module MONOID with type T.el = 'm)

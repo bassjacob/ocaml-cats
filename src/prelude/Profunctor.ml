@@ -1,7 +1,12 @@
+open Ambient
+open Sig
+open Ty
+open Ty.Sig
+
 module Join
     (* FIXME: is there a better name for this? *)
-  : functor (P : Sig.PROFUNCTOR) -> Ty.Sig.Unary.Invariant.CO
-  = functor (P : Sig.PROFUNCTOR) ->
+  : functor (P : PROFUNCTOR) -> Unary.Invariant.CO
+  = functor (P : PROFUNCTOR) ->
 struct
   include Ty.Make.Unary.Invariant(struct
     type 'a el = ('a, 'a) P.T.el
@@ -9,11 +14,11 @@ struct
 end
 
 module Fun = struct
-  module Def : Sig.PROFUNCTOR
-    with module T = Ty.Con.Fun.Poly =
+  module Def : PROFUNCTOR
+    with module T = Con.Fun.Poly =
   struct
-    module T = Ty.Con.Fun.Poly
-    let dimap f g h = let (%>) = Ambient.compose in g %> h %> f
+    module T = Con.Fun.Poly
+    let dimap f g h = let (%>) = compose in g %> h %> f
   end
   include Def
   include Ext.Profunctor(Def)

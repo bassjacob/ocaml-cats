@@ -1,5 +1,7 @@
+open Sig
+
 module List = struct
-  module Def : Sig.APPLY
+  module Def : APPLY
     with module T = Functor.List.Def.T =
   struct
     include Functor.List.Def

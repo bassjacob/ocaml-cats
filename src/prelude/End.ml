@@ -1,7 +1,9 @@
+open Sig
+
 module Make
-  : functor (P : Sig.PROFUNCTOR) -> Sig.END
+  : functor (P : PROFUNCTOR) -> END
       with module Hom := P
-  = functor (P : Sig.PROFUNCTOR) ->
+  = functor (P : PROFUNCTOR) ->
 struct
   module Hom = P
   module Def = struct

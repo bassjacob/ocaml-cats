@@ -1,9 +1,12 @@
+open Ambient
+open Sig
+
 module Fun = struct
-  module Def : Sig.SEMIGROUPOID
+  module Def : SEMIGROUPOID
     with module T = Profunctor.Fun.Def.T =
   struct
     include Profunctor.Fun.Def
-    let compose = Ambient.compose
+    let compose = compose
   end
   include Def
   include Ext.Semigroupoid(Def)

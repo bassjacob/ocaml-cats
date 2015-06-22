@@ -1,8 +1,12 @@
+open Sig
+open Ty
+open Ty.Sig
+
 module Unit = struct
-  module Def : Sig.SEMIGROUP
-    with module T = Ty.Con.Unit =
+  module Def : SEMIGROUP
+    with module T = Con.Unit =
   struct
-    module T = Ty.Con.Unit
+    module T = Con.Unit
     let op _ _ = ()
   end
   include Def
@@ -10,10 +14,10 @@ module Unit = struct
 end
 
 module String = struct
-  module Def : Sig.SEMIGROUP
-    with module T = Ty.Con.String =
+  module Def : SEMIGROUP
+    with module T = Con.String =
   struct
-    module T = Ty.Con.String
+    module T = Con.String
     let op x y = String.concat "" [x; y]
   end
   include Def
@@ -22,10 +26,10 @@ end
 
 module Additive = struct
   module Int = struct
-    module Def : Sig.SEMIGROUP
-      with module T = Ty.Con.Int =
+    module Def : SEMIGROUP
+      with module T = Con.Int =
     struct
-      module T = Ty.Con.Int
+      module T = Con.Int
       let op = (+)
     end
     include Def
@@ -33,10 +37,10 @@ module Additive = struct
   end
 
   module Float = struct
-    module Def : Sig.SEMIGROUP
-      with module T = Ty.Con.Float =
+    module Def : SEMIGROUP
+      with module T = Con.Float =
     struct
-      module T = Ty.Con.Float
+      module T = Con.Float
       let op = (+.)
     end
     include Def
@@ -46,10 +50,10 @@ end
 
 module Multiplicative = struct
   module Int = struct
-    module Def : Sig.SEMIGROUP
-      with module T = Ty.Con.Int =
+    module Def : SEMIGROUP
+      with module T = Con.Int =
     struct
-      module T = Ty.Con.Int
+      module T = Con.Int
       let op = ( * )
     end
     include Def
@@ -57,10 +61,10 @@ module Multiplicative = struct
   end
 
   module Float = struct
-    module Def : Sig.SEMIGROUP
-      with module T = Ty.Con.Float =
+    module Def : SEMIGROUP
+      with module T = Con.Float =
     struct
-      module T = Ty.Con.Float
+      module T = Con.Float
       let op = ( *. )
     end
     include Def
@@ -68,11 +72,11 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Ty.Sig.Nullary.Invariant.EL) -> struct
-  module Def : Sig.SEMIGROUP
-    with module T = Ty.Con.List.Mono(T) =
+module List = functor (T : Nullary.Invariant.EL) -> struct
+  module Def : SEMIGROUP
+    with module T = Con.List.Mono(T) =
   struct
-    module T = Ty.Con.List.Mono(T)
+    module T = Con.List.Mono(T)
     let op = List.append
   end
   include Def

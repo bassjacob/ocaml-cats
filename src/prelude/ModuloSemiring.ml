@@ -1,5 +1,7 @@
+open Sig
+
 module Unit = struct
-  module Def : Sig.MODULOSEMIRING
+  module Def : MODULOSEMIRING
     with module T = Semiring.Unit.Def.T =
   struct
     include Semiring.Unit.Def
@@ -11,7 +13,7 @@ module Unit = struct
 end
 
 module Int = struct
-  module Def : Sig.MODULOSEMIRING
+  module Def : MODULOSEMIRING
     with module T = Semiring.Int.Def.T =
   struct
     include Semiring.Int.Def
@@ -23,7 +25,7 @@ module Int = struct
 end
 
 module Float = struct
-  module Def : Sig.MODULOSEMIRING
+  module Def : MODULOSEMIRING
     with module T = Semiring.Float.Def.T =
   struct
     include Semiring.Float.Def

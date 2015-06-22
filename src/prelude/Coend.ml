@@ -1,8 +1,10 @@
+open Sig
+
 (* FIXME: consider using Exists for this *)
 module Make
-  : functor (P : Sig.PROFUNCTOR) -> Sig.COEND
+  : functor (P : PROFUNCTOR) -> COEND
       with module Hom := P
-  = functor (P : Sig.PROFUNCTOR) ->
+  = functor (P : PROFUNCTOR) ->
 struct
   module Hom = P
   module Def = struct

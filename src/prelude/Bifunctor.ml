@@ -1,21 +1,25 @@
+open Ambient
+open Sig
+open Ty
+
 module Tuple = struct
-  module Def : Sig.BIFUNCTOR
-    with module T = Ty.Con.Tuple.Poly =
+  module Def : BIFUNCTOR
+    with module T = Con.Tuple.Poly =
   struct
-    module T = Ty.Con.Tuple.Poly
+    module T = Con.Tuple.Poly
     let bimap f g = let open Ambient.Product in
-      let (%>) = Ambient.compose in pair (f %> fst) (g %> snd)
+      let (%>) = compose in pair (f %> fst) (g %> snd)
   end
   include Def
 end
 
 module Variant = struct
-  module Def : Sig.BIFUNCTOR
-    with module T = Ty.Con.Variant.Poly =
+  module Def : BIFUNCTOR
+    with module T = Con.Variant.Poly =
   struct
-    module T = Ty.Con.Variant.Poly
+    module T = Con.Variant.Poly
     let bimap f g = let open Ambient.Coproduct in
-      let (%>) = Ambient.compose in case (inl %> f) (inr %> g)
+      let (%>) = compose in case (inl %> f) (inr %> g)
   end
   include Def
 end
