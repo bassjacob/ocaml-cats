@@ -2,6 +2,14 @@ open Ty.Sig
 
 (* The Sig module collects structure signatures. *)
 
+module type UNIVERSAL = sig
+  module T : Unary.Invariant.CO
+  type poly = { ap : 'x. 'x T.el }
+  type t
+  val into : poly -> t
+  val from : t -> poly
+end
+
 module type EXISTENTIAL = sig
   module T : Unary.Invariant.CO
   type 'r elim = { ap : 'x. 'x T.el -> 'r }

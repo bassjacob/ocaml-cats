@@ -10,6 +10,7 @@ prelude/End
 prelude/Exists
 prelude/Ext
 prelude/Foldable
+prelude/Forall
 prelude/Functor
 prelude/Lan
 prelude/ModuloSemiring
