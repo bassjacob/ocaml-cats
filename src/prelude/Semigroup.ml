@@ -72,7 +72,7 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Nullary.Invariant.EL) -> struct
+module List = functor (T : Nullary.EL) -> struct
   module Def : SEMIGROUP
     with module T = Con.List.Mono(T) =
   struct

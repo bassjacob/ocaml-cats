@@ -11,7 +11,7 @@ module type EXISTENTIAL = sig
 end
 
 module type SEMIGROUP = sig
-  module T : Nullary.Invariant.CO
+  module T : Nullary.CO
   val op : T.el -> T.el -> T.el
 end
 
@@ -21,7 +21,7 @@ module type MONOID = sig
 end
 
 module type SEMIRING = sig
-  module T : Nullary.Invariant.CO
+  module T : Nullary.CO
   val zero : T.el
   val add : T.el -> T.el -> T.el
   val one : T.el

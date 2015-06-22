@@ -65,7 +65,7 @@ module Multiplicative = struct
   end
 end
 
-module List = functor (T : Nullary.Invariant.EL) -> struct
+module List = functor (T : Nullary.EL) -> struct
   module S = Semigroup.List(T)
   module Def : MONOID
     with module T = S.Def.T =
