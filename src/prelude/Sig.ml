@@ -88,6 +88,24 @@ module type COEND = sig
   val from : t -> ('r elim -> 'r)
 end
 
+module type RAN = sig
+  module G : FUNCTOR
+  module H : FUNCTOR
+  type 'a t
+  type 'f nat = { ap : 'x. ('x G.T.el, 'f) Ty.ap -> 'x H.T.el }
+  val into : (module FUNCTOR with type T.tc = 'f)
+    -> 'f nat -> (('a, 'f) Ty.ap -> 'a t)
+end
+
+module type LAN = sig
+  module G : FUNCTOR
+  module H : FUNCTOR
+  type 'a t
+  type 'f nat = { ap : 'x. 'x H.T.el -> ('x G.T.el, 'f) Ty.ap }
+  val into : (module FUNCTOR with type T.tc = 'f)
+    -> 'f nat -> ('a t -> ('a, 'f) Ty.ap)
+end
+
 module type PRODUCT = sig
   include BIFUNCTOR
   val fst : ('a, 'b) T.el -> 'a

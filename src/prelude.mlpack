@@ -11,10 +11,12 @@ prelude/Exists
 prelude/Ext
 prelude/Foldable
 prelude/Functor
+prelude/Lan
 prelude/ModuloSemiring
 prelude/Monoid
 prelude/Product
 prelude/Profunctor
+prelude/Ran
 prelude/Ring
 prelude/Semigroup
 prelude/Semigroupoid
