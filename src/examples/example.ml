@@ -44,12 +44,6 @@ let ex6 () : int list list =
   let res = T.traverse (module A) (A.T.code %> A.pure) [0; 1; 2; 3; 4] in
   A.T.elem res (* = [[0; 1; 2; 3; 4]] *)
 
-(* Ends for (->) *)
-let ex7 () : ('a -> 'a) =
-  let module E = End.Make(Profunctor.Fun) in
-  let e : E.t = E.into { E.hom = id } in
-  (E.from e).E.hom
-
 let () =
   bang @@ ex0 ();
   bang @@ ex1 ();
@@ -57,5 +51,4 @@ let () =
   bang @@ ex3 ();
   bang @@ ex4 ();
   bang @@ ex5 ();
-  bang @@ ex6 ();
-  bang @@ ex7 ()
+  bang @@ ex6 ()
