@@ -3,8 +3,10 @@ prelude/Applicative
 prelude/Apply
 prelude/Bifunctor
 prelude/Category
+prelude/Coend
 prelude/Coproduct
 prelude/DivisionRing
+prelude/End
 prelude/Exists
 prelude/Ext
 prelude/Foldable
