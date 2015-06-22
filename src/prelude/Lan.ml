@@ -11,5 +11,5 @@ struct
   type 'f nat = { ap : 'x. 'x H.T.el -> ('x G.T.el, 'f) Ty.ap }
   let into (type f) (module F : FUNCTOR with type T.co = f) n e =
     match e with
-    | Lan (f, x) -> F.T.co %> F.map f %> F.T.el %> n.ap @@ x
+    | Lan (a, h) -> F.T.co %> F.map a %> F.T.el %> n.ap @@ h
 end
