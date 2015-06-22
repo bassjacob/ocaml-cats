@@ -1,3 +1,4 @@
+(* FIXME: consider using Exists for this *)
 module Make
   : functor (P : Sig.PROFUNCTOR) -> Sig.COEND
       with module Hom := P
