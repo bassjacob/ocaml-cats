@@ -43,6 +43,14 @@ let ex6 () : int list list =
   let res = T.traverse (module A) (A.T.co %> A.pure) [0; 1; 2; 3; 4] in
   A.T.el res (* = [[0; 1; 2; 3; 4]] *)
 
+(* Natural transformations *)
+let ex7 () : _ =
+  let open Functor in let module N = Natural.Make(Option)(List) in
+  N.nat { N.ap = fun x -> match x with
+    | None -> []
+    | Some x -> [x]
+  }
+
 let () =
   bang @@ ex0 ();
   bang @@ ex1 ();
@@ -50,4 +58,5 @@ let () =
   bang @@ ex3 ();
   bang @@ ex4 ();
   bang @@ ex5 ();
-  bang @@ ex6 ()
+  bang @@ ex6 ();
+  bang @@ ex7 ()

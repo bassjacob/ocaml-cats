@@ -90,6 +90,13 @@ module type COEND = sig
   val from : t -> ('r elim -> 'r)
 end
 
+module type NATURAL = sig
+  module F : FUNCTOR
+  module G : FUNCTOR
+  type t = { ap : 'x. 'x F.T.el -> 'x G.T.el }
+  val nat : t -> ('a F.T.el -> 'a G.T.el)
+end
+
 module type RAN = sig
   module G : FUNCTOR
   module H : FUNCTOR
