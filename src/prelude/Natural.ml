@@ -8,6 +8,6 @@ module Make
 struct
   module F = F
   module G = G
-  type t = { ap : 'x. 'x F.T.el -> 'x G.T.el }
-  let nat n = n.ap
+  type t = { nat : 'x. 'x F.T.el -> 'x G.T.el }
+  let ap n = n.nat
 end

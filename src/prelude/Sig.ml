@@ -93,8 +93,8 @@ end
 module type NATURAL = sig
   module F : FUNCTOR
   module G : FUNCTOR
-  type t = { ap : 'x. 'x F.T.el -> 'x G.T.el }
-  val nat : t -> ('a F.T.el -> 'a G.T.el)
+  type t = { nat : 'x. 'x F.T.el -> 'x G.T.el }
+  val ap : t -> ('a F.T.el -> 'a G.T.el)
 end
 
 module type RAN = sig
