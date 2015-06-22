@@ -3,7 +3,7 @@ open Sig
 open Ty
 open Ty.Sig
 
-module Join = functor (P : PROFUNCTOR) -> Ty.Make.Unary.Invariant(struct
+module Diagonal = functor (P : PROFUNCTOR) -> Ty.Make.Unary.Invariant(struct
   type 'a el = ('a, 'a) P.T.el
 end)
 
