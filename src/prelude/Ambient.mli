@@ -17,6 +17,10 @@ module Product : sig
   val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) t)
 end
 
+val undefined : ?message:bytes -> 'a -> 'b
+val (@@) : ('a -> 'b) -> ('a -> 'b)
+val (|>) : 'a -> (('a -> 'r) -> 'r)
+
 val id : 'a -> 'a
 val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
 val const : 'a -> ('b -> 'a)
