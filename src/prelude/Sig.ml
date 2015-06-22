@@ -80,6 +80,14 @@ module type END = sig
   val from : t -> poly
 end
 
+module type COEND = sig
+  module Hom : PROFUNCTOR
+  type t
+  type 'r elim = { ap : 'x. ('x, 'x) Hom.T.el -> 'r }
+  val into : ('a, 'a) Hom.T.el -> t
+  val from : t -> ('r elim -> 'r)
+end
+
 module type PRODUCT = sig
   include BIFUNCTOR
   val fst : ('a, 'b) T.el -> 'a
