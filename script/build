@@ -5,7 +5,7 @@ set -o pipefail
 
 function main {
     ocamlbuild -j 8 src/prelude.cmxa
-    ocamlbuild -j 8 src/examples/example.native
+    ocamlbuild -j 8 src/examples/ExPrelude.native
     exit 0
 }
 
