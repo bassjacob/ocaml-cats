@@ -1,0 +1,5 @@
+name = "prelude"
+version = "0.0.0"
+description = "A small OCaml prelude for algebraic and categorical concepts"
+archive(byte) = "prelude.cma"
+archive(native) = "prelude.cmxa"

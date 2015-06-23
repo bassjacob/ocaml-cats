@@ -7,8 +7,6 @@ license: "MIT"
 homepage: "https://github.com/freebroccolo/ocaml-prelude"
 dev-repo: "https://github.com/freebroccolo/ocaml-prelude.git"
 build: [
-  ["./script/build"]
-]
-depends: [
-  "ocamlfind"
+  [ "ocamlbuild" "src/prelude.cma"  ]
+  [ "ocamlbuild" "src/prelude.cmxa" ]
 ]
