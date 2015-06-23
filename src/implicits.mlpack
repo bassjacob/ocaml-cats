@@ -1,4 +1,5 @@
 implicits/Bifunctor
 implicits/Foldable
+implicits/Functor
 implicits/Monoid
 implicits/Semigroup
