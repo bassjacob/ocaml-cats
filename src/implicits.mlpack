@@ -1,2 +1,3 @@
-implicits/Semigroup
+implicits/Bifunctor
 implicits/Monoid
+implicits/Semigroup
