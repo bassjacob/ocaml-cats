@@ -1,3 +1,4 @@
+implicits/Apply
 implicits/Bifunctor
 implicits/Foldable
 implicits/Functor
