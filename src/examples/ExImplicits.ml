@@ -4,13 +4,10 @@ open Ambient
 (* TODO: port full set of prelude examples to implicits style *)
 
 module I = Implicits
-open implicit I.Bifunctor
-open implicit I.Foldable
-open implicit I.Functor
-open implicit I.Semigroup
 
 (* Functor for option, list, etc. *)
 let ex0 () : _ =
+  let open implicit I.Functor in
   let module M = I.Functor in
   let _ = M.map (fun x -> x ^ "bar") (Some "foo") in
   let _ = M.map (fun x -> x * 2) [0; 1; 2; 3] in
@@ -18,6 +15,7 @@ let ex0 () : _ =
 
 (* Bifunctor for tuple, variant, etc. *)
 let ex1 () : _ =
+  let open implicit I.Bifunctor in
   let module M = I.Bifunctor in
   let _ = M.bimap (fun x -> x * 2) string_of_float (42, 3.14159) in
   let _ = M.bimap (fun x -> x ^ "bar") (fun y -> y +  1) (Coproduct.inl "foo") in
@@ -26,6 +24,7 @@ let ex1 () : _ =
 
 (* Foldable for option, list, etc. *)
 let ex4 () : _ =
+  let open implicit I.Foldable in
   let module M = I.Foldable in
   let module Add = Monoid.Additive.Int in
   let module Mul = Monoid.Multiplicative.Int in
@@ -36,6 +35,7 @@ let ex4 () : _ =
   ()
 
 let exx () : bool =
+  let open implicit I.Semigroup in
   let module M = I.Semigroup in
   let p0 : bool = M.op "foo" "bar" = "foobar" in
   let p1 : bool = (let open implicit M.Additive in M.op 3 4) = 7 in
