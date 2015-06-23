@@ -1,5 +1,17 @@
 open Sig
 
+module Option = struct
+  module Def = struct
+    include Functor.Option.Def
+    let rec apply : type b. ('a -> b) option -> ('a option -> b option) = fun fs xs ->
+      match fs with
+      | None -> None
+      | Some f -> map f xs
+  end
+  include Def
+  include Ext.Apply(Def)
+end
+
 module List = struct
   module Def = struct
     include Functor.List.Def
