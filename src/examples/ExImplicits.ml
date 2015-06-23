@@ -34,6 +34,14 @@ let ex4 () : _ =
   let _ = M.fold_map (module Mul) id (Some 5) in
   ()
 
+(* Applicative for option, list, etc. *)
+let ex5 () : _ =
+  let open implicit I.Applicative in
+  let module M = I.Apply in
+  let _ = M.apply (Some (fun x -> x ^ "bar")) (Some "foo") in
+  let _ = M.apply [(fun x -> x * 2); (fun x -> x * 4); (fun x -> x * 8)] [1; 2; 3] in
+  ()
+
 let exx () : bool =
   let open implicit I.Semigroup in
   let module M = I.Semigroup in
