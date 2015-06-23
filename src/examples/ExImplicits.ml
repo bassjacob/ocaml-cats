@@ -22,6 +22,12 @@ let ex1 () : _ =
   let _ = M.bimap (fun x -> "foo" ^ x) (fun y -> y *. 2.0) (Coproduct.inr 1.0) in
   ()
 
+(* Semigroupoid for (->) *)
+let ex2 () : _ =
+  let open I.Semigroupoid.Ext in
+  let open implicit I.Semigroupoid in
+  (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
+
 (* Foldable for option, list, etc. *)
 let ex4 () : _ =
   let open implicit I.Foldable in

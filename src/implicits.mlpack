@@ -5,3 +5,4 @@ implicits/Foldable
 implicits/Functor
 implicits/Monoid
 implicits/Semigroup
+implicits/Semigroupoid
