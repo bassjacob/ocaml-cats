@@ -6,5 +6,5 @@ val bimap : (implicit M : BIFUNCTOR)
   -> ('c -> 'd)
   -> (('a, 'c) M.T.el -> ('b, 'd) M.T.el)
 
-implicit module Tuple : BIFUNCTOR with module T = Con.Tuple.Poly
-implicit module Variant : BIFUNCTOR with module T = Con.Variant.Poly
+implicit module Tuple : module type of Prelude.Bifunctor.Tuple
+implicit module Variant : module type of Prelude.Bifunctor.Variant

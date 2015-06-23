@@ -14,5 +14,5 @@ val fold_map : (implicit M : FOLDABLE)
   -> ('a -> 'm)
   -> ('a M.T.el -> 'm)
 
-implicit module Option : FOLDABLE with module T = Con.Option.Poly
-implicit module List : FOLDABLE with module T = Con.List.Poly
+implicit module Option : module type of Prelude.Foldable.Option
+implicit module List : module type of Prelude.Foldable.List

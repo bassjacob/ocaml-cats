@@ -5,5 +5,5 @@ val map : (implicit M : FUNCTOR)
   -> ('a -> 'b)
   -> ('a M.T.el -> 'b M.T.el)
 
-implicit module Option : FUNCTOR with module T = Con.Option.Poly
-implicit module List : FUNCTOR with module T = Con.List.Poly
+implicit module Option : module type of Prelude.Functor.Option
+implicit module List : module type of Prelude.Functor.List
