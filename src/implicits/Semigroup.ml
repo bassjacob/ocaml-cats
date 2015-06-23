@@ -3,7 +3,6 @@ open Prelude.Sig
 let op (implicit M : SEMIGROUP) = M.op
 
 implicit module Unit = Prelude.Semigroup.Unit
-
 implicit module String = Prelude.Semigroup.String
 
 module Additive = struct

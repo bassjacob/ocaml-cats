@@ -3,7 +3,6 @@ open Prelude.Sig
 let unit (implicit M : MONOID) = M.unit
 
 implicit module Unit = Prelude.Monoid.Unit
-
 implicit module String = Prelude.Monoid.String
 
 module Additive = struct
