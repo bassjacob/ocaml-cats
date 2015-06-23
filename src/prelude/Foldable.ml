@@ -4,7 +4,7 @@ open Ty
 module List = struct
   module Def = struct
     module T = Con.List.Poly
-    let foldr f i xs = List.fold_right f xs i
+    let foldr f z xs = List.fold_right f xs z
     let foldl = List.fold_left
     let fold_map (type m) (module M : MONOID with type T.el = m) act =
       let rec go acc rest = match rest with
