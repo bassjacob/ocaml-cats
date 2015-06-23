@@ -14,3 +14,19 @@ module List = struct
   end
   include Def
 end
+
+module Option = struct
+  module Def = struct
+    module T = Con.Option.Poly
+    let foldr f z xs = match xs with
+      | None -> z
+      | Some x -> f x z
+    let foldl f a xs = match xs with
+      | None -> a
+      | Some x -> f a x
+    let fold_map (type m) (module M : MONOID with type T.el = m) act = function
+      | None -> M.unit
+      | Some x -> M.op (act x) M.unit
+  end
+  include Def
+end
