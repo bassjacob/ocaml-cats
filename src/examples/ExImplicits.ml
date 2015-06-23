@@ -6,7 +6,15 @@ open Ambient
 module I = Implicits
 open implicit I.Bifunctor
 open implicit I.Foldable
+open implicit I.Functor
 open implicit I.Semigroup
+
+(* Functor for option, list, etc. *)
+let ex0 () : _ =
+  let module M = I.Functor in
+  let _ = M.map (fun x -> x ^ "bar") (Some "foo") in
+  let _ = M.map (fun x -> x * 2) [0; 1; 2; 3] in
+  ()
 
 (* Bifunctor for tuple, variant, etc. *)
 let ex1 () : _ =
