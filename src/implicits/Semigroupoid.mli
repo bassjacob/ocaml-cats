@@ -1,3 +1,4 @@
+open Prelude
 open Prelude.Sig
 
 val compose : (implicit M : SEMIGROUPOID)
@@ -5,7 +6,7 @@ val compose : (implicit M : SEMIGROUPOID)
   -> ('a, 'b) M.T.el
   -> ('a, 'c) M.T.el
 
-implicit module Fun : module type of Prelude.Semigroupoid.Fun
+implicit module Fun : module type of Mod.Semigroupoid.Fun
 
 module Ext : sig
   val (%>) : (implicit M : SEMIGROUPOID)

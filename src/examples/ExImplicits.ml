@@ -1,5 +1,5 @@
 open Prelude
-open Ambient
+open Amb
 
 (* TODO: port full set of prelude examples to implicits style *)
 
@@ -32,8 +32,8 @@ let ex2 () : _ =
 let ex4 () : _ =
   let open implicit I.Foldable in
   let module M = I.Foldable in
-  let module Add = Monoid.Additive.Int in
-  let module Mul = Monoid.Multiplicative.Int in
+  let module Add = Mod.Monoid.Additive.Int in
+  let module Mul = Mod.Monoid.Multiplicative.Int in
   let _ = M.fold_map (module Add) id [1; 2; 3; 4; 5] in
   let _ = M.fold_map (module Mul) id [1; 2; 3; 4; 5] in
   let _ = M.fold_map (module Add) id None in

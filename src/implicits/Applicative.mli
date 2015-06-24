@@ -1,7 +1,7 @@
-open Prelude.Sig
 open Prelude
+open Prelude.Sig
 
 val pure : (implicit M : APPLICATIVE) -> 'a -> 'a M.T.el
 
-implicit module Option : module type of Prelude.Applicative.Option
-implicit module List : module type of Prelude.Applicative.List
+implicit module Option : module type of Mod.Applicative.Option
+implicit module List : module type of Mod.Applicative.List
