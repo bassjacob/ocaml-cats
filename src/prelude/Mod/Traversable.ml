@@ -16,7 +16,7 @@ module List = struct
         | (x::xs) -> (fun h t -> h :: t) <$-> act x <*> go xs in
       A.T.co %> go
 
-    let sequence m = traverse m Ambient.id
+    let sequence m = traverse m Amb.id
 
   end
   include Def

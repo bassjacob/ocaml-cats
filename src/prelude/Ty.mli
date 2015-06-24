@@ -163,11 +163,11 @@ module Con : sig
 
   module Tuple : sig
     module Poly : Binary.Covariant.CO
-      with type (+'a, +'b) el = ('a, 'b) Ambient.Product.t
+      with type (+'a, +'b) el = ('a, 'b) Amb.Product.t
   end
 
   module Variant : sig
     module Poly : Binary.Covariant.CO
-      with type (+'a, +'b) el = ('a, 'b) Ambient.Coproduct.t
+      with type (+'a, +'b) el = ('a, 'b) Amb.Coproduct.t
   end
 end

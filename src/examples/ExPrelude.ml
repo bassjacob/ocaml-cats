@@ -1,5 +1,5 @@
 open Prelude
-open Ambient
+open Amb
 open Mod
 open Semigroupoid.Fun
 

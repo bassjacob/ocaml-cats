@@ -1,4 +1,3 @@
-open Ambient
 open Sig
 
 module Fun = struct
@@ -6,7 +5,7 @@ module Fun = struct
     with module T = Profunctor.Fun.Def.T =
   struct
     include Profunctor.Fun.Def
-    let compose = compose
+    let compose = Amb.compose
   end
   include Def
   include Ext.Semigroupoid.Make(Def)

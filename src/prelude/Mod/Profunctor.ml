@@ -1,4 +1,3 @@
-open Ambient
 open Sig
 open Ty
 open Ty.Sig
@@ -10,7 +9,7 @@ end)
 module Fun = struct
   module Def = struct
     module T = Con.Fun.Poly
-    let dimap f g h = let (%>) = compose in g %> h %> f
+    let dimap f g h = let (%>) = Amb.compose in g %> h %> f
   end
   include Def
   include Ext.Profunctor.Make(Def)

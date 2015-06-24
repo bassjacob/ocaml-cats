@@ -190,13 +190,13 @@ module Con = struct
 
   module Tuple = struct
     module Poly = Make.Binary.Covariant(struct
-      type (+'a, +'b) el = ('a, 'b) Ambient.Product.t
+      type (+'a, +'b) el = ('a, 'b) Amb.Product.t
     end)
   end
 
   module Variant = struct
     module Poly = Make.Binary.Covariant(struct
-      type (+'a, +'b) el = ('a, 'b) Ambient.Coproduct.t
+      type (+'a, +'b) el = ('a, 'b) Amb.Coproduct.t
     end)
   end
 end
