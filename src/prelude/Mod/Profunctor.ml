@@ -13,5 +13,5 @@ module Fun = struct
     let dimap f g h = let (%>) = compose in g %> h %> f
   end
   include Def
-  include Ext.Profunctor(Def)
+  include Ext.Profunctor.Make(Def)
 end

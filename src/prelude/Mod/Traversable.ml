@@ -8,8 +8,8 @@ module List = struct
       with module T := T)
 
     let traverse (type m) (module A : APPLICATIVE with type T.co = m) f =
-      let module EFun = Ext.Functor(A) in let open EFun in
-      let module EApp = Ext.Apply  (A) in let open EApp in
+      let module EFun = Ext.Functor.Make(A) in let open EFun in
+      let module EApp = Ext.Apply  .Make(A) in let open EApp in
       let act = A.T.el %> f in
       let rec go xs = match xs with
         | [] -> A.pure []

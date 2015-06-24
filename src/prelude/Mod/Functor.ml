@@ -9,7 +9,7 @@ module Option = struct
       | Some x -> Some (f x)
   end
   include Def
-  include Ext.Functor(Def)
+  include Ext.Functor.Make(Def)
 end
 
 module List = struct
@@ -18,5 +18,5 @@ module List = struct
     let map = List.map
   end
   include Def
-  include Ext.Functor(Def)
+  include Ext.Functor.Make(Def)
 end

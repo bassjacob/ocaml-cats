@@ -9,5 +9,5 @@ module Fun = struct
     let compose = compose
   end
   include Def
-  include Ext.Semigroupoid(Def)
+  include Ext.Semigroupoid.Make(Def)
 end

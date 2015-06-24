@@ -10,7 +10,7 @@ module Unit = struct
     let mul _ _ = ()
   end
   include Def
-  include Ext.Semiring(Def)
+  include Ext.Semiring.Make(Def)
 end
 
 module Int = struct
@@ -24,7 +24,7 @@ module Int = struct
     let mul = Mul.op
   end
   include Def
-  include Ext.Semiring(Def)
+  include Ext.Semiring.Make(Def)
 end
 
 module Float = struct
@@ -38,5 +38,5 @@ module Float = struct
     let mul = Mul.op
   end
   include Def
-  include Ext.Semiring(Def)
+  include Ext.Semiring.Make(Def)
 end

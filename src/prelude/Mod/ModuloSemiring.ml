@@ -7,7 +7,7 @@ module Unit = struct
     let modulo _ _ = ()
   end
   include Def
-  include Ext.ModuloSemiring(Def)
+  include Ext.ModuloSemiring.Make(Def)
 end
 
 module Int = struct
@@ -17,7 +17,7 @@ module Int = struct
     let modulo = (mod)
   end
   include Def
-  include Ext.ModuloSemiring(Def)
+  include Ext.ModuloSemiring.Make(Def)
 end
 
 module Float = struct
@@ -27,5 +27,5 @@ module Float = struct
     let modulo = mod_float
   end
   include Def
-  include Ext.ModuloSemiring(Def)
+  include Ext.ModuloSemiring.Make(Def)
 end

@@ -8,5 +8,5 @@ module Diagonal : functor (P : PROFUNCTOR) -> Unary.Invariant.CO
 module Fun : sig
   module Def : PROFUNCTOR with module T = Con.Fun.Poly
   include (module type of Def)
-  include (module type of Ext.Profunctor(Def))
+  include (module type of Ext.Profunctor.Make(Def))
 end

@@ -1,5 +1,6 @@
 open Prelude
 open Ambient
+open Mod
 open Semigroupoid.Fun
 
 (* Existentials for list functor *)

@@ -8,7 +8,7 @@ module Unit = struct
     let op _ _ = ()
   end
   include Def
-  include Ext.Semigroup(Def)
+  include Ext.Semigroup.Make(Def)
 end
 
 module String = struct
@@ -17,7 +17,7 @@ module String = struct
     let op x y = String.concat "" [x; y]
   end
   include Def
-  include Ext.Semigroup(Def)
+  include Ext.Semigroup.Make(Def)
 end
 
 module Additive = struct
@@ -27,7 +27,7 @@ module Additive = struct
       let op = (+)
     end
     include Def
-    include Ext.Semigroup(Def)
+    include Ext.Semigroup.Make(Def)
   end
 
   module Float = struct
@@ -36,7 +36,7 @@ module Additive = struct
       let op = (+.)
     end
     include Def
-    include Ext.Semigroup(Def)
+    include Ext.Semigroup.Make(Def)
   end
 end
 
@@ -47,7 +47,7 @@ module Multiplicative = struct
       let op = ( * )
     end
     include Def
-    include Ext.Semigroup(Def)
+    include Ext.Semigroup.Make(Def)
   end
 
   module Float = struct
@@ -56,7 +56,7 @@ module Multiplicative = struct
       let op = ( *. )
     end
     include Def
-    include Ext.Semigroup(Def)
+    include Ext.Semigroup.Make(Def)
   end
 end
 

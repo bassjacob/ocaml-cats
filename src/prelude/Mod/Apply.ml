@@ -9,7 +9,7 @@ module Option = struct
       | Some f -> map f xs
   end
   include Def
-  include Ext.Apply(Def)
+  include Ext.Apply.Make(Def)
 end
 
 module List = struct
@@ -22,5 +22,5 @@ module List = struct
       | (f::fs) -> M.op (map f xs) (apply fs xs)
   end
   include Def
-  include Ext.Apply(Def)
+  include Ext.Apply.Make(Def)
 end

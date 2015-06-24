@@ -1,4 +1,9 @@
 S src
 S src/prelude
+S src/prelude/Ext
+S src/prelude/Mod
 B _build/src
 B _build/src/prelude
+B _build/src/prelude/Ext
+B _build/src/prelude/Mod
+

@@ -6,7 +6,7 @@ module Unit = struct
     let sub _ _ = ()
   end
   include Def
-  include Ext.Ring(Def)
+  include Ext.Ring.Make(Def)
 end
 
 module Int = struct
@@ -15,7 +15,7 @@ module Int = struct
     let sub = (-)
   end
   include Def
-  include Ext.Ring(Def)
+  include Ext.Ring.Make(Def)
 end
 
 module Float = struct
@@ -24,5 +24,5 @@ module Float = struct
     let sub = (-.)
   end
   include Def
-  include Ext.Ring(Def)
+  include Ext.Ring.Make(Def)
 end
