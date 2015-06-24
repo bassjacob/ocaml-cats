@@ -1,1 +1,4 @@
 <src> : include
+<src/implicits/*.cmx>: for-pack(Implicits)
+<src/prelude/*.cmx>: for-pack(Prelude)
+true: bin_annot
