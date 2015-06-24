@@ -1,1 +1,2 @@
 <*.cmx>: for-pack(Implicits)
+true: bin_annot
