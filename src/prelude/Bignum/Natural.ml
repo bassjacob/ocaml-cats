@@ -15,9 +15,10 @@ module PosDef = struct
   module T = Con
 
   let head = function
-    | Tree.L true   -> B
-    | Tree.N (h, t) -> if h then I else O
-    | _             -> raise InvalidHead
+    | Tree.L true          -> B
+    | Tree.N (h, _) when h -> I
+    | Tree.N (_, _)        -> O
+    | _ -> raise InvalidHead
 
   let one = Tree.L true
 

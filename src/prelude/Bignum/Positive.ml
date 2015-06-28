@@ -14,8 +14,9 @@ module Def = struct
   module T = Con
 
   let head = function
-    | Tree.L _ -> B
-    | Tree.N (h, _) -> if h then I else O
+    | Tree.L _             -> B
+    | Tree.N (h, _) when h -> I
+    | Tree.N (_, _)        -> O
 
   let one = Tree.L ()
 
@@ -96,7 +97,7 @@ module Make (M : POSITIVE) = struct open M
     | (O, Some B) -> M.one
     | (O, _)      ->       succ (log2 (M.div2  x))
     | (I, _)      -> succ (succ (log2 (M.div2p x)))
-    | _           -> raise InvalidLog
+    | _ -> raise InvalidLog
 
   let rec pow xi yi =
     let go x y = match M.head y with
