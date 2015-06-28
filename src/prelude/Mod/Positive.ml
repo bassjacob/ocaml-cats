@@ -1,31 +1,31 @@
+open Ty
+
 module Positive = struct
   module Def = struct
     exception InvalidDiv
 
     type code = B | O | I
 
-    type ('k, 'c) p =
-      | L of 'k
-      | N of 'c * ('k, 'c) p
+    module Tree = NumTree.Make(Con.Identity.Poly)
 
-    type t = (unit, bool) p
+    type t = (unit, bool) Tree.t
 
     let head = function
-      | L _ -> B
-      | N (h, _) -> if h then I else O
+      | Tree.L _ -> B
+      | Tree.N (h, _) -> if h then I else O
 
-    let one = L ()
+    let one = Tree.L ()
 
-    let mul2 x = N (false, x)
+    let mul2 x = Tree.N (false, x)
 
-    let mul2s x = N (true, x)
+    let mul2s x = Tree.N (true, x)
 
     let div2 = function
-      | N (false, x) -> x
+      | Tree.N (false, x) -> x
       | _ -> raise InvalidDiv
 
     let div2p = function
-      | N (true, x) -> x
+      | Tree.N (true, x) -> x
       | _ -> raise InvalidDiv
   end
   include Def
