@@ -52,6 +52,13 @@ module type DIVISIONRING = sig
   include MODULOSEMIRING with module T := T
 end
 
+module type NUMTREE = sig
+  module T : Unary.Covariant.CO
+  type ('k, 'c) t =
+    | L of 'k
+    | N of 'c * ('k, 'c) t T.el
+end
+
 module type POSITIVE = sig
   exception InvalidDiv
   type code = B | O | I
