@@ -2,6 +2,7 @@
 <src/prelude>: include
 <src/implicits/*.cmx>: for-pack(Implicits)
 <src/prelude/*.cmx>: for-pack(Prelude)
+<src/prelude/Bignum/*.cmx>: for-pack(Prelude.Bignum)
 <src/prelude/Ext/*.cmx>: for-pack(Prelude.Ext)
 <src/prelude/Mod/*.cmx>: for-pack(Prelude.Mod)
 true: bin_annot

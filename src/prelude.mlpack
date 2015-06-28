@@ -1,4 +1,5 @@
 prelude/Amb
+prelude/Bignum
 prelude/Ext
 prelude/Mod
 prelude/Sig

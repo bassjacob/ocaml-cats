@@ -1,4 +1,11 @@
 open Sig
+open Ty
+open Ty.Sig
+
+module Tree : NUMTREE with module F := Con.Identity.Poly
+
+module Con : Nullary.CO with type el = (unit, bool) Tree.t
+module Def : POSITIVE with module T = Con
 
 module Make : functor (M : POSITIVE) -> sig open M
   exception InvalidPred
@@ -15,3 +22,6 @@ module Make : functor (M : POSITIVE) -> sig open M
   val log2 : T.el -> T.el
   val pow : T.el -> T.el -> T.el
 end
+
+include (module type of Def)
+include (module type of Make(Def))

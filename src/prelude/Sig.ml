@@ -71,6 +71,11 @@ module type POSITIVE = sig
   val div2p : T.el -> T.el
 end
 
+module type NATURAL = sig
+  include POSITIVE
+  include SEMIRING with module T := T
+end
+
 module type FUNCTOR = sig
   module T : Unary.Covariant.CO
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
