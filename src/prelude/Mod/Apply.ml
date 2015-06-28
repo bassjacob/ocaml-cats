@@ -1,5 +1,14 @@
 open Sig
 
+module Identity = struct
+  module Def = struct
+    include Functor.Identity.Def
+    let rec apply f x = f x
+  end
+  include Def
+  include Ext.Apply.Make(Def)
+end
+
 module Option = struct
   module Def = struct
     include Functor.Option.Def

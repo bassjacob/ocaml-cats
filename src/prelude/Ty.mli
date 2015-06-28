@@ -147,6 +147,13 @@ module Con : sig
   module String : Nullary.CO
     with type el = string
 
+  module Identity : sig
+    module Mono : functor (T : Nullary.EL) -> Nullary.CO
+      with type el = T.el
+    module Poly : Unary.Covariant.CO
+      with type +'a el = 'a
+  end
+
   module Option : sig
     module Mono : functor (T : Nullary.EL) -> Nullary.CO
       with type el = T.el option

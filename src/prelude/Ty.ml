@@ -166,6 +166,17 @@ module Con = struct
     type el = string
   end)
 
+  module Identity = struct
+    module Mono (T : Nullary.EL) = struct
+      include Make.Nullary(struct
+        type el = T.el
+      end)
+    end
+    module Poly = Make.Unary.Covariant(struct
+      type +'a el = 'a
+    end)
+  end
+
   module Option = struct
     module Mono (T : Nullary.EL) = struct
       include Make.Nullary(struct
