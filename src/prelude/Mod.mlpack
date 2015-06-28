@@ -13,7 +13,6 @@ Functor
 Lan
 ModuloSemiring
 Monoid
-Natural
 Positive
 Product
 Profunctor
@@ -22,4 +21,5 @@ Ring
 Semigroup
 Semigroupoid
 Semiring
+Transform
 Traversable

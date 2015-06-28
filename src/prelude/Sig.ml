@@ -110,7 +110,7 @@ module type COEND = sig
   val from : t -> ('r elim -> 'r)
 end
 
-module type NATURAL = sig
+module type TRANSFORM = sig
   module F : FUNCTOR
   module G : FUNCTOR
   type t = { ap : 'x. 'x F.T.el -> 'x G.T.el }

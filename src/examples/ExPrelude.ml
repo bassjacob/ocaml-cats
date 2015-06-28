@@ -46,7 +46,7 @@ let ex6 () : int list list =
 
 (* Natural transformations *)
 let ex7 () : int list =
-  let open Functor in let module N = Natural.Make(Option)(List) in
+  let open Functor in let module N = Transform.Make(Option)(List) in
   { N.ap = fun x -> match x with
     | None -> []
     | Some x -> [x]
