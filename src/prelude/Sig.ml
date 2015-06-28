@@ -53,22 +53,22 @@ module type DIVISIONRING = sig
 end
 
 module type NUMTREE = sig
-  module T : Unary.Covariant.CO
+  module F : Unary.Covariant.CO
   type ('k, 'c) t =
     | L of 'k
-    | N of 'c * ('k, 'c) t T.el
+    | N of 'c * ('k, 'c) t F.el
 end
 
 module type POSITIVE = sig
   exception InvalidDiv
   type code = B | O | I
-  type t
-  val head : t -> code
-  val one : t
-  val mul2 : t -> t
-  val mul2s : t -> t
-  val div2 : t -> t
-  val div2p : t -> t
+  module T : Nullary.CO
+  val head : T.el -> code
+  val one : T.el
+  val mul2 : T.el -> T.el
+  val mul2s : T.el -> T.el
+  val div2 : T.el -> T.el
+  val div2p : T.el -> T.el
 end
 
 module type FUNCTOR = sig

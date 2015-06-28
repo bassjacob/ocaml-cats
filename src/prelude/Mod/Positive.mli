@@ -1,10 +1,12 @@
 open Sig
-open Ty
+open Ty.Sig
+
+module Tree : NUMTREE
+
+module Con : Nullary.CO
 
 module Positive : sig
-  module Def : sig
-    include POSITIVE
-  end with type t = (unit, bool) NumTree.Make(Con.Identity.Poly).t
+  module Def : POSITIVE with module T = Con
   include (module type of Def)
   include (module type of Ext.Positive.Make(Def))
 end

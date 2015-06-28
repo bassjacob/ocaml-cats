@@ -1,14 +1,20 @@
 open Ty
+open Ty.Sig
+
+module Tree = NumTree.Make(Con.Identity.Poly)
+
+module Con = Ty.Make.Nullary(struct
+  type el = (unit, bool) Tree.t
+end)
 
 module Positive = struct
   module Def = struct
+
     exception InvalidDiv
 
     type code = B | O | I
 
-    module Tree = NumTree.Make(Con.Identity.Poly)
-
-    type t = (unit, bool) Tree.t
+    module T = Con
 
     let head = function
       | Tree.L _ -> B
