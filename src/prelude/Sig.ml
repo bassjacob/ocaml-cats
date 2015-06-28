@@ -52,6 +52,18 @@ module type DIVISIONRING = sig
   include MODULOSEMIRING with module T := T
 end
 
+module type POSITIVE = sig
+  exception InvalidDiv
+  type code = B | O | I
+  type t
+  val head : t -> code
+  val one : t
+  val mul2 : t -> t
+  val mul2s : t -> t
+  val div2 : t -> t
+  val div2p : t -> t
+end
+
 module type FUNCTOR = sig
   module T : Unary.Covariant.CO
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)

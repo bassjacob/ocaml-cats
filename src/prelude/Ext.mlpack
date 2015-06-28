@@ -3,6 +3,7 @@ Bind
 Functor
 ModuloSemiring
 Monad
+Positive
 Profunctor
 Ring
 Semigroup
