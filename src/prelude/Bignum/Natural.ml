@@ -40,17 +40,13 @@ module Semiring = struct
   let zero = Tree.L false
 
   let add x y =
-    if x = zero then
-      y
-    else if y = zero then
-      x
-    else
+    if x = zero then y else
+    if y = zero then x else
       PosExt.add x y
 
   let mul x y =
-    if x = zero || y = zero then
-      zero
-    else
+    if x = zero then zero else
+    if y = zero then zero else
       PosExt.mul x y
 end
 
