@@ -1,12 +1,16 @@
+open Category.Fun
 open Semigroupoid.Fun
 open Sig
 
-module Make (G : FUNCTOR) (H : FUNCTOR) = struct
+module Make (J : FUNCTOR) (G : FUNCTOR) = struct
+  module J = J
   module G = G
-  module H = H
-  type 'a t = Lan : ('x G.T.el -> 'a) * 'x H.T.el -> 'a t
-  type 'f nat = { ap : 'x. 'x H.T.el -> ('x G.T.el, 'f) Ty.ap }
-  let into (type f) (module F : FUNCTOR with type T.co = f) n e =
-    match e with
-    | Lan (a, h) -> F.T.co %> F.map a %> F.T.el %> n.ap @@ h
+  type 'a lan = Lan : ('x J.T.el -> 'a) * 'x G.T.el -> 'a lan
+  type ('x, 'f) pullback = ('x J.T.el, 'f) Ty.ap
+  type 'f lhs = { lhs : 'x. 'x G.T.el -> ('x, 'f) pullback }
+  type 'f rhs = { rhs : 'x. 'x lan -> ('x, 'f) Ty.ap }
+  let into (type f) (module F : FUNCTOR with type T.co = f) lhs =
+    { rhs = fun (Lan (k, g)) -> F.T.co %> F.map k %> F.T.el %> lhs.lhs @@ g }
+  let from (type f) (module F : FUNCTOR with type T.co = f) rhs =
+    { lhs = fun g -> rhs.rhs (Lan (id, g)) }
 end

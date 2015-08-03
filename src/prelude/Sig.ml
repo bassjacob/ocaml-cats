@@ -129,21 +129,25 @@ module type TRANSFORM = sig
 end
 
 module type RAN = sig
+  module J : FUNCTOR
   module G : FUNCTOR
-  module H : FUNCTOR
-  type 'a t
-  type 'f nat = { ap : 'x. ('x G.T.el, 'f) Ty.ap -> 'x H.T.el }
-  val into : (module FUNCTOR with type T.co = 'f)
-    -> 'f nat -> (('a, 'f) Ty.ap -> 'a t)
+  type 'a ran
+  type ('x, 'f) pullback = ('x J.T.el, 'f) Ty.ap
+  type 'f lhs = { lhs : 'x. ('x, 'f) pullback -> 'x G.T.el }
+  type 'f rhs = { rhs : 'x. ('x, 'f) Ty.ap -> 'x ran }
+  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 
 module type LAN = sig
+  module J : FUNCTOR
   module G : FUNCTOR
-  module H : FUNCTOR
-  type 'a t
-  type 'f nat = { ap : 'x. 'x H.T.el -> ('x G.T.el, 'f) Ty.ap }
-  val into : (module FUNCTOR with type T.co = 'f)
-    -> 'f nat -> ('a t -> ('a, 'f) Ty.ap)
+  type 'a lan
+  type ('x, 'f) pullback = ('x J.T.el, 'f) Ty.ap
+  type 'f lhs = { lhs : 'x. 'x G.T.el -> ('x, 'f) pullback }
+  type 'f rhs = { rhs : 'x. 'x lan -> ('x, 'f) Ty.ap }
+  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 
 module type PRODUCT = sig
