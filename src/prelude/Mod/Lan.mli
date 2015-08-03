@@ -1,3 +1,3 @@
 open Sig
 
-module Make : functor (G : FUNCTOR) (H : FUNCTOR) -> LAN
+module Make : functor (J : FUNCTOR) (G : FUNCTOR) -> LAN

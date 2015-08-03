@@ -1,4 +1,3 @@
-open Semigroupoid.Fun
 open Sig
 
-module Make : functor (G : FUNCTOR) (H : FUNCTOR) -> RAN
+module Make : functor (J : FUNCTOR) (G : FUNCTOR) -> RAN
