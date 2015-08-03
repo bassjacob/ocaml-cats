@@ -105,23 +105,27 @@ module type TRANSFORM = sig
 end
 
 module type RAN = sig
-  module J : FUNCTOR
-  module G : FUNCTOR
-  type 'a ran
-  type ('x, 'f) pullback = ('x J.T.el, 'f) Ty.ap
-  type 'f lhs = { lhs : 'x. ('x, 'f) pullback -> 'x G.T.el }
-  type 'f rhs = { rhs : 'x. ('x, 'f) Ty.ap -> 'x ran }
+  open Ty.Sig.Unary
+  module J : Covariant.CO
+  module G : Covariant.CO
+  type +'a ran = { ran : 'x. ('a -> 'x J.el) -> 'x G.el }
+  module R : Covariant.CO with type +'a el = 'a ran
+  type ('x, 'f) pullback = ('x J.el, 'f) Ty.ap
+  type 'f lhs = { lhs : 'x. ('x, 'f) pullback -> 'x G.el }
+  type 'f rhs = { rhs : 'x. ('x, 'f) Ty.ap -> 'x R.el }
   val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 
 module type LAN = sig
-  module J : FUNCTOR
-  module G : FUNCTOR
-  type 'a lan
-  type ('x, 'f) pullback = ('x J.T.el, 'f) Ty.ap
-  type 'f lhs = { lhs : 'x. 'x G.T.el -> ('x, 'f) pullback }
-  type 'f rhs = { rhs : 'x. 'x lan -> ('x, 'f) Ty.ap }
+  open Ty.Sig.Unary
+  module J : Covariant.CO
+  module G : Covariant.CO
+  type +'a lan = Lan : ('x J.el -> 'a) * 'x G.el -> 'a lan
+  module L : Covariant.CO with type +'a el = 'a lan
+  type ('x, 'f) pullback = ('x J.el, 'f) Ty.ap
+  type 'f lhs = { lhs : 'x. 'x G.el -> ('x, 'f) pullback }
+  type 'f rhs = { rhs : 'x. 'x L.el -> ('x, 'f) Ty.ap }
   val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
