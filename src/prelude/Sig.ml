@@ -52,30 +52,6 @@ module type DIVISIONRING = sig
   include MODULOSEMIRING with module T := T
 end
 
-module type NUMTREE = sig
-  module F : Unary.Covariant.CO
-  type ('k, 'c) t =
-    | L of 'k
-    | N of 'c * ('k, 'c) t F.el
-end
-
-module type POSITIVE = sig
-  exception InvalidDiv
-  type code = B | O | I
-  module T : Nullary.CO
-  val head : T.el -> code
-  val one : T.el
-  val mul2 : T.el -> T.el
-  val mul2s : T.el -> T.el
-  val div2 : T.el -> T.el
-  val div2p : T.el -> T.el
-end
-
-module type NATURAL = sig
-  include POSITIVE
-  include SEMIRING with module T := T
-end
-
 module type FUNCTOR = sig
   module T : Unary.Covariant.CO
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
