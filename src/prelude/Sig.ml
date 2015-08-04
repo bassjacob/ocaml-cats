@@ -2,6 +2,33 @@ open Ty.Sig
 
 (* The Sig module collects structure signatures. *)
 
+module type INITIAL = sig
+  type t
+  val absurd : t -> 'a
+end
+
+module type TERMINAL = sig
+  type t
+  val bang : 'a -> t
+end
+
+module type LEIBNIZ = sig
+  open Ty.Sig.Unary
+  type ('a, 'b) t
+  val refl : ('a, 'a) t
+  val subst : (module Invariant.CO with type co = 'f)
+    -> ('a, 'b) t -> (('a, 'f) Ty.ap -> ('b, 'f) Ty.ap)
+end
+
+module type APART = sig
+  module I : INITIAL
+  module L : LEIBNIZ
+  type ('a, 'b) t = ('a, 'b) L.t -> I.t
+  type ('a, 'b) obs
+  val into : ('a, 'b) L.t -> ('a, 'b) obs
+  val from : ('a, 'b) obs -> ('a, 'b) L.t
+end
+
 module type UNIVERSAL = sig
   module T : Unary.Invariant.CO
   type poly = { ap : 'x. 'x T.el }

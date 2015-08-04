@@ -1,3 +1,4 @@
+Apart
 Applicative
 Apply
 Bifunctor
@@ -10,7 +11,9 @@ Exists
 Foldable
 Forall
 Functor
+Initial
 Lan
+Leibniz
 ModuloSemiring
 Monoid
 Product
@@ -20,5 +23,6 @@ Ring
 Semigroup
 Semigroupoid
 Semiring
+Terminal
 Transform
 Traversable

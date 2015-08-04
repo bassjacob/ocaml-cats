@@ -1,0 +1,3 @@
+open Sig
+
+include INITIAL
