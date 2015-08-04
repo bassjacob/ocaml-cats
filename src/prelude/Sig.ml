@@ -24,9 +24,6 @@ module type APART = sig
   module I : INITIAL
   module L : LEIBNIZ
   type ('a, 'b) t = ('a, 'b) L.t -> I.t
-  type ('a, 'b) obs
-  val into : ('a, 'b) L.t -> ('a, 'b) obs
-  val from : ('a, 'b) obs -> ('a, 'b) L.t
 end
 
 module type UNIVERSAL = sig

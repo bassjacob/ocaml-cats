@@ -10,4 +10,3 @@ type ('a, 'b) obs =
 include APART
   with module I := I
    and module L := L
-   and type ('a, 'b) obs := ('a, 'b) obs
