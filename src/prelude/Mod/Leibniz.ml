@@ -1,6 +1,6 @@
 open Sig
-
 open Ty.Sig.Unary
+
 type ('a, 'b) t = Refl : ('a, 'a) t
 let refl = Refl
 let subst (type f) (module T : Invariant.CO with type co = f) (type a) (type b)

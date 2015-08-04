@@ -1,3 +1,5 @@
+open Sig
+
 module I = Initial
 module L = Leibniz
 
