@@ -127,27 +127,44 @@ module type TRANSFORM = sig
   type t = { ap : 'x. 'x F.T.el -> 'x G.T.el }
 end
 
-module type RAN = sig
+(* pullback (along J) *)
+module type PULLBACK = sig
   module J : TC1
-  module G : TC1
-  type 'a ran = { ran : 'x. ('a -> 'x J.el) -> 'x G.el }
-  module R : TC1 with type 'a el = 'a ran
-  type ('x, 'f) pullback = ('x J.el, 'f) ap
-  type 'f lhs = { lhs : 'x. ('x, 'f) pullback -> 'x G.el }
-  type 'f rhs = { rhs : 'x. ('x, 'f) ap -> 'x R.el }
-  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
-  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
+  (* J↑* f ≅ f ∘ J *)
+  type ('x, 'f) t = ('x J.el, 'f) ap
 end
 
+(* left adjoint to the pullback (along J) *)
 module type LAN = sig
   module J : TC1
   module G : TC1
+  (* J↑* F ≅ F ∘ J *)
+  module AlongJ : PULLBACK with module J = J
+  (* Lan J G ⊣ J↑* *)
   type 'a lan = Lan : ('x J.el -> 'a) * 'x G.el -> 'a lan
   module L : TC1 with type 'a el = 'a lan
-  type ('x, 'f) pullback = ('x J.el, 'f) ap
-  type 'f lhs = { lhs : 'x. 'x G.el -> ('x, 'f) pullback }
+  type 'f lhs = { lhs : 'x. 'x G.el -> ('x, 'f) AlongJ.t }
   type 'f rhs = { rhs : 'x. 'x L.el -> ('x, 'f) ap }
+  (* (G ~> J↑* F) → (Lan J G ~> F) *)
   val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  (* (G ~> J↑* F) ← (Lan J G ~> F) *)
+  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
+end
+
+(* right adjoint to the pullback (along J) *)
+module type RAN = sig
+  module J : TC1
+  module G : TC1
+  (* J↑* F ≅ F ∘ J *)
+  module AlongJ : PULLBACK with module J = J
+  (* J↑* ⊣ Ran J G *)
+  type 'a ran = { ran : 'x. ('a -> 'x J.el) -> 'x G.el }
+  module R : TC1 with type 'a el = 'a ran
+  type 'f lhs = { lhs : 'x. ('x, 'f) AlongJ.t -> 'x G.el }
+  type 'f rhs = { rhs : 'x. ('x, 'f) ap -> 'x R.el }
+  (* (J↑* F ~> G) → (F ~> Ran J G) *)
+  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  (* (J↑* F ~> G) ← (F ~> Ran J G) *)
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 

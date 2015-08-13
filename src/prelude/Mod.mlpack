@@ -18,6 +18,7 @@ ModuloSemiring
 Monoid
 Product
 Profunctor
+Pullback
 Ran
 Ring
 Semigroup
