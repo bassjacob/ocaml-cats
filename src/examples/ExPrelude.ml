@@ -2,6 +2,7 @@ open Prelude
 open Amb
 open Mod
 open Semigroupoid.Fun
+open TyCon
 
 (* Existentials for list functor *)
 let ex0 () : int = let module E = Exists.Make(Functor.List.T) in
@@ -18,7 +19,7 @@ let ex2 () : int = (fun x -> x + 1) %> (fun x -> x * 2) @@ 10
 
 (* Monoid for list *)
 let ex3 () : int list =
-  let module M = Monoid.List(struct type el = int end) in
+  let module M = Monoid.List(TC0(struct type t = int end)) in
   M.op [0; 1; 2; 3] [4; 5; 6; 7]
 
 (* Foldable for list *)
@@ -60,4 +61,4 @@ let () =
   bang @@ ex4 ();
   bang @@ ex5 ();
   bang @@ ex6 ();
-  bang @@ ex7 ()
+  bang @@ ex7 ();

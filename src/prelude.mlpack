@@ -2,4 +2,4 @@ prelude/Amb
 prelude/Ext
 prelude/Mod
 prelude/Sig
-prelude/Ty
+prelude/TyCon

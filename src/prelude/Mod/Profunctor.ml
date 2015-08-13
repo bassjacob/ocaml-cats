@@ -1,14 +1,13 @@
 open Sig
-open Ty
-open Ty.Sig
+open TyCon
 
-module Diagonal (P : PROFUNCTOR) = Make.Unary.Invariant(struct
-  type 'a el = ('a, 'a) P.T.el
+module Diagonal (P : PROFUNCTOR) = TC1(struct
+  type 'a t = ('a, 'a) P.T.el
 end)
 
 module Fun = struct
   module Def = struct
-    module T = Con.Fun.Poly
+    module T = TC.Fun
     let dimap f g h = let (%>) = Amb.compose in g %> h %> f
   end
   include Def

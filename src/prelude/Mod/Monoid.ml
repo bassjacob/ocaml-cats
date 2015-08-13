@@ -1,5 +1,5 @@
 open Sig
-open Ty.Sig
+open TyCon
 
 module Unit = struct
   module Def = struct
@@ -53,7 +53,7 @@ module Multiplicative = struct
   end
 end
 
-module List (T : Nullary.EL) = struct
+module List (T : TC0) = struct
   module Dep = Semigroup.List(T)
   module Def = struct
     include Dep.Def

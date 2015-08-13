@@ -1,4 +1,4 @@
 open Sig
-open Ty.Sig.Unary
+open TyCon
 
-module Make : functor (J : Covariant.CO) (G : Covariant.CO) -> LAN
+module Make : functor (J : TC1) (G : TC1) -> LAN

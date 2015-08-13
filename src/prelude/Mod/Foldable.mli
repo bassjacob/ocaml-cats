@@ -1,12 +1,12 @@
 open Sig
-open Ty
+open TyCon
 
 module List : sig
-  module Def : FOLDABLE with module T = Con.List.Poly
+  module Def : FOLDABLE with module T = TC.List
   include (module type of Def)
 end
 
 module Option : sig
-  module Def : FOLDABLE with module T = Con.Option.Poly
+  module Def : FOLDABLE with module T = TC.Option
   include (module type of Def)
 end

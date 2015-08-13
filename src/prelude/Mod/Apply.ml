@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Identity = struct
   module Def = struct
@@ -25,7 +26,7 @@ module List = struct
   module Def = struct
     include Functor.List.Def
     let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
-      let module M = Semigroup.List(struct type el = b end) in
+      let module M = Semigroup.List(TC0(struct type t = b end)) in
       match fs with
       | [] -> []
       | (f::fs) -> M.op (map f xs) (apply fs xs)

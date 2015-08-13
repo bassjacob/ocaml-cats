@@ -1,7 +1,7 @@
 open Sig
-open Ty.Sig
+open TyCon
 
-module Make : functor (E : Unary.Invariant.CO) -> sig
+module Make : functor (E : TC1) -> sig
   module Def : UNIVERSAL with module T := E
   include (module type of Def)
 end

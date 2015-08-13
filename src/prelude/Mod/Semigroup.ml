@@ -1,10 +1,9 @@
 open Sig
-open Ty
-open Ty.Sig
+open TyCon
 
 module Unit = struct
   module Def = struct
-    module T = Con.Unit
+    module T = TC.Unit
     let op _ _ = ()
   end
   include Def
@@ -13,7 +12,7 @@ end
 
 module String = struct
   module Def = struct
-    module T = Con.String
+    module T = TC.String
     let op x y = String.concat "" [x; y]
   end
   include Def
@@ -23,7 +22,7 @@ end
 module Additive = struct
   module Int = struct
     module Def = struct
-      module T = Con.Int
+      module T = TC.Int
       let op = (+)
     end
     include Def
@@ -32,7 +31,7 @@ module Additive = struct
 
   module Float = struct
     module Def = struct
-      module T = Con.Float
+      module T = TC.Float
       let op = (+.)
     end
     include Def
@@ -43,7 +42,7 @@ end
 module Multiplicative = struct
   module Int = struct
     module Def = struct
-      module T = Con.Int
+      module T = TC.Int
       let op = ( * )
     end
     include Def
@@ -52,7 +51,7 @@ module Multiplicative = struct
 
   module Float = struct
     module Def = struct
-      module T = Con.Float
+      module T = TC.Float
       let op = ( *. )
     end
     include Def
@@ -60,9 +59,9 @@ module Multiplicative = struct
   end
 end
 
-module List (T : Nullary.EL) = struct
+module List (X : TC0) = struct
   module Def = struct
-    module T = Con.List.Mono(T)
+    module T = TC0(struct type t = X.el TC.List.el end)
     let op = List.append
   end
   include Def

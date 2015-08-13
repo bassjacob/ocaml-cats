@@ -1,7 +1,7 @@
 open Sig
-open Ty.Sig
+open TyCon
 
-module Make (E : Unary.Invariant.CO) = struct
+module Make (E : TC1) = struct
   module Def = struct
     module T = E
     type poly = { ap : 'x. 'x T. el }

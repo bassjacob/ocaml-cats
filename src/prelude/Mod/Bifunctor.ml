@@ -1,9 +1,9 @@
 open Sig
-open Ty
+open TyCon
 
 module Tuple = struct
   module Def = struct
-    module T = Con.Tuple.Poly
+    module T = TC.Tuple
     let bimap f g = let open Amb.Product in
       let (%>) = Amb.compose in pair (f %> fst) (g %> snd)
   end
@@ -12,7 +12,7 @@ end
 
 module Variant = struct
   module Def = struct
-    module T = Con.Variant.Poly
+    module T = TC.Variant
     let bimap f g = let open Amb.Coproduct in
       let (%>) = Amb.compose in case (inl %> f) (inr %> g)
   end

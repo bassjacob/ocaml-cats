@@ -1,5 +1,4 @@
 open Sig
-open Ty
 
 module Tuple = struct
   module Def = struct

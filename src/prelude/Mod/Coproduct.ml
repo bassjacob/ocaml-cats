@@ -1,5 +1,5 @@
 open Sig
-open Ty
+open TyCon
 
 module Variant = struct
   module Def = struct

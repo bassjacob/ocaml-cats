@@ -1,7 +1,7 @@
 open Sig
-open Ty
+open TyCon
 
 module Variant : sig
-  module Def : COPRODUCT with module T = Con.Variant.Poly
+  module Def : COPRODUCT with module T = TC.Variant
   include (module type of Def)
 end

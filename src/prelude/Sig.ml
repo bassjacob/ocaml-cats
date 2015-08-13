@@ -1,4 +1,4 @@
-open Ty.Sig
+open TyCon
 
 (* The Sig module collects structure signatures. *)
 
@@ -13,11 +13,10 @@ module type TERMINAL = sig
 end
 
 module type LEIBNIZ = sig
-  open Ty.Sig.Unary
   type ('a, 'b) t
   val refl : ('a, 'a) t
-  val subst : (module Invariant.CO with type co = 'f)
-    -> ('a, 'b) t -> (('a, 'f) Ty.ap -> ('b, 'f) Ty.ap)
+  val subst : (module TC1 with type co = 'f)
+    -> ('a, 'b) t -> (('a, 'f) ap -> ('b, 'f) ap)
 end
 
 module type APART = sig
@@ -27,7 +26,7 @@ module type APART = sig
 end
 
 module type UNIVERSAL = sig
-  module T : Unary.Invariant.CO
+  module T : TC1
   type poly = { ap : 'x. 'x T.el }
   type t
   val into : poly -> t
@@ -35,7 +34,7 @@ module type UNIVERSAL = sig
 end
 
 module type EXISTENTIAL = sig
-  module T : Unary.Invariant.CO
+  module T : TC1
   type 'r elim = { ap : 'x. 'x T.el -> 'r }
   type t
   val into : 'a T.el -> t
@@ -43,7 +42,7 @@ module type EXISTENTIAL = sig
 end
 
 module type SEMIGROUP = sig
-  module T : Nullary.CO
+  module T : TC0
   val op : T.el -> T.el -> T.el
 end
 
@@ -53,7 +52,7 @@ module type MONOID = sig
 end
 
 module type SEMIRING = sig
-  module T : Nullary.CO
+  module T : TC0
   val zero : T.el
   val add : T.el -> T.el -> T.el
   val one : T.el
@@ -77,22 +76,22 @@ module type DIVISIONRING = sig
 end
 
 module type FUNCTOR = sig
-  module T : Unary.Covariant.CO
+  module T : TC1
   val map : ('a -> 'b) -> ('a T.el -> 'b T.el)
 end
 
 module type BIFUNCTOR = sig
-  module T : Binary.Covariant.CO
+  module T : TC2
   val bimap : ('a -> 'b) -> ('c -> 'd) -> (('a, 'c) T.el -> ('b, 'd) T.el)
 end
 
 module type PRESHEAF = sig
-  module T : Unary.Contravariant.CO
+  module T : TC1
   val premap : ('a -> 'b) -> ('b T.el -> 'a T.el)
 end
 
 module type PROFUNCTOR = sig
-  module T : Binary.ContraCovariant.CO
+  module T : TC2
   val dimap : ('a -> 'b) -> ('c -> 'd) -> (('b, 'c) T.el -> ('a, 'd) T.el)
 end
 
@@ -129,27 +128,25 @@ module type TRANSFORM = sig
 end
 
 module type RAN = sig
-  open Ty.Sig.Unary
-  module J : Covariant.CO
-  module G : Covariant.CO
-  type +'a ran = { ran : 'x. ('a -> 'x J.el) -> 'x G.el }
-  module R : Covariant.CO with type +'a el = 'a ran
-  type ('x, 'f) pullback = ('x J.el, 'f) Ty.ap
+  module J : TC1
+  module G : TC1
+  type 'a ran = { ran : 'x. ('a -> 'x J.el) -> 'x G.el }
+  module R : TC1 with type 'a el = 'a ran
+  type ('x, 'f) pullback = ('x J.el, 'f) ap
   type 'f lhs = { lhs : 'x. ('x, 'f) pullback -> 'x G.el }
-  type 'f rhs = { rhs : 'x. ('x, 'f) Ty.ap -> 'x R.el }
+  type 'f rhs = { rhs : 'x. ('x, 'f) ap -> 'x R.el }
   val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 
 module type LAN = sig
-  open Ty.Sig.Unary
-  module J : Covariant.CO
-  module G : Covariant.CO
-  type +'a lan = Lan : ('x J.el -> 'a) * 'x G.el -> 'a lan
-  module L : Covariant.CO with type +'a el = 'a lan
-  type ('x, 'f) pullback = ('x J.el, 'f) Ty.ap
+  module J : TC1
+  module G : TC1
+  type 'a lan = Lan : ('x J.el -> 'a) * 'x G.el -> 'a lan
+  module L : TC1 with type 'a el = 'a lan
+  type ('x, 'f) pullback = ('x J.el, 'f) ap
   type 'f lhs = { lhs : 'x. 'x G.el -> ('x, 'f) pullback }
-  type 'f rhs = { rhs : 'x. 'x L.el -> ('x, 'f) Ty.ap }
+  type 'f rhs = { rhs : 'x. 'x L.el -> ('x, 'f) ap }
   val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
@@ -199,7 +196,7 @@ module type COMONAD = sig
 end
 
 module type FOLDABLE = sig
-  module T : Unary.Invariant.CO
+  module T : TC1
   val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
   val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
   val fold_map : (module MONOID with type T.el = 'm)
@@ -210,7 +207,7 @@ module type TRAVERSABLE = sig
   include FUNCTOR
   include FOLDABLE with module T := T
   val traverse : (module APPLICATIVE with type T.co = 'm)
-    -> ('a -> ('b, 'm) Ty.ap) -> ('a T.el -> ('b T.el, 'm) Ty.ap)
+    -> ('a -> ('b, 'm) ap) -> ('a T.el -> ('b T.el, 'm) ap)
   val sequence : (module APPLICATIVE with type T.co = 'm)
-    -> ('a, 'm) Ty.ap T.el -> ('a T.el, 'm) Ty.ap
+    -> ('a, 'm) ap T.el -> ('a T.el, 'm) ap
 end

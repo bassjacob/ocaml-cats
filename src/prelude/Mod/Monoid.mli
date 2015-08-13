@@ -1,5 +1,5 @@
 open Sig
-open Ty.Sig
+open TyCon
 
 module Unit : sig
   module Def : MONOID with module T = Semigroup.Unit.Def.T
@@ -35,7 +35,7 @@ module Multiplicative : sig
   end
 end
 
-module List : functor (T : Nullary.EL) -> sig
+module List : functor (T : TC0) -> sig
   module Def : MONOID with module T = Semigroup.List(T).Def.T
   include (module type of Def)
 end

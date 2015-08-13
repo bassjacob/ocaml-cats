@@ -1,9 +1,9 @@
 open Sig
-open Ty
+open TyCon
 
 module List = struct
   module Def = struct
-    module T = Con.List.Poly
+    module T = TC.List
     let foldr f z xs = List.fold_right f xs z
     let foldl = List.fold_left
     let fold_map (type m) (module M : MONOID with type T.el = m) act =
@@ -17,7 +17,7 @@ end
 
 module Option = struct
   module Def = struct
-    module T = Con.Option.Poly
+    module T = TC.Option
     let foldr f z xs = match xs with
       | None -> z
       | Some x -> f x z

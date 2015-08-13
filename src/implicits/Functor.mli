@@ -1,6 +1,6 @@
 open Prelude
 open Prelude.Sig
-open Prelude.Ty
+open Prelude.TyCon
 
 val map : (implicit M : FUNCTOR)
   -> ('a -> 'b)

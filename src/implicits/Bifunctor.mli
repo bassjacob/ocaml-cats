@@ -1,6 +1,6 @@
 open Prelude
 open Prelude.Sig
-open Prelude.Ty
+open Prelude.TyCon
 
 val bimap : (implicit M : BIFUNCTOR)
   -> ('a -> 'b)

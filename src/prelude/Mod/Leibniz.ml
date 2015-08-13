@@ -1,8 +1,8 @@
 open Sig
-open Ty.Sig.Unary
+open TyCon
 
 type ('a, 'b) t = Refl : ('a, 'a) t
 let refl = Refl
-let subst (type f) (module T : Invariant.CO with type co = f) (type a) (type b)
-  : (a, b) t -> ((a, f) Ty.ap -> (b, f) Ty.ap)
+let subst (type f) (module T : TC1 with type co = f) (type a) (type b)
+  : (a, b) t -> ((a, f) ap -> (b, f) ap)
   = fun Refl -> Amb.id

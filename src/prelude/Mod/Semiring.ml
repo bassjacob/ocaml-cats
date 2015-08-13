@@ -1,9 +1,9 @@
 open Sig
-open Ty
+open TyCon
 
 module Unit = struct
   module Def = struct
-    module T = Con.Unit
+    module T = TC.Unit
     let zero = ()
     let add _ _ = ()
     let one = ()
@@ -17,7 +17,7 @@ module Int = struct
   module Def = struct
     module Add = Monoid.Additive.Int.Def
     module Mul = Monoid.Multiplicative.Int.Def
-    module T = Con.Int
+    module T = TC.Int
     let zero = Add.unit
     let add = Add.op
     let one = Mul.unit
@@ -31,7 +31,7 @@ module Float = struct
   module Def = struct
     module Add = Monoid.Additive.Float.Def
     module Mul = Monoid.Multiplicative.Float.Def
-    module T = Ty.Con.Float
+    module T = TC.Float
     let zero = Add.unit
     let add = Add.op
     let one = Mul.unit

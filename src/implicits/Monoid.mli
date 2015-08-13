@@ -1,6 +1,6 @@
 open Prelude
 open Prelude.Sig
-open Prelude.Ty.Sig
+open Prelude.TyCon
 
 val unit : (implicit M : MONOID) -> M.T.el
 

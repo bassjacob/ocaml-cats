@@ -1,6 +1,6 @@
 open Prelude
 open Prelude.Sig
-open Prelude.Ty.Sig
+open Prelude.TyCon
 
 val op : (implicit M : SEMIGROUP)
   -> M.T.el -> M.T.el -> M.T.el

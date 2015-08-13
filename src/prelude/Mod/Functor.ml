@@ -1,9 +1,9 @@
 open Sig
-open Ty
+open TyCon
 
 module Identity = struct
   module Def = struct
-    module T = Con.Identity.Poly
+    module T = TC.Identity
     let map f x = f x
   end
   include Def
@@ -12,7 +12,7 @@ end
 
 module Option = struct
   module Def = struct
-    module T = Con.Option.Poly
+    module T = TC.Option
     let map f = function
       | None -> None
       | Some x -> Some (f x)
@@ -23,7 +23,7 @@ end
 
 module List = struct
   module Def = struct
-    module T = Con.List.Poly
+    module T = TC.List
     let map = List.map
   end
   include Def
