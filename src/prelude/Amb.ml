@@ -1,3 +1,17 @@
+let undefined ?(message = "Undefined") _ = failwith message
+external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
+external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
+
+external id : 'a -> 'a = "%identity"
+let compose g f x = g (f x)
+let const x _ = x
+let flip f x y = f y x
+let bang x = const () x
+let diagonal x = (x, x)
+let curry f x y = f (x, y)
+let uncurry f (x, y) = f x y
+let tap f x = f x; x
+
 module Initial = struct
   type t
   let abort _ = failwith "Initial.abort"
@@ -17,19 +31,7 @@ module Product = struct
   let fst (x, y) = x
   let snd (x, y) = y
   let into f g p = (f p, g p)
-  let pair x y = into (fun _ -> x) (fun _ -> y) ()
+  let pair x y = into (const x) (const y) ()
 end
 
-let undefined ?(message = "Undefined") _ = failwith message
-external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
-external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
-external id : 'a -> 'a = "%identity"
-let compose g f x = g (f x)
-let const x _ = x
-let flip f x y = f y x
-let bang x = const () x
-let diagonal x = (x, x)
-let curry f x y = f (x, y)
-let uncurry f (x, y) = f x y
-let tap f x = f x; x
