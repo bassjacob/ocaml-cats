@@ -7,14 +7,15 @@ module Coproduct : sig
   type ('a, 'b) t = InL of 'a | InR of 'b
   val inl : 'a -> ('a, 'b) t
   val inr : 'b -> ('a, 'b) t
-  val case : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) t -> 'x)
+  val from : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) t -> 'x)
 end
 
 module Product : sig
   type ('a, 'b) t = 'a * 'b
   val fst : ('a, 'b) t -> 'a
   val snd : ('a, 'b) t -> 'b
-  val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) t)
+  val into : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) t)
+  val pair : 'a -> 'b -> ('a, 'b) t
 end
 
 val undefined : ?message:bytes -> 'a -> 'b

@@ -7,7 +7,7 @@ module Coproduct = struct
   type ('a, 'b) t = InL of 'a | InR of 'b
   let inl a = InL a
   let inr b = InR b
-  let case f g x = match x with
+  let from f g x = match x with
     | InL a -> f a
     | InR b -> g b
 end
@@ -16,7 +16,8 @@ module Product = struct
   type ('a, 'b) t = 'a * 'b
   let fst (x, y) = x
   let snd (x, y) = y
-  let pair f g p = (f p, g p)
+  let into f g p = (f p, g p)
+  let pair x y = into (fun _ -> x) (fun _ -> y) ()
 end
 
 let undefined ?(message = "Undefined") _ = failwith message

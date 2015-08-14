@@ -1,7 +1,11 @@
 Apart
 Applicative
 Apply
+Biapply
+Biapplicative
+Bifoldable
 Bifunctor
+Bitraversable
 Category
 Coend
 Coproduct

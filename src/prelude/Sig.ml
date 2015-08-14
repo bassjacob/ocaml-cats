@@ -168,18 +168,18 @@ module type RAN = sig
   val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
 end
 
-module type PRODUCT = sig
-  include BIFUNCTOR
-  val fst : ('a, 'b) T.el -> 'a
-  val snd : ('a, 'b) T.el -> 'b
-  val pair : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) T.el)
-end
-
 module type COPRODUCT = sig
   include BIFUNCTOR
   val inl : 'a -> ('a, 'b) T.el
   val inr : 'b -> ('a, 'b) T.el
-  val case : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) T.el -> 'x)
+  val from : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) T.el -> 'x)
+end
+
+module type PRODUCT = sig
+  include BIFUNCTOR
+  val fst : ('a, 'b) T.el -> 'a
+  val snd : ('a, 'b) T.el -> 'b
+  val into : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) T.el)
 end
 
 module type APPLY = sig
@@ -227,4 +227,31 @@ module type TRAVERSABLE = sig
     -> ('a -> ('b, 'm) ap) -> ('a T.el -> ('b T.el, 'm) ap)
   val sequence : (module APPLICATIVE with type T.co = 'm)
     -> ('a, 'm) ap T.el -> ('a T.el, 'm) ap
+end
+
+module type BIAPPLY = sig
+  include BIFUNCTOR
+  val biapply : ('a -> 'b, 'c -> 'd) T.el -> ('a, 'c) T.el -> ('b, 'd) T.el
+end
+
+module type BIAPPLICATIVE = sig
+  include BIAPPLY
+  val bipure : 'a -> 'b -> ('a, 'b) T.el
+end
+
+module type BIFOLDABLE = sig
+  module T : TC2
+  val bifoldr : ('a -> 'c -> 'c) -> ('b -> 'c -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
+  val bifoldl : ('c -> 'a -> 'c) -> ('c -> 'b -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
+  val bifold_map : (module MONOID with type T.el = 'm)
+    -> ('a -> 'm) -> ('b -> 'm) -> (('a, 'b) T.el -> 'm)
+end
+
+module type BITRAVERSABLE = sig
+  include BIFUNCTOR
+  include BIFOLDABLE with module T := T
+  val bitraverse : (module APPLICATIVE with type T.co = 'm)
+    -> ('a -> ('c, 'm) ap) -> ('b -> ('d, 'm) ap) -> (('a, 'b) T.el -> (('c, 'd) T.el, 'm) ap)
+  val bisequence : (module APPLICATIVE with type T.co = 'm)
+    -> (('a, 'm) ap, ('b, 'm) ap) T.el -> (('a, 'b) T.el, 'm) ap
 end
