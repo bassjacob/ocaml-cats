@@ -167,3 +167,11 @@ sig
   module Unit : TC0 with type el = unit
   module Variant : TC2 with type ('a, 'b) el = ('a, 'b) Amb.Coproduct.t
 end
+
+type 'f tc0 = (module TC0 with type co = 'f)
+type 'f tc1 = (module TC1 with type co = 'f)
+type 'f tc2 = (module TC2 with type co = 'f)
+type 'f tc3 = (module TC3 with type co = 'f)
+type 'f tc4 = (module TC4 with type co = 'f)
+type 'f tc5 = (module TC5 with type co = 'f)
+type 'f tc6 = (module TC6 with type co = 'f)
