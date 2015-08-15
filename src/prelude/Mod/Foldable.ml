@@ -6,7 +6,8 @@ module List = struct
     module T = TC.List
     let foldr f z xs = List.fold_right f xs z
     let foldl = List.fold_left
-    let fold_map (type m) (module M : MONOID with type T.el = m) act =
+    let fold_map (type m) (m : m monoid) act =
+      let module M = (val m) in
       let rec go acc rest = match rest with
         | [] -> acc
         | (x::xs) -> go (M.op (act x) acc) xs in
@@ -24,7 +25,9 @@ module Option = struct
     let foldl f a xs = match xs with
       | None -> a
       | Some x -> f a x
-    let fold_map (type m) (module M : MONOID with type T.el = m) act = function
+    let fold_map (type m) (m : m monoid) act =
+      let module M = (val m) in
+      function
       | None -> M.unit
       | Some x -> M.op (act x) M.unit
   end

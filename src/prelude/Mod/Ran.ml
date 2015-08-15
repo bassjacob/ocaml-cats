@@ -15,9 +15,11 @@ module Make (J : TC1) (G : TC1) = struct
   type 'f lhs = { lhs : 'x. ('x, 'f) AlongJ.t -> 'x G.el }
   type 'f rhs = { rhs : 'x. ('x, 'f) ap -> 'x R.el }
   (* (J↑* F ~> G) → (F ~> Ran J G) *)
-  let into (type f) (module F : FUNCTOR with type T.co = f) lhs =
+  let into (type f) (m : f functor') lhs =
+    let module F = (val m) in
     { rhs = fun f -> { ran = fun k -> lhs.lhs %> F.T.co %> F.map k %> F.T.el @@ f } }
   (* (J↑* F ~> G) ← (F ~> Ran J G) *)
-  let from (type f) (module F : FUNCTOR with type T.co = f) rhs =
+  let from (type f) (m : f functor') rhs =
+    let module F = (val m) in
     { lhs = fun p -> (rhs.rhs p).ran id }
 end

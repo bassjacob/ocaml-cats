@@ -9,7 +9,8 @@ module Tuple = struct
       f (fst p) (g (snd p) i)
     let bifoldl f g i p =
       g (f i (fst p)) (snd p)
-    let bifold_map (type m) (module M : MONOID with type T.el = m) f g p =
+    let bifold_map (type m) (m : m monoid) f g p =
+      let module M = (val m) in
       M.op (f @@ fst p) (g @@ snd p)
   end
   include Def
@@ -23,7 +24,8 @@ module Variant = struct
       from (fun x -> f x i) (fun y -> g y i) v
     let bifoldl f g i v =
       from (fun x -> f i x) (fun y -> g i y) v
-    let bifold_map (type m) (module M : MONOID with type T.el = m) f g v =
+    let bifold_map (type m) (m : m monoid) f g v =
+      let module M = (val m) in
       from f g v
   end
   include Def

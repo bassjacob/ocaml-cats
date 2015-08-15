@@ -2,19 +2,16 @@ open Sig
 
 module List = struct
   module Def = struct
-    open Semigroupoid.Fun
     include Functor.List.Def
     include (Foldable.List.Def : module type of Foldable.List.Def
       with module T := T)
 
-    let traverse (type m) (module A : APPLICATIVE with type T.co = m) f =
-      let module EFun = Ext.Functor.Make(A) in let open EFun in
-      let module EApp = Ext.Apply  .Make(A) in let open EApp in
-      let act = A.T.el %> f in
+    let traverse (type m) (m : m applicative) f =
+      let module A = (val m) in
       let rec go xs = match xs with
         | [] -> A.pure []
-        | (x::xs) -> (fun h t -> h :: t) <$-> act x <*> go xs in
-      A.T.co %> go
+        | (x :: xs) -> A.apply (A.map Amb.cons (A.T.el @@ f @@ x)) (go xs) in
+      fun x -> A.T.co @@ go @@ x
 
     let sequence m = traverse m Amb.id
 
