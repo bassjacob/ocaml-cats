@@ -17,7 +17,7 @@ type 't terminal = (module TERMINAL with type t = 't)
 module type LEIBNIZ = sig
   type ('a, 'b) t
   val refl : ('a, 'a) t
-  val subst : (module TC1 with type co = 'f)
+  val subst : 'f tc1
     -> ('a, 'b) t -> (('a, 'f) ap -> ('b, 'f) ap)
 end
 
@@ -169,9 +169,9 @@ module type LAN = sig
   type 'f lhs = { lhs : 'x. 'x G.el -> ('x, 'f) AlongJ.t }
   type 'f rhs = { rhs : 'x. 'x L.el -> ('x, 'f) ap }
   (* (G ~> J↑* F) → (Lan J G ~> F) *)
-  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  val into : 'f functor' -> 'f lhs -> 'f rhs
   (* (G ~> J↑* F) ← (Lan J G ~> F) *)
-  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
+  val from : 'f functor' -> 'f rhs -> 'f lhs
 end
 type ('j, 'g) lan =
   (module LAN
@@ -190,9 +190,9 @@ module type RAN = sig
   type 'f lhs = { lhs : 'x. ('x, 'f) AlongJ.t -> 'x G.el }
   type 'f rhs = { rhs : 'x. ('x, 'f) ap -> 'x R.el }
   (* (J↑* F ~> G) → (F ~> Ran J G) *)
-  val into : (module FUNCTOR with type T.co = 'f) -> 'f lhs -> 'f rhs
+  val into : 'f functor' -> 'f lhs -> 'f rhs
   (* (J↑* F ~> G) ← (F ~> Ran J G) *)
-  val from : (module FUNCTOR with type T.co = 'f) -> 'f rhs -> 'f lhs
+  val from : 'f functor' -> 'f rhs -> 'f lhs
 end
 type ('j, 'g) ran =
   (module RAN
@@ -255,7 +255,7 @@ module type FOLDABLE = sig
   module T : TC1
   val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
   val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
-  val fold_map : (module MONOID with type T.el = 'm)
+  val fold_map : 'm monoid
     -> ('a -> 'm) -> ('a T.el -> 'm)
 end
 type 'f foldable = (module FOLDABLE with type T.co = 'f)
@@ -263,9 +263,9 @@ type 'f foldable = (module FOLDABLE with type T.co = 'f)
 module type TRAVERSABLE = sig
   include FUNCTOR
   include FOLDABLE with module T := T
-  val traverse : (module APPLICATIVE with type T.co = 'm)
+  val traverse : 'm applicative
     -> ('a -> ('b, 'm) ap) -> ('a T.el -> ('b T.el, 'm) ap)
-  val sequence : (module APPLICATIVE with type T.co = 'm)
+  val sequence : 'm applicative
     -> ('a, 'm) ap T.el -> ('a T.el, 'm) ap
 end
 type 'f traversable = (module TRAVERSABLE with type T.co = 'f)
@@ -286,7 +286,7 @@ module type BIFOLDABLE = sig
   module T : TC2
   val bifoldr : ('a -> 'c -> 'c) -> ('b -> 'c -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
   val bifoldl : ('c -> 'a -> 'c) -> ('c -> 'b -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
-  val bifold_map : (module MONOID with type T.el = 'm)
+  val bifold_map : 'm monoid
     -> ('a -> 'm) -> ('b -> 'm) -> (('a, 'b) T.el -> 'm)
 end
 type 'f bifoldable = (module BIFOLDABLE with type T.co = 'f)
@@ -294,9 +294,9 @@ type 'f bifoldable = (module BIFOLDABLE with type T.co = 'f)
 module type BITRAVERSABLE = sig
   include BIFUNCTOR
   include BIFOLDABLE with module T := T
-  val bitraverse : (module APPLICATIVE with type T.co = 'm)
+  val bitraverse : 'm applicative
     -> ('a -> ('c, 'm) ap) -> ('b -> ('d, 'm) ap) -> (('a, 'b) T.el -> (('c, 'd) T.el, 'm) ap)
-  val bisequence : (module APPLICATIVE with type T.co = 'm)
+  val bisequence : 'm applicative
     -> (('a, 'm) ap, ('b, 'm) ap) T.el -> (('a, 'b) T.el, 'm) ap
 end
 type 'f bitraversable = (module BITRAVERSABLE with type T.co = 'f)
