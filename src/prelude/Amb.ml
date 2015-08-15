@@ -4,6 +4,7 @@ external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 
 external id : 'a -> 'a = "%identity"
 let compose g f x = g (f x)
+let cons x xs = x :: xs
 let const x _ = x
 let flip f x y = f y x
 let bang x = const () x

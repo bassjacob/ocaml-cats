@@ -24,6 +24,7 @@ val (|>) : 'a -> (('a -> 'r) -> 'r)
 
 val id : 'a -> 'a
 val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
+val cons : 'a -> 'a list -> 'a list
 val const : 'a -> ('b -> 'a)
 val flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c)
 val bang : 'a -> unit
