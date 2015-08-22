@@ -13,4 +13,4 @@ let into : type a b. (a, b) L.t -> (a, b) obs = function
 
 let from : type a b. (a, b) obs -> (a, b) L.t = function
   | Refl -> L.Refl
-  | Void i -> I.absurd i
+  | Void i -> I.gnab i

@@ -4,7 +4,7 @@ open TyCon
 
 module type INITIAL = sig
   type t
-  val absurd : t -> 'a
+  val gnab : t -> 'a
 end
 type 't initial = (module INITIAL with type t = 't)
 
