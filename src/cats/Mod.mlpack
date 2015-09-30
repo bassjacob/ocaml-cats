@@ -5,6 +5,7 @@ Biapply
 Biapplicative
 Bifoldable
 Bifunctor
+Bind
 Bitraversable
 Category
 Coend
