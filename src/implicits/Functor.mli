@@ -1,6 +1,6 @@
-open Prelude
-open Prelude.Sig
-open Prelude.TyCon
+open Cats
+open Cats.Sig
+open Cats.TyCon
 
 val map : (implicit M : FUNCTOR)
   -> ('a -> 'b)

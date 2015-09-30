@@ -1,5 +1,5 @@
-open Prelude
-open Prelude.Sig
+open Cats
+open Cats.Sig
 
 val pure : (implicit M : APPLICATIVE) -> 'a -> 'a M.T.el
 

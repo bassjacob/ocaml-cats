@@ -1,12 +1,12 @@
 opam-version: "1.2"
-name: "prelude"
+name: "cats"
 version: "0.0.0"
 maintainer: "Darin Morrison <darinmorrison+git@gmail.com>"
 authors: [ "Darin Morrison" ]
 license: "MIT"
-homepage: "https://github.com/freebroccolo/ocaml-prelude"
-dev-repo: "https://github.com/freebroccolo/ocaml-prelude.git"
+homepage: "https://github.com/freebroccolo/ocaml-cats"
+dev-repo: "https://github.com/freebroccolo/ocaml-cats.git"
 build: [
-  [ "ocamlbuild" "src/prelude.cma"  ]
-  [ "ocamlbuild" "src/prelude.cmxa" ]
+  [ "ocamlbuild" "src/cats.cma"  ]
+  [ "ocamlbuild" "src/cats.cmxa" ]
 ]

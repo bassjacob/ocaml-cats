@@ -1,7 +1,7 @@
 <src>: include
-<src/prelude>: include
+<src/cats>: include
 <src/implicits/*.cmx>: for-pack(Implicits)
-<src/prelude/*.cmx>: for-pack(Prelude)
-<src/prelude/Ext/*.cmx>: for-pack(Prelude.Ext)
-<src/prelude/Mod/*.cmx>: for-pack(Prelude.Mod)
+<src/cats/*.cmx>: for-pack(Cats)
+<src/cats/Ext/*.cmx>: for-pack(Cats.Ext)
+<src/cats/Mod/*.cmx>: for-pack(Cats.Mod)
 true: bin_annot

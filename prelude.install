@@ -1,8 +1,0 @@
-lib: [
-  "META"
-  "_build/src/prelude.a"
-  "_build/src/prelude.cma"
-  "_build/src/prelude.cmi"
-  "_build/src/prelude.cmx"
-  "_build/src/prelude.cmxa"
-]

@@ -1,7 +1,7 @@
-open Prelude
+open Cats
 open Amb
 
-(* TODO: port full set of prelude examples to implicits style *)
+(* TODO: port full set of cats examples to implicits style *)
 
 module I = Implicits
 

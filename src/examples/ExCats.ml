@@ -1,4 +1,4 @@
-open Prelude
+open Cats
 open Amb
 open Mod
 open Semigroupoid.Fun

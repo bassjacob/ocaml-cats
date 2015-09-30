@@ -1,5 +1,5 @@
-open Prelude
-open Prelude.Sig
+open Cats
+open Cats.Sig
 
 let foldr (implicit M : FOLDABLE) = M.foldr
 let foldl (implicit M : FOLDABLE) = M.foldl

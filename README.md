@@ -1,8 +1,6 @@
-# ocaml-prelude
+# ocaml-cats
 
-A small OCaml prelude for algebraic and categorical concepts
-
-Inspired by the Purescript prelude.
+Category theory for OCaml
 
 ### Examples
 
@@ -32,10 +30,10 @@ let ex5 () : int list =
 
 #### Modular Implicits
 
-Modular implicits provide implicit module resolution functionality based on
-elaboration into first-class functors. They are similar to canonical structures
-or modular type classes. Modular implicits support higher-rank, higher-kinded
-polymorphism.
+Modular implicits provide implicit module resolution functionality
+based on elaboration into first-class functors. They are similar to
+canonical structures or modular type classes. Modular implicits
+support higher-rank, higher-kinded polymorphism.
 
 See the [paper](http://www.lpw25.net/ml2014.pdf) for further details.
 
@@ -73,28 +71,31 @@ let ex5 () : _ =
 ##### Using modular implicits
 
 The modular implicits functionality is available as a separate library
-`implicits` that builds on the standard definitions in `prelude`. The
-`implicits` library can be built with the [modular implicits
-compiler](https://github.com/ocamllabs/ocaml-modular-implicits) which is also
-available via `opam switch 4.02.1+modular-implicits-ber`.
+`implicits` that builds on the standard definitions in `cats`. The
+`implicits` library can be built with the
+[modular implicits compiler](https://github.com/ocamllabs/ocaml-modular-implicits)
+which is also available via `opam switch
+4.02.1+modular-implicits-ber`.
 
 ### Installing
 
-The `prelude` library is not yet available on the OPAM repository but you can
-install it directly from this repository in the meantime with the following:
+The `cats` library is not yet available on the OPAM repository but you
+can install it directly from this repository in the meantime with the
+following:
 
-* `opam pin add prelude git://github.com/freebroccolo/ocaml-prelude`
+* `opam pin add cats git://github.com/freebroccolo/ocaml-cats`
 
-Once this completes, `prelude` should be available as usual with `ocamlfind`.
+Once this completes, `cats` should be available as usual with
+`ocamlfind`.
 
 ### Experimenting in the toplevel
 
-Once `prelude` is installed as above, you can load it up in the toplevel:
+Once `cats` is installed as above, you can load it up in the toplevel:
 
 ```
 utop # #use "topfind";;
-utop # #require "prelude";;
-utop # Prelude.Functor.List.map string_of_int [0; 1; 2];;
+utop # #require "cats";;
+utop # Cats.Functor.List.map string_of_int [0; 1; 2];;
 - : bytes list = ["0"; "1"; "2"]
 ```
 
@@ -104,14 +105,15 @@ Building the code requires the following:
 
 * `ocaml`
 
-If you have `opam` you may optionally to switch to a new ocaml environment:
+If you have `opam` you may optionally to switch to a new ocaml
+environment:
 
-1. `opam switch install prelude -A 4.02.2` # (optional) switch to a new ocaml env
-2. `opam pin add prelude .`
+1. `opam switch install cats -A 4.02.2` # (optional) switch to a new ocaml env
+2. `opam pin add cats .`
 
-The `prelude` library can be built with `ocamlbuild` using the build script:
+The `cats` library can be built with `ocamlbuild` using the build script:
 
 * `./script/build`
 
-Additionally, the `implicits` library can be built using `./script/implicits` if
-you have the appropriate compiler installed.
+Additionally, the `implicits` library can be built using
+`./script/implicits` if you have the appropriate compiler installed.

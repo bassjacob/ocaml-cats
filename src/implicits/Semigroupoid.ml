@@ -1,5 +1,5 @@
-open Prelude
-open Prelude.Sig
+open Cats
+open Cats.Sig
 
 let compose (implicit M : SEMIGROUPOID) = M.compose
 

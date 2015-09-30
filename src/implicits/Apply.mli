@@ -1,5 +1,5 @@
-open Prelude
-open Prelude.Sig
+open Cats
+open Cats.Sig
 
 val apply : (implicit M : APPLY)
   -> ('a -> 'b) M.T.el

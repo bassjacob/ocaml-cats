@@ -4,8 +4,8 @@ set -eu
 set -o pipefail
 
 function main {
-    ocamlbuild -use-ocamlfind -j 0 src/prelude.cmxa
-    ocamlbuild -use-ocamlfind -j 0 src/examples/ExPrelude.native
+    ocamlbuild -use-ocamlfind -j 0 src/cats.cmxa
+    ocamlbuild -use-ocamlfind -j 0 src/examples/ExCats.native
     exit 0
 }
 

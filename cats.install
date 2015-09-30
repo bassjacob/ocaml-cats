@@ -1,0 +1,8 @@
+lib: [
+  "META"
+  "_build/src/cats.a"
+  "_build/src/cats.cma"
+  "_build/src/cats.cmi"
+  "_build/src/cats.cmx"
+  "_build/src/cats.cmxa"
+]
