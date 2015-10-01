@@ -1,6 +1,15 @@
 open Sig
 open TyCon
 
+module Flip (M : SEMIGROUP) = struct
+  module Def = struct
+    module T = M.T
+    let op y x = M.op x y
+  end
+  include Def
+  include Ext.Semigroup.Make(Def)
+end
+
 module Unit = struct
   module Def = struct
     module T = TC.Unit

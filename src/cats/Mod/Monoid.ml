@@ -1,6 +1,15 @@
 open Sig
 open TyCon
 
+module Flip (M : MONOID) = struct
+  module Dep = Semigroup.Flip(M)
+  module Def = struct
+    include Dep.Def
+    let unit = M.unit
+  end
+  include Def
+end
+
 module Unit = struct
   module Def = struct
     include Semigroup.Unit.Def

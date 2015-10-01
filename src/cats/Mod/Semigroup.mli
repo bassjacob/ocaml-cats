@@ -1,6 +1,12 @@
 open Sig
 open TyCon
 
+module Flip (M : SEMIGROUP) : sig
+  module Def : SEMIGROUP with module T = M.T
+  include (module type of Def)
+  include (module type of Ext.Semigroup.Make(Def))
+end
+
 module Unit : sig
   module Def : SEMIGROUP with module T = TC.Unit
   include (module type of Def)
