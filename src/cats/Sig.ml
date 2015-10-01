@@ -241,7 +241,7 @@ type 'm monad = (module MONAD with type T.co = 'm)
 
 module type EXTEND = sig
   include FUNCTOR
-  val extend : ('a T.el -> 'b) -> ('a T.el -> 'b T.el)
+  val extend : 'a T.el -> ('a T.el -> 'b) -> 'b T.el
 end
 type 'w extend = (module EXTEND with type T.co = 'w)
 
