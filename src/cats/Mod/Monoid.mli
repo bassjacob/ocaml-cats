@@ -35,7 +35,7 @@ module Multiplicative : sig
   end
 end
 
-module List : functor (T : TC0) -> sig
-  module Def : MONOID with module T = Semigroup.List(T).Def.T
+module List : functor (A : TC0) -> sig
+  module Def : MONOID with module T = Semigroup.List(A).Def.T
   include (module type of Def)
 end
