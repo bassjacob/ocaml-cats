@@ -1,4 +1,3 @@
-let undefined ?(message = "Undefined") _ = failwith message
 external (@@) : ('a -> 'b) -> ('a -> 'b) = "%apply"
 external (|>) : 'a -> (('a -> 'r) -> 'r) = "%revapply"
 

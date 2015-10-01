@@ -1,3 +1,17 @@
+val (@@) : ('a -> 'b) -> ('a -> 'b)
+val (|>) : 'a -> (('a -> 'r) -> 'r)
+
+val id : 'a -> 'a
+val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
+val cons : 'a -> 'a list -> 'a list
+val const : 'a -> ('b -> 'a)
+val flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c)
+val bang : 'a -> unit
+val diagonal : 'a -> 'a * 'a
+val curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c))
+val uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c)
+val tap : ('a -> unit) -> ('a -> 'a)
+
 module Initial : sig
   type t
   val abort : t -> 'a
@@ -17,18 +31,3 @@ module Product : sig
   val into : ('x -> 'a) -> ('x -> 'b) -> ('x -> ('a, 'b) t)
   val pair : 'a -> 'b -> ('a, 'b) t
 end
-
-val undefined : ?message:bytes -> 'a -> 'b
-val (@@) : ('a -> 'b) -> ('a -> 'b)
-val (|>) : 'a -> (('a -> 'r) -> 'r)
-
-val id : 'a -> 'a
-val compose : ('b -> 'c) -> ('a -> 'b) -> ('a -> 'c)
-val cons : 'a -> 'a list -> 'a list
-val const : 'a -> ('b -> 'a)
-val flip : ('a -> 'b -> 'c) -> ('b -> 'a -> 'c)
-val bang : 'a -> unit
-val diagonal : 'a -> 'a * 'a
-val curry : ('a * 'b -> 'c) -> ('a -> ('b -> 'c))
-val uncurry : ('a -> ('b -> 'c)) -> ('a * 'b -> 'c)
-val tap : ('a -> unit) -> ('a -> 'a)
