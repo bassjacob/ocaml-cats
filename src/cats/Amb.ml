@@ -19,7 +19,9 @@ module Initial = struct
 end
 
 module Coproduct = struct
-  type ('a, 'b) t = InL of 'a | InR of 'b
+  type ('a, 'b) t =
+    | InL of 'a
+    | InR of 'b
   let inl a = InL a
   let inr b = InR b
   let from f g x = match x with
@@ -34,5 +36,3 @@ module Product = struct
   let into f g p = (f p, g p)
   let pair x y = into (const x) (const y) ()
 end
-
-
