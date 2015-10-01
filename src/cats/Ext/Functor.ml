@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make (M : FUNCTOR) = struct open M
   let (<$->) = map

@@ -253,8 +253,6 @@ type 'w comonad = (module COMONAD with type T.co = 'w)
 
 module type FOLDABLE = sig
   module T : TC1
-  val foldr : ('a -> 'b -> 'b) -> ('b -> 'a T.el -> 'b)
-  val foldl : ('b -> 'a -> 'b) -> ('b -> 'a T.el -> 'b)
   val fold_map : 'm monoid
     -> ('a -> 'm) -> ('a T.el -> 'm)
 end
@@ -265,8 +263,6 @@ module type TRAVERSABLE = sig
   include FOLDABLE with module T := T
   val traverse : 'm applicative
     -> ('a -> ('b, 'm) ap) -> ('a T.el -> ('b T.el, 'm) ap)
-  val sequence : 'm applicative
-    -> ('a, 'm) ap T.el -> ('a T.el, 'm) ap
 end
 type 'f traversable = (module TRAVERSABLE with type T.co = 'f)
 
@@ -296,7 +292,5 @@ module type BITRAVERSABLE = sig
   include BIFOLDABLE with module T := T
   val bitraverse : 'm applicative
     -> ('a -> ('c, 'm) ap) -> ('b -> ('d, 'm) ap) -> (('a, 'b) T.el -> (('c, 'd) T.el, 'm) ap)
-  val bisequence : 'm applicative
-    -> (('a, 'm) ap, ('b, 'm) ap) T.el -> (('a, 'b) T.el, 'm) ap
 end
 type 'f bitraversable = (module BITRAVERSABLE with type T.co = 'f)

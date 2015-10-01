@@ -1,4 +1,4 @@
 open Sig
+open TyCon
 
-type t = unit
-let bang _ = ()
+include Def.Terminal

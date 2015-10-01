@@ -2,80 +2,89 @@ open Sig
 open TyCon
 
 module Endo (A : TC0) = struct
-  module Dep = Semigroup.Endo(A)
-  module Def = struct
-    include Dep.Def
-    let unit = Amb.id
+  module Def = Def.Monoid.Endo(A)
+  module Ext = struct
+    module Super = Semigroup.Endo(A)
+    include Super.Ext
   end
   include Def
+  include Ext
 end
 
 module Flip (M : MONOID) = struct
-  module Dep = Semigroup.Flip(M)
-  module Def = struct
-    include Dep.Def
-    let unit = M.unit
+  module Def = Def.Monoid.Flip(M)
+  module Ext = struct
+    module Super = Semigroup.Flip(M)
+    include Super.Ext
   end
   include Def
+  include Ext
 end
 
 module Unit = struct
-  module Def = struct
-    include Semigroup.Unit.Def
-    let unit = ()
+  module Def = Def.Monoid.Unit
+  module Ext = struct
+    include Semigroup.Unit.Ext
   end
   include Def
+  include Ext
 end
 
 module String = struct
-  module Def = struct
-    include Semigroup.String.Def
-    let unit = ""
+  module Def = Def.Monoid.String
+  module Ext = struct
+    include Semigroup.String.Ext
   end
   include Def
+  include Ext
 end
 
 module Additive = struct
   module Int = struct
-    module Def = struct
-      include Semigroup.Additive.Int.Def
-      let unit = 0
+    module Def = Def.Monoid.Additive.Int
+    module Ext = struct
+      include Semigroup.Additive.Int.Ext
     end
     include Def
+    include Ext
   end
 
   module Float = struct
-    module Def = struct
-      include Semigroup.Additive.Float.Def
-      let unit = 0.0
+    module Def = Def.Monoid.Additive.Float
+    module Ext = struct
+      include Semigroup.Additive.Float.Ext
     end
     include Def
+    include Ext
   end
 end
 
 module Multiplicative = struct
   module Int = struct
-    module Def = struct
-      include Semigroup.Multiplicative.Int.Def
-      let unit = 1
+    module Def = Def.Monoid.Multiplicative.Int
+    module Ext = struct
+      include Semigroup.Multiplicative.Int.Ext
     end
     include Def
+    include Ext
   end
 
   module Float = struct
-    module Def = struct
-      include Semigroup.Multiplicative.Float.Def
-      let unit = 1.0
+    module Def = Def.Monoid.Multiplicative.Float
+    module Ext = struct
+      include Semigroup.Multiplicative.Float.Ext
     end
     include Def
+    include Ext
   end
 end
 
 module List (T : TC0) = struct
-  module Dep = Semigroup.List(T)
-  module Def = struct
-    include Dep.Def
-    let unit = []
+  module Def = Def.Monoid.List(T)
+  module Ext = struct
+    module Super = Semigroup.List(T)
+    include Super.Ext
   end
   include Def
+  include Ext
 end

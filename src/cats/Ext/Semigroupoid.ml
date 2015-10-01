@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make (M : SEMIGROUPOID) = struct open M
   let (%>) = compose

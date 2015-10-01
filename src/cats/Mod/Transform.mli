@@ -1,6 +1,5 @@
 open Sig
+open TyCon
 
-module Make
-  : functor (F : FUNCTOR) (G : FUNCTOR) -> TRANSFORM
-      with module F := F
-       and module G := G
+module Make : functor (F : FUNCTOR) (G : FUNCTOR) ->
+  module type of Def.Transform.Make(F)(G)

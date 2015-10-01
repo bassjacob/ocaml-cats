@@ -1,31 +1,32 @@
 open Sig
+open TyCon
 
 module Unit = struct
-  module Def = struct
-    include Semiring.Unit.Def
-    let div _ _ = ()
-    let modulo _ _ = ()
+  module Def = Def.ModuloSemiring.Unit
+  module Ext = struct
+    include Semiring.Unit.Ext
+    include Ext.ModuloSemiring.Make(Def)
   end
   include Def
-  include Ext.ModuloSemiring.Make(Def)
+  include Ext
 end
 
 module Int = struct
-  module Def = struct
-    include Semiring.Int.Def
-    let div = (/)
-    let modulo = (mod)
+  module Def = Def.ModuloSemiring.Int
+  module Ext = struct
+    include Semiring.Int.Ext
+    include Ext.ModuloSemiring.Make(Def)
   end
   include Def
-  include Ext.ModuloSemiring.Make(Def)
+  include Ext
 end
 
 module Float = struct
-  module Def = struct
-    include Semiring.Float.Def
-    let div = (/.)
-    let modulo = mod_float
+  module Def = Def.ModuloSemiring.Float
+  module Ext = struct
+    include Semiring.Float.Ext
+    include Ext.ModuloSemiring.Make(Def)
   end
   include Def
-  include Ext.ModuloSemiring.Make(Def)
+  include Ext
 end

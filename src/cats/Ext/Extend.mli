@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make : functor (M : EXTEND) -> sig open M
   val (=>>) : 'a T.el -> ('a T.el -> 'b) -> 'b T.el

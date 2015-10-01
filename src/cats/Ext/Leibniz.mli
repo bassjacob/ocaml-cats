@@ -1,5 +1,6 @@
 open Sig
+open TyCon
 
-module type Make = functor (L : LEIBNIZ) -> sig
+module Make : functor (L : LEIBNIZ) -> sig
   val cast : ('a, 'b) L.t -> ('a -> 'b)
 end

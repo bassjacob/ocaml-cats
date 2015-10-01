@@ -2,35 +2,31 @@ open Sig
 open TyCon
 
 module Identity = struct
-  module Def = struct
-    include Functor.Identity.Def
-    let rec apply f x = f x
+  module Def = Def.Apply.Identity
+  module Ext = struct
+    include Functor.Identity.Ext
+    include Ext.Apply.Make(Def)
   end
   include Def
-  include Ext.Apply.Make(Def)
+  include Ext
 end
 
 module Option = struct
-  module Def = struct
-    include Functor.Option.Def
-    let rec apply : type b. ('a -> b) option -> ('a option -> b option) = fun fs xs ->
-      match fs with
-      | None -> None
-      | Some f -> map f xs
+  module Def = Def.Apply.Option
+  module Ext = struct
+    include Functor.Option.Ext
+    include Ext.Apply.Make(Def)
   end
   include Def
-  include Ext.Apply.Make(Def)
+  include Ext
 end
 
 module List = struct
-  module Def = struct
-    include Functor.List.Def
-    let rec apply : type b. ('a -> b) list -> ('a list -> b list) = fun fs xs ->
-      let module M = Semigroup.List(TC0(struct type t = b end)) in
-      match fs with
-      | [] -> []
-      | (f::fs) -> M.op (map f xs) (apply fs xs)
+  module Def = Def.Apply.List
+  module Ext = struct
+    include Functor.List.Ext
+    include Ext.Apply.Make(Def)
   end
   include Def
-  include Ext.Apply.Make(Def)
+  include Ext
 end

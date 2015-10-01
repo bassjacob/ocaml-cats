@@ -1,9 +1,11 @@
 open Sig
 
 module Identity = struct
-  module Def = struct
-    include Apply.Identity.Def
-    let bind x f = f x
+  module Def = Def.Bind.Identity
+  module Ext = struct
+    include Apply.Identity.Ext
+    include Ext.Bind.Make(Def)
   end
   include Def
+  include Ext
 end

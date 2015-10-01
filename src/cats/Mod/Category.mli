@@ -1,6 +1,7 @@
 open Sig
+open TyCon
 
 module Fun : sig
-  module Def : CATEGORY with module T = Semigroupoid.Fun.Def.T
-  include (module type of Def)
+  module Def = Def.Category.Fun
+  include module type of Def
 end

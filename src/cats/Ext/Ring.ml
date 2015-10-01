@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make (M : RING) = struct open M
   let (-@) = sub

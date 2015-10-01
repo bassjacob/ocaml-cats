@@ -1,4 +1,4 @@
 open Sig
+open TyCon
 
-include TERMINAL
-
+include module type of Def.Terminal

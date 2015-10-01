@@ -1,3 +1,4 @@
 open Sig
+open TyCon
 
-include INITIAL
+include module type of Def.Initial

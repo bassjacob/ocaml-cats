@@ -1,5 +1,5 @@
 open Sig
 open TyCon
 
-module Make : functor (J : TC1) -> PULLBACK
-  with module J = J
+module Make : functor (J : TC1) ->
+  module type of Def.Pullback.Make(J)

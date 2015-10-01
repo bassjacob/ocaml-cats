@@ -1,9 +1,7 @@
 open Sig
+open TyCon
 
 module Tuple = struct
-  module Def = struct
-    include Bifunctor.Tuple.Def
-    include Amb.Product
-  end
+  module Def = Def.Product.Tuple
   include Def
 end

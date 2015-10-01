@@ -1,3 +1,5 @@
 open Sig
+open TyCon
 
-module Make : functor (P : PROFUNCTOR) -> END
+module Make : functor (P : PROFUNCTOR) ->
+  module type of Def.End.Make(P)

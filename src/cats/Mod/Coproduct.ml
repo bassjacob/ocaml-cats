@@ -2,9 +2,6 @@ open Sig
 open TyCon
 
 module Variant = struct
-  module Def = struct
-    include Bifunctor.Variant.Def
-    include Amb.Coproduct
-  end
+  module Def = Def.Coproduct.Variant
   include Def
 end

@@ -1,9 +1,7 @@
 open Sig
+open TyCon
 
 module Fun = struct
-  module Def = struct
-    include Semigroupoid.Fun.Def
-    let id = Amb.id
-  end
+  module Def = Def.Category.Fun
   include Def
 end

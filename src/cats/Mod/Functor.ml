@@ -2,30 +2,22 @@ open Sig
 open TyCon
 
 module Identity = struct
-  module Def = struct
-    module T = TC.Identity
-    let map f x = f x
-  end
+  module Def = Def.Functor.Identity
+  module Ext = Ext.Functor.Make(Def)
   include Def
-  include Ext.Functor.Make(Def)
+  include Ext
 end
 
 module Option = struct
-  module Def = struct
-    module T = TC.Option
-    let map f = function
-      | None -> None
-      | Some x -> Some (f x)
-  end
+  module Def = Def.Functor.Option
+  module Ext = Ext.Functor.Make(Def)
   include Def
-  include Ext.Functor.Make(Def)
+  include Ext
 end
 
 module List = struct
-  module Def = struct
-    module T = TC.List
-    let map = List.map
-  end
+  module Def = Def.Functor.List
+  module Ext = Ext.Functor.Make(Def)
   include Def
-  include Ext.Functor.Make(Def)
+  include Ext
 end

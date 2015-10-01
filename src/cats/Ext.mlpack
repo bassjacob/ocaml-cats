@@ -1,9 +1,12 @@
 Apply
 Bind
+Bitraversable
 Comonad
 Extend
+Foldable
 Functor
 Lan
+Leibniz
 ModuloSemiring
 Monad
 Profunctor
@@ -12,3 +15,4 @@ Ring
 Semigroup
 Semigroupoid
 Semiring
+Traversable

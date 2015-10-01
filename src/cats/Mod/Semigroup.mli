@@ -2,58 +2,68 @@ open Sig
 open TyCon
 
 module Endo : functor (A : TC0) -> sig
-  module Def : SEMIGROUP with type T.el = A.el -> A.el
-  include (module type of Def)
-  include (module type of Ext.Semigroup.Make(Def))
+  module Def : module type of Def.Semigroup.Endo(A)
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
 end
 
 module Flip (M : SEMIGROUP) : sig
-  module Def : SEMIGROUP with module T = M.T
-  include (module type of Def)
-  include (module type of Ext.Semigroup.Make(Def))
+  module Def : module type of Def.Semigroup.Flip(M)
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
 end
 
 module Unit : sig
-  module Def : SEMIGROUP with module T = TC.Unit
-  include (module type of Def)
-  include (module type of Ext.Semigroup.Make(Def))
+  module Def = Def.Semigroup.Unit
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
 end
 
 module String : sig
-  module Def : SEMIGROUP with module T = TC.String
-  include (module type of Def)
-  include (module type of Ext.Semigroup.Make(Def))
+  module Def = Def.Semigroup.String
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
 end
 
 module Additive : sig
   module Int : sig
-    module Def : SEMIGROUP with module T = TC.Int
-    include (module type of Def)
-    include (module type of Ext.Semigroup.Make(Def))
+    module Def = Def.Semigroup.Additive.Int
+    module Ext : module type of Ext.Semigroup.Make(Def)
+    include module type of Def
+    include module type of Ext
   end
 
   module Float : sig
-    module Def : SEMIGROUP with module T = TC.Float
-    include (module type of Def)
-    include (module type of Ext.Semigroup.Make(Def))
+    module Def = Def.Semigroup.Additive.Float
+    module Ext : module type of Ext.Semigroup.Make(Def)
+    include module type of Def
+    include module type of Ext
   end
 end
 
 module Multiplicative : sig
   module Int : sig
-    module Def : SEMIGROUP with module T = TC.Int
-    include (module type of Def)
-    include (module type of Ext.Semigroup.Make(Def))
+    module Def = Def.Semigroup.Multiplicative.Int
+    module Ext : module type of Ext.Semigroup.Make(Def)
+    include module type of Def
+    include module type of Ext
   end
 
   module Float : sig
-    module Def : SEMIGROUP with module T = TC.Float
-    include (module type of Def)
-    include (module type of Ext.Semigroup.Make(Def))
+    module Def = Def.Semigroup.Multiplicative.Float
+    module Ext : module type of Ext.Semigroup.Make(Def)
+    include module type of Def
+    include module type of Ext
   end
 end
 
-module List : functor (X : TC0) -> sig
-  module Def : SEMIGROUP with type T.el = X.el TC.List.el
-  include (module type of Def)
+module List : functor (A : TC0) -> sig
+  module Def : module type of Def.Semigroup.List(A)
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
 end

@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make (M : PROFUNCTOR) = struct open M
   let lmap f = dimap f Amb.id

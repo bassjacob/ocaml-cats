@@ -1,6 +1,11 @@
 open Sig
 
 module Identity : sig
-  module Def : BIND with module T = Functor.Identity.Def.T
-  include (module type of Def)
+  module Def = Def.Bind.Identity
+  module Ext : sig
+    include module type of Apply.Identity.Ext
+    include module type of Ext.Bind.Make(Def)
+  end
+  include module type of Def
+  include module type of Ext
 end

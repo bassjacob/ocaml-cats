@@ -2,19 +2,22 @@ open Sig
 open TyCon
 
 module Identity : sig
-  module Def : FUNCTOR with module T = TC.Identity
+  module Def = Def.Functor.Identity
+  module Ext : module type of Ext.Functor.Make(Def)
   include (module type of Def)
-  include (module type of Ext.Functor.Make(Def))
+  include (module type of Ext)
 end
 
 module Option : sig
-  module Def : FUNCTOR with module T = TC.Option
+  module Def = Def.Functor.Option
+  module Ext : module type of Ext.Functor.Make(Def)
   include (module type of Def)
-  include (module type of Ext.Functor.Make(Def))
+  include (module type of Ext)
 end
 
 module List : sig
-  module Def : FUNCTOR with module T = TC.List
+  module Def = Def.Functor.List
+  module Ext : module type of Ext.Functor.Make(Def)
   include (module type of Def)
-  include (module type of Ext.Functor.Make(Def))
+  include (module type of Ext)
 end

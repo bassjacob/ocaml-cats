@@ -1,9 +1,12 @@
 open Sig
+open TyCon
 
 module Identity = struct
-  module Def = struct
-    include Applicative.Identity.Def
-    include (Bind.Identity.Def : BIND with module T := T)
+  module Def = Def.Monad.Identity
+  module Ext = struct
+    include Apply.Identity.Ext
+    include Bind.Identity.Ext
   end
   include Def
+  include Ext
 end

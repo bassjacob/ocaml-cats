@@ -2,6 +2,7 @@
 <src/cats>: include
 <src/implicits/*.cmx>: for-pack(Implicits)
 <src/cats/*.cmx>: for-pack(Cats)
+<src/cats/Def/*.cmx>: for-pack(Cats.Def)
 <src/cats/Ext/*.cmx>: for-pack(Cats.Ext)
 <src/cats/Mod/*.cmx>: for-pack(Cats.Mod)
 true: bin_annot

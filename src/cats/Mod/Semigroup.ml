@@ -2,85 +2,68 @@ open Sig
 open TyCon
 
 module Endo (A : TC0) = struct
-  module Def = struct
-    module T = TC0(struct type t = A.el -> A.el end)
-    let op = Amb.compose
-  end
+  module Def = Def.Semigroup.Endo(A)
+  module Ext = Ext.Semigroup.Make(Def)
   include Def
-  include Ext.Semigroup.Make(Def)
+  include Ext
 end
 
 module Flip (M : SEMIGROUP) = struct
-  module Def = struct
-    module T = M.T
-    let op y x = M.op x y
-  end
+  module Def = Def.Semigroup.Flip(M)
+  module Ext = Ext.Semigroup.Make(Def)
   include Def
-  include Ext.Semigroup.Make(Def)
+  include Ext
 end
 
 module Unit = struct
-  module Def = struct
-    module T = TC.Unit
-    let op _ _ = ()
-  end
+  module Def = Def.Semigroup.Unit
+  module Ext = Ext.Semigroup.Make(Def)
   include Def
-  include Ext.Semigroup.Make(Def)
+  include Ext
 end
 
 module String = struct
-  module Def = struct
-    module T = TC.String
-    let op x y = String.concat "" [x; y]
-  end
+  module Def = Def.Semigroup.String
+  module Ext = Ext.Semigroup.Make(Def)
   include Def
-  include Ext.Semigroup.Make(Def)
+  include Ext
 end
 
 module Additive = struct
   module Int = struct
-    module Def = struct
-      module T = TC.Int
-      let op = (+)
-    end
+    module Def = Def.Semigroup.Additive.Int
+    module Ext = Ext.Semigroup.Make(Def)
     include Def
-    include Ext.Semigroup.Make(Def)
+    include Ext
   end
 
   module Float = struct
-    module Def = struct
-      module T = TC.Float
-      let op = (+.)
-    end
+    module Def = Def.Semigroup.Additive.Float
+    module Ext = Ext.Semigroup.Make(Def)
     include Def
-    include Ext.Semigroup.Make(Def)
+    include Ext
   end
 end
 
 module Multiplicative = struct
   module Int = struct
-    module Def = struct
-      module T = TC.Int
-      let op = ( * )
-    end
+    module Def = Def.Semigroup.Multiplicative.Int
+    module Ext = Ext.Semigroup.Make(Def)
     include Def
-    include Ext.Semigroup.Make(Def)
+    include Ext
   end
 
   module Float = struct
-    module Def = struct
-      module T = TC.Float
-      let op = ( *. )
-    end
+    module Def = Def.Semigroup.Multiplicative.Float
+    module Ext = Ext.Semigroup.Make(Def)
     include Def
-    include Ext.Semigroup.Make(Def)
+    include Ext
   end
 end
 
-module List (X : TC0) = struct
-  module Def = struct
-    module T = TC0(struct type t = X.el TC.List.el end)
-    let op = List.append
-  end
+module List (A : TC0) = struct
+  module Def = Def.Semigroup.List(A)
+  module Ext = Ext.Semigroup.Make(Def)
   include Def
+  include Ext
 end

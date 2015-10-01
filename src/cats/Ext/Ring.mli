@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Make : functor (M : RING) -> sig open M
   val (-@) : T.el -> T.el -> T.el
