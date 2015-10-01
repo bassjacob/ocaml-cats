@@ -1,6 +1,12 @@
 open Sig
 open TyCon
 
+module Endo : functor (A : TC0) -> sig
+  module Def : SEMIGROUP with type T.el = A.el -> A.el
+  include (module type of Def)
+  include (module type of Ext.Semigroup.Make(Def))
+end
+
 module Flip (M : SEMIGROUP) : sig
   module Def : SEMIGROUP with module T = M.T
   include (module type of Def)

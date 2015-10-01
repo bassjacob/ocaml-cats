@@ -1,6 +1,15 @@
 open Sig
 open TyCon
 
+module Endo (A : TC0) = struct
+  module Dep = Semigroup.Endo(A)
+  module Def = struct
+    include Dep.Def
+    let unit = Amb.id
+  end
+  include Def
+end
+
 module Flip (M : MONOID) = struct
   module Dep = Semigroup.Flip(M)
   module Def = struct

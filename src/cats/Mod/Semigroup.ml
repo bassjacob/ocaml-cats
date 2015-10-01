@@ -1,6 +1,15 @@
 open Sig
 open TyCon
 
+module Endo (A : TC0) = struct
+  module Def = struct
+    module T = TC0(struct type t = A.el -> A.el end)
+    let op = Amb.compose
+  end
+  include Def
+  include Ext.Semigroup.Make(Def)
+end
+
 module Flip (M : SEMIGROUP) = struct
   module Def = struct
     module T = M.T

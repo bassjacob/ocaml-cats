@@ -1,6 +1,11 @@
 open Sig
 open TyCon
 
+module Endo : functor (A : TC0) -> sig
+  module Def : MONOID with module T = Semigroup.Endo(A).Def.T
+  include (module type of Def)
+end
+
 module Flip (M : MONOID) : sig
   module Def : MONOID with module T = Semigroup.Flip(M).Def.T
   include (module type of Def)
