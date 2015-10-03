@@ -280,8 +280,6 @@ type 'f biapplicative = (module BIAPPLICATIVE with type T.co = 'f)
 
 module type BIFOLDABLE = sig
   module T : TC2
-  val bifoldr : ('a -> 'c -> 'c) -> ('b -> 'c -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
-  val bifoldl : ('c -> 'a -> 'c) -> ('c -> 'b -> 'c) -> ('c -> ('a, 'b) T.el -> 'c)
   val bifold_map : 'm monoid
     -> ('a -> 'm) -> ('b -> 'm) -> (('a, 'b) T.el -> 'm)
 end
