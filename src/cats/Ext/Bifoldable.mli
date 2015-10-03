@@ -10,4 +10,6 @@ module Make : functor (M : BIFOLDABLE) -> sig open M
      : ('c -> 'a -> 'c)
     -> ('c -> 'b -> 'c)
     -> ('c -> ('a, 'b) T.el -> 'c)
+   val biany : ('a -> bool) -> ('b -> bool) -> (('a, 'b) T.el -> bool)
+   val biall : ('a -> bool) -> ('b -> bool) -> (('a, 'b) T.el -> bool)
 end
