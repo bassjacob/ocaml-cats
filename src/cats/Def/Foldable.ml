@@ -2,17 +2,14 @@ open Sig
 open TyCon
 
 module Cofree
-    (F :
-     sig
-       include FOLDABLE
-       include FUNCTOR with module T := T
-     end) =
+  (FFun : FUNCTOR)
+  (FFol : FOLDABLE with module T = FFun.T) =
 struct
-  include Cofree.Make(F)
+  include Cofree.Make(FFun)
 
   let fold_map (type m) (m : m Sig.monoid) =
     let module M = (val m) in
-    let functor' = F.fold_map m in
+    let functor' = FFol.fold_map m in
     let rec cofree act (Fork (x, xs)) =
       M.op (act x) (functor' (cofree act) xs) in
     cofree

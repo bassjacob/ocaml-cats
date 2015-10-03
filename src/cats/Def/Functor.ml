@@ -2,17 +2,18 @@ open Sig
 open TyCon
 
 module Cofree (F : FUNCTOR) = struct
-  include Cofree.Make(F)
-  let fork x xs = Fork (x, xs)
+  module Data = Cofree.Make(F)
+  module T = Data.T
   let rec map f = function
-    | Fork (x, xs) -> Fork (f x, F.map (map f) xs)
+    | Data.Fork (x, xs) -> Data.Fork (f x, F.map (map f) xs)
 end
 
 module Free (F : FUNCTOR) = struct
-  include Free.Make(F)
+  module Data =  Free.Make(F)
+  module T = Data.T
   let rec map f = function
-    | Leaf x -> Leaf (f x)
-    | Fork xs -> Fork (F.map (map f) xs)
+    | Data.Leaf x -> Data.Leaf (f x)
+    | Data.Fork xs -> Data.Fork (F.map (map f) xs)
 end
 
 module Identity = struct

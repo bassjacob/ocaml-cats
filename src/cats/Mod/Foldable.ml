@@ -2,13 +2,10 @@ open Sig
 open TyCon
 
 module Cofree
-    (F :
-     sig
-       include FOLDABLE
-       include FUNCTOR with module T := T
-     end) =
+  (FFol : FOLDABLE)
+  (FFun : FUNCTOR with module T = FFol.T) =
 struct
-  module Def = Def.Foldable.Cofree(F)
+  module Def = Def.Foldable.Cofree(FFun)(FFol)
   module Ext = Ext.Foldable.Make(Def)
   include Def
   include Ext

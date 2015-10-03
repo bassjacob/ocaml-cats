@@ -1,15 +1,22 @@
 open Sig
 open TyCon
 
-module Cofree (F : TRAVERSABLE) = struct
-  include Functor.Cofree(F)
-  include (Foldable.Cofree(F) : module type of Foldable.Cofree(F)
-    with module T := T)
+module Cofree
+  (FFun : FUNCTOR)
+  (FTra : TRAVERSABLE with module T = FFun.T) =
+struct
+  module Data = Cofree.Make(FFun)
+  include Functor.Cofree(FFun)
+  include (Foldable.Cofree(FFun)(FTra) :
+    module type of Foldable.Cofree(FFun)(FTra)
+      with module T := T)
+
+  let fork x xs = Data.Fork (x, xs)
 
   let traverse (type m) (m : m Sig.applicative) act =
     let module M = (val m) in
-    let functor' = F.traverse m in
-    let rec cofree (Fork (x, xs)) = M.T.co @@
+    let functor' = FTra.traverse m in
+    let rec cofree (Data.Fork (x, xs)) = M.T.co @@
       M.apply
         (M.map fork (M.T.el (act x)))
         (M.T.el (functor' cofree xs)) in

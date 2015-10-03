@@ -2,7 +2,15 @@ open Sig
 open TyCon
 
 module Free (F : FUNCTOR) = struct
+  module Data = Free.Make(F)
   include Functor.Free(F)
+
+  let pure x = Data.Leaf x
+
+  let rec bind t k = match t with
+    | Data.Leaf x -> k x
+    | Data.Fork xs -> Data.Fork (F.map (fun x -> bind x k) xs)
+
   let apply mf mx =
     bind mf @@ fun f ->
     bind mx @@ fun x ->

@@ -2,13 +2,10 @@ open Sig
 open TyCon
 
 module Cofree
-  (F :
-   sig
-     include FOLDABLE
-     include FUNCTOR with module T := T
-   end) :
+  (FFun : FUNCTOR)
+  (FFol : FOLDABLE with module T = FFun.T) :
 sig
-  include FOLDABLE with module T = Cofree.Make(F).T
+  include FOLDABLE with module T = Cofree.Make(FFun).T
 end
 
 module List : sig
