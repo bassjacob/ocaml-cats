@@ -121,6 +121,7 @@ end
 
 module TC =
 struct
+  module Bool = TC0(struct type t = bool end)
   module Float = TC0(struct type t = float end)
   module Fun = TC2(struct type ('a, 'b) t = 'a -> 'b end)
   module Identity = TC1(struct type 'a t = 'a end)

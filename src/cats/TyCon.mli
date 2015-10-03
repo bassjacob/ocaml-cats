@@ -156,6 +156,7 @@ module TC6 :
 
 module TC :
 sig
+  module Bool : TC0 with type el = bool
   module Float : TC0 with type el = float
   module Fun : TC2 with type ('a, 'b) el = 'a -> 'b
   module Identity : TC1 with type 'a el = 'a
