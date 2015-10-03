@@ -15,6 +15,20 @@ module Flip (M : SEMIGROUP) : sig
   include module type of Ext
 end
 
+module Any : sig
+  module Def = Def.Semigroup.Any
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
+end
+
+module All : sig
+  module Def = Def.Semigroup.All
+  module Ext : module type of Ext.Semigroup.Make(Def)
+  include module type of Def
+  include module type of Ext
+end
+
 module Unit : sig
   module Def = Def.Semigroup.Unit
   module Ext : module type of Ext.Semigroup.Make(Def)

@@ -11,6 +11,16 @@ module Flip (M : SEMIGROUP) = struct
   let op y x = M.op x y
 end
 
+module Any = struct
+  module T = TC.Bool
+  let op = ( || )
+end
+
+module All = struct
+  module T = TC.Bool
+  let op = ( && )
+end
+
 module Unit = struct
   module T = TC.Unit
   let op _ _ = ()
@@ -24,12 +34,12 @@ end
 module Additive = struct
   module Int = struct
     module T = TC.Int
-    let op = (+)
+    let op = ( + )
   end
 
   module Float = struct
     module T = TC.Float
-    let op = (+.)
+    let op = ( +. )
   end
 end
 

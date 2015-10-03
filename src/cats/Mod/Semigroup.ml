@@ -15,6 +15,20 @@ module Flip (M : SEMIGROUP) = struct
   include Ext
 end
 
+module Any = struct
+  module Def = Def.Semigroup.Any
+  module Ext = Ext.Semigroup.Make(Def)
+  include Def
+  include Ext
+end
+
+module All = struct
+  module Def = Def.Semigroup.All
+  module Ext = Ext.Semigroup.Make(Def)
+  include Def
+  include Ext
+end
+
 module Unit = struct
   module Def = Def.Semigroup.Unit
   module Ext = Ext.Semigroup.Make(Def)

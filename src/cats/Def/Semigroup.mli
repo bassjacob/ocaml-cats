@@ -9,6 +9,14 @@ module Flip (M : SEMIGROUP) : sig
   include SEMIGROUP with module T = M.T
 end
 
+module Any : sig
+  include SEMIGROUP with module T = TC.Bool
+end
+
+module All : sig
+  include SEMIGROUP with module T = TC.Bool
+end
+
 module Unit : sig
   include SEMIGROUP with module T = TC.Unit
 end
