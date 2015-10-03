@@ -10,10 +10,12 @@ Bitraversable
 Category
 Coend
 Cofree
+Comonad
 Coproduct
 DivisionRing
 End
 Exists
+Extend
 Foldable
 Forall
 Free

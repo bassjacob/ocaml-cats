@@ -9,10 +9,12 @@ Bind
 Bitraversable
 Category
 Coend
+Comonad
 Coproduct
 DivisionRing
 End
 Exists
+Extend
 Foldable
 Forall
 Functor
