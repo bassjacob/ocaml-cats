@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Free (F : FUNCTOR) : sig
   include BIND with module T = Functor.Free(F).T

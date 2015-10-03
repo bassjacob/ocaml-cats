@@ -7,6 +7,6 @@ module Diagonal : functor (P : PROFUNCTOR) ->
 module Fun : sig
   module Def = Def.Profunctor.Fun
   module Ext : module type of Ext.Profunctor.Make(Def)
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end

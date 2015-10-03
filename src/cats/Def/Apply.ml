@@ -11,7 +11,6 @@ end
 
 module Identity = struct
   include Functor.Identity
-
   let rec apply f x = f x
 end
 

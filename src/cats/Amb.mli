@@ -18,7 +18,9 @@ module Initial : sig
 end
 
 module Coproduct : sig
-  type ('a, 'b) t = Inl of 'a | Inr of 'b
+  type ('a, 'b) t
+    = Inl of 'a
+    | Inr of 'b
   val inl : 'a -> ('a, 'b) t
   val inr : 'b -> ('a, 'b) t
   val from : ('a -> 'x) -> ('b -> 'x) -> (('a, 'b) t -> 'x)

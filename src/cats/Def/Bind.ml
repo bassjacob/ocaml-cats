@@ -1,4 +1,5 @@
 open Sig
+open TyCon
 
 module Free (F : FUNCTOR) = struct
   include Functor.Free(F)

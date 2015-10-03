@@ -3,5 +3,5 @@ open TyCon
 
 module Variant : sig
   module Def = Def.Coproduct.Variant
-  include (module type of Def)
+  include module type of Def
 end

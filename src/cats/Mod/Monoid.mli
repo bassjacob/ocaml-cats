@@ -6,8 +6,8 @@ module Endo : functor (A : TC0) -> sig
   module Ext : sig
     (* include module type of Semigroup.Endo(A).Ext *)
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module Flip (M : MONOID) : sig
@@ -15,8 +15,8 @@ module Flip (M : MONOID) : sig
   module Ext : sig
     (* include Semigroup.Flip(M).Ext *)
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module Any : sig
@@ -24,8 +24,8 @@ module Any : sig
   module Ext : sig
     include module type of Semigroup.Any.Ext
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module All : sig
@@ -33,8 +33,8 @@ module All : sig
   module Ext : sig
     include module type of Semigroup.All.Ext
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module Unit : sig
@@ -42,8 +42,8 @@ module Unit : sig
   module Ext : sig
     include module type of Semigroup.Unit.Ext
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module String : sig
@@ -51,8 +51,8 @@ module String : sig
   module Ext : sig
     include module type of Semigroup.String.Ext
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
 
 module Additive : sig
@@ -61,8 +61,8 @@ module Additive : sig
     module Ext : sig
       include module type of Semigroup.Additive.Int.Ext
     end
-    include (module type of Def)
-    include (module type of Ext)
+    include module type of Def
+    include module type of Ext
   end
 
   module Float : sig
@@ -70,8 +70,8 @@ module Additive : sig
     module Ext : sig
       include module type of Semigroup.Additive.Float.Ext
     end
-    include (module type of Def)
-    include (module type of Ext)
+    include module type of Def
+    include module type of Ext
   end
 end
 
@@ -81,8 +81,8 @@ module Multiplicative : sig
     module Ext : sig
       include module type of Semigroup.Multiplicative.Int.Ext
     end
-    include (module type of Def)
-    include (module type of Ext)
+    include module type of Def
+    include module type of Ext
   end
 
   module Float : sig
@@ -90,8 +90,8 @@ module Multiplicative : sig
     module Ext : sig
       include module type of Semigroup.Multiplicative.Float.Ext
     end
-    include (module type of Def)
-    include (module type of Ext)
+    include module type of Def
+    include module type of Ext
   end
 end
 
@@ -100,6 +100,6 @@ module List : functor (A : TC0) -> sig
   module Ext : sig
     (* include module type of Semigroup.List.Ext *)
   end
-  include (module type of Def)
-  include (module type of Ext)
+  include module type of Def
+  include module type of Ext
 end
