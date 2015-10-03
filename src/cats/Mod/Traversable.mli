@@ -1,13 +1,7 @@
 open Sig
 open TyCon
 
-module Cofree
-    (F :
-     sig
-       include FOLDABLE
-       include TRAVERSABLE with module T := T
-     end) :
-sig
+module Cofree (F : TRAVERSABLE) : sig
   module Def : module type of Def.Traversable.Cofree(F)
   module Ext : sig
     include module type of Ext.Foldable.Make(Def)

@@ -1,13 +1,7 @@
 open Sig
 open TyCon
 
-module Cofree
-  (F :
-   sig
-     include FUNCTOR
-     include TRAVERSABLE with module T := T
-   end) :
-sig
+module Cofree (F : TRAVERSABLE) : sig
   include TRAVERSABLE with module T = Functor.Cofree(F).T
 end
 
