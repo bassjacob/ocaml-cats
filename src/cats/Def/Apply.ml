@@ -1,6 +1,14 @@
 open Sig
 open TyCon
 
+module Free (F : FUNCTOR) = struct
+  include Functor.Free(F)
+  let apply mf mx =
+    bind mf @@ fun f ->
+    bind mx @@ fun x ->
+    pure @@ f x
+end
+
 module Identity = struct
   include Functor.Identity
 

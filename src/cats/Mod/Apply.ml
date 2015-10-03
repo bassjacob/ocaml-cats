@@ -1,6 +1,16 @@
 open Sig
 open TyCon
 
+module Free (F : FUNCTOR) = struct
+  module Def = Def.Apply.Free(F)
+  module Ext = struct
+    include Ext.Functor.Make(Def)
+    include Ext.Apply.Make(Def)
+  end
+  include Def
+  include Ext
+end
+
 module Identity = struct
   module Def = Def.Apply.Identity
   module Ext = struct
