@@ -10,6 +10,6 @@ module List = struct
     let module A = (val m) in
     let rec go xs = match xs with
       | [] -> A.pure []
-      | (x :: xs) -> A.apply (A.map Amb.cons (A.T.el @@ f @@ x)) (go xs) in
-    fun x -> A.T.co @@ go @@ x
+      | (x :: xs) -> A.apply (A.map Amb.cons (A.T.el (f x))) (go xs) in
+    Amb.compose A.T.co go
 end
