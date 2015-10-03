@@ -1,12 +1,25 @@
 open Sig
 open TyCon
 
+module Cofree
+    (F :
+     sig
+       include FOLDABLE
+       include FUNCTOR with module T := T
+     end) =
+struct
+  include Cofree.Make(F)
+
+  let fold_map (type m) (m : m Sig.monoid) =
+    let module M = (val m) in
+    let functor' = F.fold_map m in
+    let rec cofree act (Fork (x, xs)) =
+      M.op (act x) (functor' (cofree act) xs) in
+    cofree
+end
+
 module List = struct
   module T = TC.List
-
-  let foldr f z xs = List.fold_right f xs z
-
-  let foldl = List.fold_left
 
   let fold_map (type m) (m : m monoid) act =
     let module M = (val m) in
@@ -18,14 +31,6 @@ end
 
 module Option = struct
   module T = TC.Option
-
-  let foldr f z xs = match xs with
-    | None -> z
-    | Some x -> f x z
-
-  let foldl f a xs = match xs with
-    | None -> a
-    | Some x -> f a x
 
   let fold_map (type m) (m : m monoid) act =
     let module M = (val m) in
