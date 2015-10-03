@@ -3,6 +3,7 @@ open TyCon
 
 module Cofree (F : FUNCTOR) = struct
   include Cofree.Make(F)
+  let fork x xs = Fork (x, xs)
   let rec map f = function
     | Fork (x, xs) -> Fork (f x, F.map (map f) xs)
 end

@@ -4,6 +4,7 @@ open TyCon
 module Cofree (F : FUNCTOR) : sig
   include module type of Cofree.Make(F)
   include FUNCTOR with module T := T
+  val fork : 'a -> 'a t F.T.el -> 'a t
 end
 
 module Free (F : FUNCTOR) : sig
