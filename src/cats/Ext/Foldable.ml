@@ -14,4 +14,5 @@ module Make (M : FOLDABLE) = struct open M
 
   let any p = fold_map (module Def.Monoid.Any) p
   let all p = fold_map (module Def.Monoid.All) p
+  let elem x = any (fun y -> x = y)
 end
