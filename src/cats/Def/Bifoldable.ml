@@ -13,7 +13,7 @@ module Tuple = struct
 
   let bifold_map (type m) (m : m monoid) f g p =
     let module M = (val m) in
-    M.op (f @@ fst p) (g @@ snd p)
+    M.op (f (fst p)) (g (snd p))
 end
 
 module Variant = struct
@@ -21,10 +21,10 @@ module Variant = struct
   module T = TC.Variant
 
   let bifoldr f g i v = 
-    from (fun x -> f x i) (fun y -> g y i) v
+    from (Amb.flip f i) (Amb.flip g i) v
 
   let bifoldl f g i v =
-    from (fun x -> f i x) (fun y -> g i y) v
+    from (f i) (g i) v
 
   let bifold_map (type m) (m : m monoid) f g v =
     let module M = (val m) in

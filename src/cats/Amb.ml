@@ -19,13 +19,13 @@ end
 
 module Coproduct = struct
   type ('a, 'b) t =
-    | InL of 'a
-    | InR of 'b
-  let inl a = InL a
-  let inr b = InR b
+    | Inl of 'a
+    | Inr of 'b
+  let inl a = Inl a
+  let inr b = Inr b
   let from f g x = match x with
-    | InL a -> f a
-    | InR b -> g b
+    | Inl a -> f a
+    | Inr b -> g b
 end
 
 module Product = struct
