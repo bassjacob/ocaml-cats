@@ -26,7 +26,5 @@ module Variant = struct
   let bifoldl f g i v =
     from (f i) (g i) v
 
-  let bifold_map (type m) (m : m monoid) f g v =
-    let module M = (val m) in
-    from f g v
+  let bifold_map _ = from
 end
