@@ -11,6 +11,16 @@ module Flip (M : MONOID) = struct
   let unit = M.unit
 end
 
+module Any = struct
+  include Semigroup.Any
+  let unit = false
+end
+
+module All = struct
+  include Semigroup.All
+  let unit = true
+end
+
 module Unit = struct
   include Semigroup.Unit
   let unit = ()

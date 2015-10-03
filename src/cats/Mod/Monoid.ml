@@ -21,6 +21,24 @@ module Flip (M : MONOID) = struct
   include Ext
 end
 
+module Any = struct
+  module Def = Def.Monoid.Any
+  module Ext = struct
+    include Semigroup.Any.Ext
+  end
+  include Def
+  include Ext
+end
+
+module All = struct
+  module Def = Def.Monoid.All
+  module Ext = struct
+    include Semigroup.All.Ext
+  end
+  include Def
+  include Ext
+end
+
 module Unit = struct
   module Def = Def.Monoid.Unit
   module Ext = struct

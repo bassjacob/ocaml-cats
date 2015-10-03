@@ -9,6 +9,14 @@ module Flip (M : MONOID) : sig
   include MONOID with module T = Semigroup.Flip(M).T
 end
 
+module Any : sig
+  include MONOID with module T = Semigroup.Any.T
+end
+
+module All : sig
+  include MONOID with module T = Semigroup.All.T
+end
+
 module Unit : sig
   include MONOID with module T = Semigroup.Unit.T
 end

@@ -19,6 +19,24 @@ module Flip (M : MONOID) : sig
   include (module type of Ext)
 end
 
+module Any : sig
+  module Def : MONOID with module T = Def.Monoid.Any.T
+  module Ext : sig
+    include module type of Semigroup.Any.Ext
+  end
+  include (module type of Def)
+  include (module type of Ext)
+end
+
+module All : sig
+  module Def : MONOID with module T = Def.Monoid.All.T
+  module Ext : sig
+    include module type of Semigroup.All.Ext
+  end
+  include (module type of Def)
+  include (module type of Ext)
+end
+
 module Unit : sig
   module Def : MONOID with module T = Def.Monoid.Unit.T
   module Ext : sig
