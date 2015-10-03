@@ -9,12 +9,14 @@ Bind
 Bitraversable
 Category
 Coend
+Cofree
 Coproduct
 DivisionRing
 End
 Exists
 Foldable
 Forall
+Free
 Functor
 Initial
 Lan
