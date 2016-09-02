@@ -4,8 +4,8 @@ set -eu
 set -o pipefail
 
 function main {
-    ocamlbuild -use-ocamlfind -j 0 src/cats.cma
-    utop -init .ocamlinit
+    rebuild -use-ocamlfind -j 0 src/cats.cma
+    rtop -init .ocamlinit
     exit 0
 }
 

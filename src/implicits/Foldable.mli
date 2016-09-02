@@ -15,5 +15,5 @@ val fold_map : (implicit M : FOLDABLE)
   -> ('a -> 'm)
   -> ('a M.T.el -> 'm)
 
-implicit module Option : module type of Mod.Foldable.Option
-implicit module List : module type of Mod.Foldable.List
+implicit module Option : module type Mod.Foldable.Option
+implicit module List : module type Mod.Foldable.List

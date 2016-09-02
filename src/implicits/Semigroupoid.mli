@@ -6,7 +6,7 @@ val compose : (implicit M : SEMIGROUPOID)
   -> ('a, 'b) M.T.el
   -> ('a, 'c) M.T.el
 
-implicit module Fun : module type of Mod.Semigroupoid.Fun
+implicit module Fun : module type Mod.Semigroupoid.Fun
 
 module Ext : sig
   val (%>) : (implicit M : SEMIGROUPOID)

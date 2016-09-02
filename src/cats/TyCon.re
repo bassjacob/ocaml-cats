@@ -1,0 +1,135 @@
+type ap 'f 'x;
+
+module type TC0 = {
+  type el;
+  type co;
+  external co: el => co = "%identity";
+  external el: co => el = "%identity";
+};
+
+module type TC1 = {
+  type el 'a;
+  type co;
+  external co: el 'a => ap co 'a = "%identity";
+  external el: ap co 'a => el 'a = "%identity";
+};
+
+module type TC2 = {
+  type el 'a 'b;
+  type co;
+  external co: el 'a 'b => ap (ap co 'a) 'b = "%identity";
+  external el: ap (ap co 'a) 'b => el 'a 'b = "%identity";
+};
+
+module type TC3 = {
+  type el 'a 'b 'c;
+  type co;
+  external co: el 'a 'b 'c => ap (ap (ap co 'a) 'b) 'c = "%identity";
+  external el: ap (ap (ap co 'a) 'b) 'c => el 'a 'b 'c = "%identity";
+};
+
+module type TC4 = {
+  type el 'a 'b 'c 'd;
+  type co;
+  external co: el 'a 'b 'c 'd => ap (ap (ap (ap co 'a) 'b) 'c) 'd = "%identity";
+  external el: ap (ap (ap (ap co 'a) 'b) 'c) 'd => el 'a 'b 'c 'd = "%identity";
+};
+
+module type TC5 = {
+  type el 'a 'b 'c 'd 'e;
+  type co;
+  external co: el 'a 'b 'c 'd 'e => ap (ap (ap (ap (ap co 'a) 'b) 'c) 'd) 'e = "%identity";
+  external el: ap (ap (ap (ap (ap co 'a) 'b) 'c) 'd) 'e => el 'a 'b 'c 'd 'e = "%identity";
+};
+
+module type TC6 = {
+  type el 'a 'b 'c 'd 'e 'f;
+  type co;
+  external co: el 'a 'b 'c 'd 'e 'f => ap (ap (ap (ap (ap (ap co 'a) 'b) 'c) 'd) 'e) 'f = "%identity";
+  external el: ap (ap (ap (ap (ap (ap co 'a) 'b) 'c) 'd) 'e) 'f => el 'a 'b 'c 'd 'e 'f = "%identity";
+};
+
+let module Op = {
+  type co;
+  external co : 'a => 'b = "%identity";
+  external el : 'a => 'b = "%identity";
+};
+
+let module TC0 (T: { type t; }) => {
+  type el = T.t;
+  include Op;
+};
+
+let module TC1 (T: { type t 'a; }) => {
+  type el 'a = T.t 'a;
+  include Op;
+};
+
+let module TC2 (T: { type t 'a 'b; }) => {
+  type el 'a 'b = T.t 'a 'b;
+  include Op;
+};
+
+let module TC3 (T: { type t 'a 'b 'c; }) => {
+  type el 'a 'b 'c = T.t 'a 'b 'c;
+  include Op;
+};
+
+let module TC4 (T: { type t 'a 'b 'c 'd; }) => {
+  type s 'a 'b 'c 'd = T.t 'a 'b 'c 'd;
+  include Op;
+};
+
+let module TC5 (T: { type t 'a 'b 'c 'd 'e; }) => {
+  type s 'a 'b 'c 'd 'e = T.t 'a 'b 'c 'd 'e;
+  include Op;
+};
+
+let module TC6 (T: { type t 'a 'b 'c 'd 'e 'f; }) => {
+  type s 'a 'b 'c 'd 'e 'f = T.t 'a 'b 'c 'd 'e 'f;
+  include Op;
+};
+
+let module TC = {
+  let module Bool = TC0 {
+    type t = bool;
+  };
+  let module Float = TC0 {
+    type t = float;
+  };
+  let module Fun = TC2 {
+    type t 'a 'b = 'a => 'b;
+  };
+  let module Identity = TC1 {
+    type t 'a = 'a;
+  };
+  let module Int = TC0 {
+    type t = int;
+  };
+  let module List = TC1 {
+    type t 'a = list 'a;
+  };
+  let module Option = TC1 {
+    type t 'a = option 'a;
+  };
+  let module String = TC0 {
+    type t = string;
+  };
+  let module Tuple = TC2 {
+    type t 'a 'b = Amb.Product.t 'a 'b;
+  };
+  let module Unit = TC0 {
+    type t = unit;
+  };
+  let module Variant = TC2 {
+    type t 'a 'b = Amb.Coproduct.t 'a 'b;
+  };
+};
+
+type tc0 'f = (module TC0 with type co ='f);
+type tc1 'f = (module TC1 with type co ='f);
+type tc2 'f = (module TC2 with type co ='f);
+type tc3 'f = (module TC3 with type co ='f);
+type tc4 'f = (module TC4 with type co ='f);
+type tc5 'f = (module TC5 with type co ='f);
+type tc6 'f = (module TC6 with type co ='f);
