@@ -57,7 +57,7 @@ let ex6 () => {
   let module T = Traversable.List;
   /* not very interesting but it works … */
   let res = T.traverse (module A) (A.T.co %> A.pure) [0, 1, 2, 3, 4];
-  let res = A.T.el res; /* = [[0, 1, 2, 3, 4]] */
+  let res = A.T.el res;
   assert (res == [[0, 1, 2, 3, 4]]);
 };
 ```
