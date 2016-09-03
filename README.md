@@ -4,6 +4,8 @@ Category theory for OCaml
 
 ### Examples
 
+Also see the `examples` directory for more comprehensive examples.
+
 #### Standard OCaml
 
 ```ocaml
