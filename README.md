@@ -19,7 +19,7 @@ let ex1 () => {
   assert (res == (84, "3.14159"));
 };
 
-/* Semigroupoid for (->) */
+/* Semigroupoid for (=>) */
 let ex2 () => {
   let res = (fun x => x + 1) %> (fun x => x * 2) @@ 10;
   assert (res == 21);

@@ -85,7 +85,7 @@ type divisionring 't = (module DIVISIONRING with type T.el = 't);
 
 module type FUNCTOR = {
   let module T: TC1;
-  let map: ('a => 'b) => T.el 'a => T.el 'b;
+  let map: ('a => 'b) => (T.el 'a => T.el 'b);
 };
 type functor' 'f = (module FUNCTOR with type T.co = 'f);
 
@@ -264,14 +264,12 @@ module type BIAPPLICATIVE = {
   include BIAPPLY;
   let bipure: 'a => 'b => T.el 'a 'b;
 };
-
 type biapplicative 'f = (module BIAPPLICATIVE with type T.co = 'f);
 
 module type BIFOLDABLE = {
   let module T: TC2;
   let bifold_map: monoid 'm => ('a => 'm) => ('b => 'm) => T.el 'a 'b => 'm;
 };
-
 type bifoldable 'f = (module BIFOLDABLE with type T.co = 'f);
 
 module type BITRAVERSABLE = {
@@ -279,5 +277,4 @@ module type BITRAVERSABLE = {
   include BIFOLDABLE with module T := T;
   let bitraverse: applicative 'm => ('a => ap 'm 'c) => ('b => ap 'm 'd) => T.el 'a 'b => ap 'm (T.el 'c 'd);
 };
-
 type bitraversable 'f = (module BITRAVERSABLE with type T.co = 'f);
