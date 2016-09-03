@@ -6,6 +6,7 @@ set -o pipefail
 function main {
     rebuild -use-ocamlfind -j 0 src/cats.cmxa |& refmterr
     rebuild -use-ocamlfind -j 0 src/examples/ExCats.native |& refmterr
+    rebuild -use-ocamlfind -j 0 src/examples/Rose.native |& refmterr
     exit 0
 }
 
