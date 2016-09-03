@@ -72,12 +72,12 @@ let ex7 () => {
 };
 
 let () = {
-  bang @@ ex0 ();
-  bang @@ ex1 ();
-  bang @@ ex2 ();
-  bang @@ ex3 ();
-  bang @@ ex4 ();
-  bang @@ ex5 ();
-  bang @@ ex6 ();
-  bang @@ ex7 ();
+  ex0 ();
+  ex1 ();
+  ex2 ();
+  ex3 ();
+  ex4 ();
+  ex5 ();
+  ex6 ();
+  ex7 ();
 };
